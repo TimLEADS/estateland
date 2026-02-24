@@ -20,7 +20,7 @@ export default function Privacy() {
       {section("How We Use Your Information", <p>Your information is used to deliver leads, configure your CRM, provide customer support, and communicate about your account. We do not sell your personal information to third parties.</p>)}
       {section("Data Security", <p>We use industry-standard encryption and security practices to protect your data. Access to personal information is restricted to authorized personnel.</p>)}
       {section("Your Rights", <p>You may request access, correction, or deletion of your personal data. Contact us at <a href="mailto:privacy@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>privacy@estateland.us</a>.</p>)}
-      {section("Contact", <p>Questions? Email <a href="mailto:hello@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>hello@estateland.us</a>.</p>)}
+      {section("Contact", <p>Questions? Email <a href="mailto:support@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>support@estateland.us</a>.</p>)}
 
       <Link to="/" style={{ fontFamily: font.body, fontSize: 14, color: C.gold, textDecoration: "none" }}>← Back to home</Link>
     </section>

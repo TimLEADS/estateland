@@ -88,7 +88,8 @@ export default function Onboarding() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`/api/checkout-session/${stripeSessionId}`);
+        const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+        const res = await fetch(`${apiBase}/api/checkout-session/${stripeSessionId}`);
         const data = await res.json();
         if (cancelled) return;
         if (res.ok && data.payment_status === "paid") {

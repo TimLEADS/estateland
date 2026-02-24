@@ -19,7 +19,7 @@ export default function Cookies() {
       {section("What Are Cookies", <p>Cookies are small text files stored on your device when you visit our website. They help us provide a better experience.</p>)}
       {section("How We Use Cookies", <p>We use cookies for essential site functionality, authentication, analytics, and to remember your preferences. We do not use cookies for advertising.</p>)}
       {section("Your Choices", <p>You can disable cookies in your browser settings, but some features may not work correctly. Most browsers allow you to manage cookie preferences.</p>)}
-      {section("Contact", <p>Questions? Email <a href="mailto:hello@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>hello@estateland.us</a>.</p>)}
+      {section("Contact", <p>Questions? Email <a href="mailto:support@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>support@estateland.us</a>.</p>)}
 
       <Link to="/" style={{ fontFamily: font.body, fontSize: 14, color: C.gold, textDecoration: "none" }}>← Back to home</Link>
     </section>

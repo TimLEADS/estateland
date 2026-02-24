@@ -48,7 +48,8 @@ export default function PaymentPage() {
     } catch (_) {}
     try {
       const origin = window.location.origin;
-      const res = await fetch("/api/create-checkout-session", {
+      const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+      const res = await fetch(`${apiBase}/api/create-checkout-session`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

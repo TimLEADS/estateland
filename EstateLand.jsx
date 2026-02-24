@@ -105,14 +105,20 @@ function Styles() {
     <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
       *{margin:0;padding:0;box-sizing:border-box}
-      html{scroll-behavior:smooth}
-      body{background:${C.void};color:${C.cream};overflow-x:hidden;-webkit-font-smoothing:antialiased}
+      html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+      body{background:${C.void};color:${C.cream};overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-overflow-scrolling:touch}
+      img,video{max-width:100%;height:auto;display:block}
+      a,button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
       ::selection{background:${C.goldDim};color:${C.goldLight}}
       ::-webkit-scrollbar{width:6px}
       ::-webkit-scrollbar-track{background:${C.surface}}
       ::-webkit-scrollbar-thumb{background:${C.gold};border-radius:3px}
       input::placeholder,textarea::placeholder{color:${C.mute}}
       #contact input::placeholder,#contact textarea::placeholder{color:rgba(15,15,15,0.5)}
+      @media (prefers-reduced-motion: reduce){
+        *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+        html{scroll-behavior:auto}
+      }
       
       @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
       @keyframes slideLeft{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
@@ -170,20 +176,21 @@ function Styles() {
       @keyframes servicesGoldLine{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
       @keyframes servicesBgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
       
-      .reveal{opacity:0;transform:translateY(36px);transition:all 0.9s cubic-bezier(.22,1,.36,1)}
+      .reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s cubic-bezier(.22,1,.36,1),transform 0.9s cubic-bezier(.22,1,.36,1)}
       .reveal.visible{opacity:1;transform:translateY(0)}
       .reveal-d1{transition-delay:0.08s}.reveal-d2{transition-delay:0.16s}.reveal-d3{transition-delay:0.24s}.reveal-d4{transition-delay:0.32s}.reveal-d5{transition-delay:0.4s}.reveal-d6{transition-delay:0.48s}
-      
-      .hover-lift{transition:transform 0.4s cubic-bezier(.22,1,.36,1)}
+
+      .hover-lift{transition:transform 0.4s cubic-bezier(.22,1,.36,1);will-change:transform}
       .hover-lift:hover{transform:translateY(-4px)}
+      @media (hover:none){.hover-lift:hover{transform:none}}
       
       .gold-btn{
-        display:inline-flex;align-items:center;gap:10px;
-        padding:16px 36px;border:none;cursor:pointer;
+        display:inline-flex;align-items:center;justify-content:center;gap:10px;
+        padding:16px 36px;min-height:48px;border:none;cursor:pointer;
         font-family:${font.body};font-size:12px;font-weight:600;
         letter-spacing:0.12em;text-transform:uppercase;
         background:${C.gold};color:${C.void};
-        transition:all 0.35s cubic-bezier(.22,1,.36,1);
+        transition:background 0.35s cubic-bezier(.22,1,.36,1),color 0.35s,transform 0.35s cubic-bezier(.22,1,.36,1),box-shadow 0.35s;
         position:relative;overflow:hidden;
       }
       .gold-btn::after{
@@ -210,7 +217,8 @@ function Styles() {
       @media(max-width:1024px){
         .desk-nav{display:none!important}
         .mob-toggle{display:flex!important}
-        .grid-2{grid-template-columns:1fr!important}
+        .grid-2,.contact-grid,.faq-grid{grid-template-columns:1fr!important}
+        .contact-form-panel{border-left:none!important;border-top:1px solid rgba(240,235,227,0.12)!important}
         .grid-3{grid-template-columns:1fr!important}
         .grid-4{grid-template-columns:1fr 1fr!important}
         .hero-grid{grid-template-columns:1fr!important}
@@ -221,12 +229,14 @@ function Styles() {
         .grid-4{grid-template-columns:1fr!important}
         .footer-grid{grid-template-columns:1fr!important}
         .stats-row{grid-template-columns:1fr!important}
+        .contact-form-grid{grid-template-columns:1fr!important}
+        .marquee-stat-pill{flex-wrap:wrap;justify-content:center;gap:12px;padding:12px 20px;max-width:320px}
       }
       @media(max-width:768px){
         .reviews-why-grid{grid-template-columns:1fr!important}
       }
-      @media(max-width:640px){
-        .marquee-stat-pill{flex-wrap:wrap;justify-content:center;gap:12px;padding:12px 20px;max-width:320px}
+      @media(max-width:480px){
+        html{scroll-padding-top:60px}
       }
     `}</style>
   );
@@ -316,11 +326,11 @@ function Navbar() {
       background: scrolled ? "rgba(8,8,8,0.94)" : "transparent",
       backdropFilter: scrolled ? "blur(24px)" : "none",
       WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
-      transition: "all 0.4s cubic-bezier(.22,1,.36,1)",
+      transition: "background 0.4s cubic-bezier(.22,1,.36,1), backdrop-filter 0.4s, padding 0.4s, border-color 0.4s",
       padding: scrolled ? "14px 0" : "26px 0",
       borderBottom: scrolled ? `1px solid rgba(255,255,255,0.06)` : "none",
     }}>
-      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 clamp(16px, 4vw, 40px)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Link to="/" style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
           <div style={{
             width: 42, height: 42, border: `1px solid ${C.gold}`, display: "flex", alignItems: "center", justifyContent: "center",
@@ -385,7 +395,7 @@ function Navbar() {
         </div>
 
         <button type="button" className="mob-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-expanded={mobileOpen} aria-controls="mobile-nav" aria-label="Toggle menu" style={{
-          display: "none", flexDirection: "column", gap: 5, cursor: "pointer", padding: 8, background: "transparent", border: "none",
+          display: "none", flexDirection: "column", gap: 5, cursor: "pointer", padding: 12, minWidth: 44, minHeight: 44, justifyContent: "center", background: "transparent", border: "none",
         }}>
           <div style={{ width: 24, height: 1.5, background: C.gold, transition: "all 0.3s", transform: mobileOpen ? "rotate(45deg) translate(3px,4px)" : "none" }} />
           <div style={{ width: 24, height: 1.5, background: C.gold, transition: "all 0.3s", opacity: mobileOpen ? 0 : 1 }} />
@@ -394,7 +404,7 @@ function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div ref={mobileRef} id="mobile-nav" style={{ background: C.surface, padding: "28px 40px", display: "flex", flexDirection: "column", gap: 10, borderTop: `1px solid ${C.border}` }}>
+        <div ref={mobileRef} id="mobile-nav" style={{ background: C.surface, padding: "clamp(20px, 5vw, 28px) clamp(20px, 5vw, 40px)", display: "flex", flexDirection: "column", gap: 10, borderTop: `1px solid ${C.border}` }}>
           {links.map((l) => {
             const [label, id] = l.split(":");
             return (
@@ -487,7 +497,7 @@ function Hero() {
       }} />
 
       <div style={{
-        maxWidth: 1440, margin: "0 auto", padding: "140px 40px 100px", width: "100%",
+        maxWidth: 1440, margin: "0 auto", padding: "clamp(100px, 12vw, 140px) clamp(20px, 5vw, 40px) clamp(60px, 10vw, 100px)", width: "100%",
         position: "relative", zIndex: 2,
       }}>
         <div style={{ maxWidth: 560 }}>
@@ -844,7 +854,7 @@ function About() {
   const [ref, vis] = useInView();
   const T = THEME.dark;
   return (
-    <section id="about" ref={ref} style={{ background: T.bg, padding: "120px 40px", position: "relative" }}>
+    <section id="about" ref={ref} style={{ background: T.bg, padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative" }}>
       <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 1, height: 80, background: `linear-gradient(to bottom, ${T.accent}, transparent)` }} />
       <div style={{ maxWidth: 1440, margin: "0 auto" }}>
         <div className={`grid-2 reveal ${vis ? "visible" : ""}`} style={{ display: "grid", gridTemplateColumns: "0.48fr 0.52fr", gap: 80, alignItems: "center" }}>
@@ -932,7 +942,7 @@ function Services() {
       ref={ref}
       style={{
         background: T.bg,
-        padding: "120px 40px",
+        padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -1215,7 +1225,7 @@ function Process() {
     <section id="process" ref={setSectionRef}
       style={{
         background: T.bg,
-        padding: "120px 24px 140px",
+        padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 24px) clamp(80px, 12vw, 140px)",
         position: "relative",
         overflow: "hidden",
         minHeight: "100vh",
@@ -1373,7 +1383,7 @@ function Results() {
   ];
 
   return (
-    <section id="results" ref={ref} style={{ position: "relative", padding: "120px 40px", overflow: "hidden", background: T.bg }}>
+    <section id="results" ref={ref} style={{ position: "relative", padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", overflow: "hidden", background: T.bg }}>
       <div style={{ maxWidth: 1440, margin: "0 auto", position: "relative", zIndex: 2 }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
@@ -1418,7 +1428,7 @@ function Reviews() {
   ];
 
   return (
-    <section id="reviews" ref={ref} role="region" aria-label="Why choose us" style={{ background: T.bg, padding: "120px 40px", position: "relative" }}>
+    <section id="reviews" ref={ref} role="region" aria-label="Why choose us" style={{ background: T.bg, padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
@@ -1454,7 +1464,7 @@ function Pricing() {
   const plans = PRICING_PLANS;
 
   return (
-    <section id="pricing" ref={ref} style={{ background: T.bg, padding: "120px 40px", position: "relative", overflow: "hidden" }}>
+    <section id="pricing" ref={ref} style={{ background: T.bg, padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative", overflow: "hidden" }}>
       {/* Subtle background gradient */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(166,124,0,0.04) 0%, transparent 60%)", pointerEvents: "none" }} />
 
@@ -1783,9 +1793,9 @@ function Contact() {
 
   return (
     <section id="contact" ref={ref} style={{ position: "relative", overflow: "hidden", background: T.bg }}>
-      <div className="grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "100vh" }}>
+      <div className="grid-2 contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "100vh" }}>
         <div style={{
-          background: T.bg, padding: "90px 52px", display: "flex", flexDirection: "column", justifyContent: "center",
+          background: T.bg, padding: "clamp(40px, 8vw, 90px) clamp(20px, 5vw, 52px)", display: "flex", flexDirection: "column", justifyContent: "center",
           position: "relative", overflow: "hidden",
         }}>
           <div style={{
@@ -1819,7 +1829,7 @@ function Contact() {
               <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
                 <div style={{ width: 44, height: 44, background: T.accentDim, border: `1px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }} aria-hidden>✉️</div>
                 <div>
-                  <a href="mailto:hello@estateland.us" style={{ fontFamily: font.body, fontSize: 16, color: T.text, fontWeight: 500, textDecoration: "none" }}>hello@estateland.us</a>
+                  <a href="mailto:support@estateland.us" style={{ fontFamily: font.body, fontSize: 16, color: T.text, fontWeight: 500, textDecoration: "none" }}>support@estateland.us</a>
                   <div style={{ fontFamily: font.body, fontSize: 12, color: T.mute, fontWeight: 400 }}>Response within 2 business hours</div>
                 </div>
               </div>
@@ -1852,13 +1862,13 @@ function Contact() {
           </div>
         </div>
 
-        <div style={{ background: "rgba(255,255,255,0.5)", padding: "90px 52px", display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: `1px solid ${T.border}` }}>
+        <div className="contact-form-panel" style={{ background: "rgba(255,255,255,0.5)", padding: "clamp(40px, 8vw, 90px) clamp(20px, 5vw, 52px)", display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: `1px solid ${T.border}` }}>
           <div className={`reveal ${vis ? "visible" : ""} reveal-d1`}>
             <h3 style={{ fontFamily: font.display, fontSize: 28, color: T.text, marginBottom: 6 }}>Schedule Your Free Consultation</h3>
             <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute, fontWeight: 400, marginBottom: 36 }}>Fill in the details below. Our team will reach out within 2 hours.</p>
 
             <form onSubmit={handleSubmit}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                 <label className="sr-only" htmlFor="firstName">First Name</label>
                 <input id="firstName" name="firstName" type="text" placeholder="First Name" required aria-required="true" autoComplete="given-name" style={{ ...inputStyle, gridColumn: "auto" }}
                   onFocus={e => { e.target.style.borderColor = T.accent; }} onBlur={e => { e.target.style.borderColor = T.border; }} />
@@ -1936,7 +1946,7 @@ function Footer() {
     ]},
   ];
   return (
-    <footer role="contentinfo" style={{ background: C.void, padding: "72px 40px 32px", borderTop: `1px solid ${C.border}` }}>
+    <footer role="contentinfo" style={{ background: C.void, padding: "clamp(48px, 8vw, 72px) clamp(20px, 5vw, 40px) 32px", borderTop: `1px solid ${C.border}` }}>
       <div className="footer-grid" style={{ maxWidth: 1440, margin: "0 auto", display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr 1fr", gap: 52, marginBottom: 52 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>

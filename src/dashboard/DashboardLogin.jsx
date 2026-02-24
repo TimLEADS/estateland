@@ -55,12 +55,12 @@ export default function DashboardLogin() {
         padding: 24,
       }}
     >
+      {/* CSS-only background — no external image so page shows immediately */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80) center/cover no-repeat",
-          opacity: 0.12,
+          background: "linear-gradient(135deg, rgba(15,15,15,0.98) 0%, rgba(22,22,22,0.95) 50%, rgba(201,162,39,0.06) 100%)",
           pointerEvents: "none",
         }}
         aria-hidden="true"

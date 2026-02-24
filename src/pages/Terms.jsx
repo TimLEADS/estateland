@@ -20,7 +20,7 @@ export default function Terms() {
       {section("Services", <p>Estate Land provides exclusive seller leads and related services to licensed real estate professionals in the United States. Services are provided on a month-to-month basis unless otherwise agreed.</p>)}
       {section("User Responsibilities", <p>You must provide accurate information, maintain your real estate license in good standing, and use leads in compliance with applicable laws and regulations.</p>)}
       {section("Termination", <p>You may cancel at any time. We may suspend or terminate accounts for violation of these terms or non-payment.</p>)}
-      {section("Contact", <p>Questions? Email <a href="mailto:hello@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>hello@estateland.us</a>.</p>)}
+      {section("Contact", <p>Questions? Email <a href="mailto:support@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>support@estateland.us</a>.</p>)}
 
       <Link to="/" style={{ fontFamily: font.body, fontSize: 14, color: C.gold, textDecoration: "none" }}>← Back to home</Link>
     </section>

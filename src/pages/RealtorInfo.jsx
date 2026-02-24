@@ -219,12 +219,12 @@ export default function RealtorInfo() {
           <div style={cardStyle}>
             <h3 style={{ fontFamily: font.display, fontSize: 18, color: C.gold, marginBottom: 12 }}>Estate Land Partnership Agreement</h3>
             <p style={{ ...bodyText, marginBottom: 16 }}>
-              Please review the full agreement and return a signed copy to hello@estateland.us to begin onboarding.
+              Please review the full agreement and return a signed copy to support@estateland.us to begin onboarding.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               <Link to="/#contact" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, color: C.gold, textDecoration: "none" }}>Review Agreement</Link>
               <span style={{ color: C.mute }}>|</span>
-              <a href="mailto:hello@estateland.us" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, color: C.gold, textDecoration: "none" }}>Email Signed Copy</a>
+              <a href="mailto:support@estateland.us" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, color: C.gold, textDecoration: "none" }}>Email Signed Copy</a>
             </div>
           </div>
         </section>
@@ -250,7 +250,7 @@ export default function RealtorInfo() {
           <div style={{ fontFamily: font.body, fontSize: 14, color: C.creamDim }}>
             <a href="tel:+18005551234" style={{ color: C.gold, textDecoration: "none" }}>+1 (800) XXX-XXXX</a>
             <span style={{ color: C.mute, margin: "0 12px" }}>·</span>
-            <a href="mailto:hello@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>hello@estateland.us</a>
+            <a href="mailto:support@estateland.us" style={{ color: C.gold, textDecoration: "none" }}>support@estateland.us</a>
           </div>
           <div style={{ fontFamily: font.body, fontSize: 12, color: C.mute, marginTop: 8 }}>www.estateland.us</div>
         </section>
@@ -259,7 +259,7 @@ export default function RealtorInfo() {
         <section style={{ padding: "40px 32px", border: `1px solid ${C.gold}`, background: C.surface, textAlign: "center" }}>
           <p style={{ fontFamily: font.body, fontSize: 11, color: C.gold, letterSpacing: 0.15, textTransform: "uppercase", marginBottom: 8 }}>Premium Lead Generation for Real Estate Professionals</p>
           <p style={{ fontFamily: font.body, fontSize: 13, color: C.mute, marginBottom: 24 }}>
-            estateland.us · hello@estateland.us · +1 (800) XXX-XXXX
+            estateland.us · support@estateland.us · +1 (800) XXX-XXXX
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
             <Link to="/#pricing" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, padding: "12px 24px", background: C.gold, color: C.void, borderRadius: 4, textDecoration: "none" }}>View Pricing and Plans</Link>
