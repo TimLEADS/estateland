@@ -95,7 +95,7 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 export const PRICING_PLANS = [
   { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "5 ZIP codes", "Double-verified leads", "Scheduled appointments", "Basic CRM setup", "Live support"], agreement: "https://docs.google.com/document/d/1-AcimEQkUET884KjHqzpMVs88OZLXIsT/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
   { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, features: ["Up to 5 exclusive leads / month", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "https://docs.google.com/document/d/1DgwPCJ2Tct51MRieFLg1mn2xMXEPacx9x-Bf/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
-  { id: "premier", name: "Premier", price: "$1,050", period: "lifetime", fee: "10% at closing", popular: false, features: ["Up to 7 exclusive leads / month", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Dedicated account manager", "Live support"], agreement: "https://docs.google.com/document/d/1C3QsnqY3t3jneC89V7ENbo9-N-JmHmaj/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
+  { id: "premier", name: "Premier", price: "$1,050", period: "lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 exclusive leads / month", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Dedicated account manager", "Live support"], agreement: "https://docs.google.com/document/d/1C3QsnqY3t3jneC89V7ENbo9-N-JmHmaj/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
 ];
 export { THEME, font, C };
 
@@ -1489,11 +1489,11 @@ function Pricing() {
               aria-label={`${p.name} plan — ${p.price} ${p.period}`}
               style={{
                 position: "relative",
-                background: p.popular ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.92)",
+                background: (p.popular || p.badge) ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.92)",
                 borderRadius: 20,
-                padding: p.popular ? "40px 32px 36px" : "36px 28px 32px",
-                border: p.popular ? `2px solid ${T.accent}` : `1px solid ${T.border}`,
-                boxShadow: p.popular ? "0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" : "0 12px 40px rgba(0,0,0,0.06)",
+                padding: (p.popular || p.badge) ? "40px 32px 36px" : "36px 28px 32px",
+                border: (p.popular || p.badge) ? `2px solid ${T.accent}` : `1px solid ${T.border}`,
+                boxShadow: (p.popular || p.badge) ? "0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" : "0 12px 40px rgba(0,0,0,0.06)",
                 opacity: vis ? 1 : 0,
                 transform: vis ? "translateY(0)" : "translateY(32px)",
                 animation: vis ? `processStepIn 0.7s cubic-bezier(0.22,1,0.36,1) ${0.15 + i * 0.12}s forwards` : "none",
@@ -1501,19 +1501,19 @@ function Pricing() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-8px)";
-                e.currentTarget.style.boxShadow = p.popular ? "0 32px 72px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.06)" : "0 20px 50px rgba(0,0,0,0.1)";
+                e.currentTarget.style.boxShadow = (p.popular || p.badge) ? "0 32px 72px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.06)" : "0 20px 50px rgba(0,0,0,0.1)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = p.popular ? "0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" : "0 12px 40px rgba(0,0,0,0.06)";
+                e.currentTarget.style.boxShadow = (p.popular || p.badge) ? "0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)" : "0 12px 40px rgba(0,0,0,0.06)";
               }}
             >
-              {p.popular && (
+              {(p.popular || p.badge) && (
                 <div style={{
                   position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
                   background: T.accent, color: T.bg, fontFamily: font.body, fontSize: 10, fontWeight: 700, letterSpacing: 0.15, padding: "6px 18px", borderRadius: 20,
                 }}>
-                  Most popular
+                  {p.badge || "Most popular"}
                 </div>
               )}
               <div style={{ textAlign: "center", marginBottom: 28 }}>
@@ -1537,16 +1537,16 @@ function Pricing() {
                 className="gold-btn"
                 style={{
                   width: "100%", justifyContent: "center", padding: "18px 28px", fontSize: 13, textDecoration: "none",
-                  background: p.popular ? T.accent : "transparent",
-                  color: p.popular ? T.bg : T.text,
-                  border: p.popular ? "none" : `2px solid ${T.border}`,
+                  background: (p.popular || p.badge) ? T.accent : "transparent",
+                  color: (p.popular || p.badge) ? T.bg : T.text,
+                  border: (p.popular || p.badge) ? "none" : `2px solid ${T.border}`,
                 }}
                 onMouseEnter={(e) => {
-                  if (p.popular) { e.currentTarget.style.background = "#8a6910"; e.currentTarget.style.color = T.bg; }
+                  if ((p.popular || p.badge)) { e.currentTarget.style.background = "#8a6910"; e.currentTarget.style.color = T.bg; }
                   else { e.currentTarget.style.background = T.text; e.currentTarget.style.color = T.bg; e.currentTarget.style.borderColor = T.text; }
                 }}
                 onMouseLeave={(e) => {
-                  if (p.popular) { e.currentTarget.style.background = T.accent; e.currentTarget.style.color = T.bg; }
+                  if ((p.popular || p.badge)) { e.currentTarget.style.background = T.accent; e.currentTarget.style.color = T.bg; }
                   else { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = T.text; e.currentTarget.style.borderColor = T.border; }
                 }}
               >
