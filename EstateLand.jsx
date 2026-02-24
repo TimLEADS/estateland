@@ -1489,6 +1489,8 @@ function Pricing() {
               aria-label={`${p.name} plan — ${p.price} ${p.period}`}
               style={{
                 position: "relative",
+                display: "flex",
+                flexDirection: "column",
                 background: (p.popular || p.badge) ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.92)",
                 borderRadius: 20,
                 padding: (p.popular || p.badge) ? "40px 32px 36px" : "36px 28px 32px",
@@ -1536,7 +1538,7 @@ function Pricing() {
                 to={`/get-started?plan=${p.id}`}
                 className="gold-btn"
                 style={{
-                  width: "100%", justifyContent: "center", padding: "18px 28px", fontSize: 13, textDecoration: "none",
+                  marginTop: "auto", width: "100%", justifyContent: "center", padding: "18px 28px", fontSize: 13, textDecoration: "none",
                   background: (p.popular || p.badge) ? T.accent : "transparent",
                   color: (p.popular || p.badge) ? T.bg : T.text,
                   border: (p.popular || p.badge) ? "none" : `2px solid ${T.border}`,
