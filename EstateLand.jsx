@@ -1559,7 +1559,46 @@ function Pricing() {
 
       <style>{`
         @media (max-width: 1024px) {
-          #pricing [style*="grid-template-columns: repeat(3)"] { grid-template-columns: 1fr !important; max-width: 420px; margin: 0 auto; }
+          #pricing [style*="grid-template-columns"] {
+            grid-template-columns: 1fr !important;
+            max-width: 480px;
+            margin: 0 auto;
+            gap: 20px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          #pricing {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+          #pricing [style*="grid-template-columns"] {
+            grid-template-columns: 1fr !important;
+            max-width: 100% !important;
+            margin: 0 auto;
+            gap: 16px !important;
+          }
+          #pricing [role="article"] {
+            padding: 28px 20px 24px !important;
+            border-radius: 16px !important;
+          }
+          #pricing h2 {
+            font-size: clamp(28px, 6vw, 36px) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          #pricing {
+            padding-top: 48px !important;
+            padding-bottom: 48px !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+          #pricing [style*="grid-template-columns"] {
+            gap: 14px !important;
+          }
+          #pricing [role="article"] {
+            padding: 24px 16px 20px !important;
+            border-radius: 14px !important;
+          }
         }
       `}</style>
     </section>
