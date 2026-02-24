@@ -93,9 +93,9 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 // Shared pricing plan data (used by Pricing section and Onboarding)
 export const PRICING_PLANS = [
-  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "5 ZIP codes", "Double-verified leads", "Scheduled appointments", "Basic CRM setup", "Live support"] },
-  { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, features: ["Up to 5 exclusive leads / month", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"] },
-  { id: "premier", name: "Premier", price: "$1,050", period: "lifetime", fee: "10% at closing", popular: false, features: ["Up to 7 exclusive leads / month", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Dedicated account manager", "Live support"] },
+  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "5 ZIP codes", "Double-verified leads", "Scheduled appointments", "Basic CRM setup", "Live support"], agreement: "https://docs.google.com/document/d/1-AcimEQkUET884KjHqzpMVs88OZLXIsT/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
+  { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, features: ["Up to 5 exclusive leads / month", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "https://docs.google.com/document/d/1DgwPCJ2Tct51MRieFLg1mn2xMXEPacx9x-Bf/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
+  { id: "premier", name: "Premier", price: "$1,050", period: "lifetime", fee: "10% at closing", popular: false, features: ["Up to 7 exclusive leads / month", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Dedicated account manager", "Live support"], agreement: "https://docs.google.com/document/d/1C3QsnqY3t3jneC89V7ENbo9-N-JmHmaj/edit?usp=sharing&ouid=110363510947289657254&rtpof=true&sd=true" },
 ];
 export { THEME, font, C };
 
@@ -1552,6 +1552,39 @@ function Pricing() {
               >
                 Get started
               </Link>
+              {p.agreement && (
+                <a
+                  href={p.agreement}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    textAlign: "center",
+                    padding: "12px 18px",
+                    fontSize: 13,
+                    fontFamily: font.body,
+                    color: T.accent,
+                    textDecoration: "none",
+                    border: `1px solid ${T.border}`,
+                    borderRadius: 8,
+                    marginTop: 10,
+                    transition: "background 0.3s ease, border-color 0.3s ease",
+                    fontWeight: 500,
+                    letterSpacing: 0.3,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(201,162,39,0.08)";
+                    e.currentTarget.style.borderColor = T.accent;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.borderColor = T.border;
+                  }}
+                >
+                  View Agreement
+                </a>
+              )}
             </div>
           ))}
         </div>
