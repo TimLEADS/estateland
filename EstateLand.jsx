@@ -1822,7 +1822,7 @@ function Contact() {
               <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
                 <div style={{ width: 44, height: 44, background: T.accentDim, border: `1px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }} aria-hidden>📞</div>
                 <div>
-                  <a href="tel:+18005551234" style={{ fontFamily: font.body, fontSize: 16, color: T.text, fontWeight: 500, textDecoration: "none" }}>+1 (800) XXX-XXXX</a>
+                  <a href="tel:+18005551234" style={{ fontFamily: font.body, fontSize: 16, color: T.text, fontWeight: 500, textDecoration: "none" }}>+1 312-778-5505</a>
                   <div style={{ fontFamily: font.body, fontSize: 12, color: T.mute, fontWeight: 400 }}>Mon – Fri, 8:00 AM – 8:00 PM EST</div>
                 </div>
               </div>
