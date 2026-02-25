@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { PRICING_PLANS, THEME, font } from "../../EstateLand.jsx";
 import { useDashboard } from "../context/DashboardContext.jsx";
 
@@ -31,7 +31,6 @@ const inputStyle = (T) => ({
 
 export default function Onboarding() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const planParam = searchParams.get("plan");
   const { startOnboardingSession, updateOnboardingSession, submitOnboarding, addPayment, createUser, users, submittedSessions } = useDashboard();
   const sessionIdRef = useRef(null);
@@ -44,6 +43,10 @@ export default function Onboarding() {
     primaryAreas: "", secondaryAreas: "", radius: "",
     leadType: "both", note: "",
   });
+
+  const [couponCode, setCouponCode] = useState("");
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
 
   const T = THEME.light;
   const paymentSuccess = searchParams.get("success") === "1";
@@ -67,18 +70,55 @@ export default function Onboarding() {
     }
   }, [selectedPlan, details, updateOnboardingSession]);
 
-  const handleContinueToPayment = () => {
-    if (!selectedPlan?.id) return;
-    if (!details?.name?.trim() || !details?.email?.trim()) return;
+  const handleProceedToPayment = async () => {
+    if (!selectedPlan?.id) {
+      setPaymentError("Please select a plan.");
+      return;
+    }
+    if (!details?.name?.trim() || !details?.email?.trim()) {
+      setPaymentError("Please fill in your name and email.");
+      return;
+    }
+    setPaymentError("");
+    setPaymentLoading(true);
+
+    if (sessionIdRef.current) {
+      submitOnboarding(sessionIdRef.current, {
+        plan: selectedPlan,
+        territory: {},
+        contact: details,
+      });
+    }
+
     try {
-      sessionStorage.setItem(CHECKOUT_DATA_KEY, JSON.stringify({
+      sessionStorage.setItem("estateland_pending_submission", JSON.stringify({
         plan: selectedPlan,
         contact: details,
-        territory: {},
-        sessionId: sessionIdRef.current,
       }));
     } catch (_) {}
-    navigate("/get-started/payment");
+
+    try {
+      const origin = window.location.origin;
+      const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+      const res = await fetch(`${apiBase}/api/create-checkout-session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planId: selectedPlan.id,
+          couponCode: couponCode.trim() || undefined,
+          successUrl: `${origin}/get-started?success=1&session_id={CHECKOUT_SESSION_ID}`,
+          cancelUrl: `${origin}/get-started`,
+          customerEmail: details.email,
+        }),
+      });
+      const resData = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(resData.error || "Payment failed");
+      if (resData.url) window.location.href = resData.url;
+      else throw new Error("No checkout URL");
+    } catch (err) {
+      setPaymentError(err.message || "Could not start checkout");
+      setPaymentLoading(false);
+    }
   };
 
   const stripeSessionId = searchParams.get("session_id");
@@ -264,15 +304,20 @@ export default function Onboarding() {
               <span style={labelStyle}>Note</span>
               <textarea value={details.note} onChange={(e) => setDetails((d) => ({ ...d, note: e.target.value }))} placeholder="Any additional notes..." rows={3} style={{ ...inputStyle(T), resize: "vertical", minHeight: 80 }} />
             </label>
+            <label style={{ display: "block" }}>
+              <span style={labelStyle}>Coupon code (optional)</span>
+              <input type="text" placeholder="Enter coupon code" value={couponCode} onChange={(e) => { setCouponCode(e.target.value); setPaymentError(""); }} style={inputStyle(T)} />
+            </label>
+            {paymentError && <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginTop: 8 }}>{paymentError}</p>}
             <div style={{ marginTop: 8 }}>
               <button
                 type="button"
                 className="gold-btn"
-                onClick={handleContinueToPayment}
-                disabled={!selectedPlan?.id || !details?.name?.trim() || !details?.email?.trim()}
+                onClick={handleProceedToPayment}
+                disabled={paymentLoading || !selectedPlan?.id || !details?.name?.trim() || !details?.email?.trim()}
                 style={{ padding: "18px 48px", fontSize: 12, letterSpacing: 0.12 }}
               >
-                Continue to payment
+                {paymentLoading ? "Redirecting\u2026" : "Proceed to payment"}
               </button>
             </div>
           </div>
