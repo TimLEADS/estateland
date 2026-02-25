@@ -44,7 +44,6 @@ export default function Onboarding() {
     leadType: "both", note: "",
   });
 
-  const [couponCode, setCouponCode] = useState("");
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
@@ -105,7 +104,6 @@ export default function Onboarding() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           planId: selectedPlan.id,
-          couponCode: couponCode.trim() || undefined,
           successUrl: `${origin}/get-started?success=1&session_id={CHECKOUT_SESSION_ID}`,
           cancelUrl: `${origin}/get-started`,
           customerEmail: details.email,
@@ -304,11 +302,7 @@ export default function Onboarding() {
               <span style={labelStyle}>Note</span>
               <textarea value={details.note} onChange={(e) => setDetails((d) => ({ ...d, note: e.target.value }))} placeholder="Any additional notes..." rows={3} style={{ ...inputStyle(T), resize: "vertical", minHeight: 80 }} />
             </label>
-            <label style={{ display: "block" }}>
-              <span style={labelStyle}>Coupon code (optional)</span>
-              <input type="text" placeholder="Enter coupon code" value={couponCode} onChange={(e) => { setCouponCode(e.target.value); setPaymentError(""); }} style={inputStyle(T)} />
-            </label>
-            {paymentError && <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginTop: 8 }}>{paymentError}</p>}
+            {paymentError && <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginBottom: 8 }}>{paymentError}</p>}
             <div style={{ marginTop: 8 }}>
               <button
                 type="button"
