@@ -301,7 +301,7 @@ function Navbar() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [mobileOpen]);
 
-  const links = ["Home:hero", "About:about", "Services:services", "Process:process", "Results:results", "Reviews:reviews", "Pricing:pricing", "FAQ:faq", "Contact:contact"];
+  const links = ["Home:hero", "About:about", "Services:services", "Process:process", "Results:results", "Why Estate Land:reviews", "Pricing:pricing", "FAQ:faq", "Contact:contact"];
 
   const navLinkBase = {
     fontFamily: font.body,
