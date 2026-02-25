@@ -12,7 +12,7 @@ import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import RealtorInfo from "./pages/RealtorInfo";
 import Onboarding from "./pages/Onboarding";
-ihmport DashboardLayout from "./dashboard/DashboardLayout.jsx";
+import DashboardLayout from "./dashboard/DashboardLayout.jsx";
 import DashboardLogin from "./dashboard/DashboardLogin.jsx";
 import AdminOverview from "./dashboard/AdminOverview.jsx";
 import OnboardingLive from "./dashboard/OnboardingLive.jsx";
