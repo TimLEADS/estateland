@@ -12,8 +12,7 @@ import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import RealtorInfo from "./pages/RealtorInfo";
 import Onboarding from "./pages/Onboarding";
-import PaymentPage from "./pages/PaymentPage";
-import DashboardLayout from "./dashboard/DashboardLayout.jsx";
+ihmport DashboardLayout from "./dashboard/DashboardLayout.jsx";
 import DashboardLogin from "./dashboard/DashboardLogin.jsx";
 import AdminOverview from "./dashboard/AdminOverview.jsx";
 import OnboardingLive from "./dashboard/OnboardingLive.jsx";
@@ -41,11 +40,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout><HomePage /></Layout>} />
           <Route path="/get-started" element={<Layout><Onboarding /></Layout>} />
-          <Route path="/get-started/payment" element={<Layout><PaymentPage /></Layout>} />
           <Route path="/careers" element={<Layout><Careers /></Layout>} />
           <Route path="/blog" element={<Layout><Blog /></Layout>} />
           <Route path="/agent-guide" element={<Layout><AgentGuide /></Layout>} />
-          <Route path="/market-reports" element={<Layout><MarketReports /></Layout>} />
           <Route path="/referral" element={<Layout><Referral /></Layout>} />
           <Route path="/info" element={<Layout><RealtorInfo /></Layout>} />
           <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
