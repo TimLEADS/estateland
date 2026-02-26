@@ -2171,9 +2171,9 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <Marquee />
-      <About />
       <Services />
+      <About />
+      <Marquee />
       <Process />
       <Results />
       <Reviews />
