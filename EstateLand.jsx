@@ -263,10 +263,81 @@ function GrainOverlay() {
 }
 
 // ─── NAVBAR ───
+// ─── LOADING OVERLAY ───────────────────────────────────────────
+function LoadingOverlay() {
+  return (
+    <div style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      background: C.void,
+      zIndex: 99999,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      animation: "loadingFadeIn 0.3s ease",
+    }}>
+      <style>{`
+        @keyframes loadingFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes loadingSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes loadingPulse {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 1; }
+        }
+      `}</style>
+      <div style={{
+        width: 48,
+        height: 48,
+        border: "2px solid rgba(201,162,39,0.2)",
+        borderTop: "2px solid " + C.gold,
+        borderRadius: "50%",
+        animation: "loadingSpin 0.8s linear infinite",
+        marginBottom: 24,
+      }} />
+      <div style={{
+        fontFamily: font.serif,
+        fontSize: 18,
+        color: C.gold,
+        letterSpacing: 2,
+        animation: "loadingPulse 1.5s ease-in-out infinite",
+      }}>
+        ESTATE LAND
+      </div>
+      <div style={{
+        fontSize: 11,
+        color: C.mute,
+        marginTop: 8,
+        letterSpacing: 1,
+      }}>
+        Loading Dashboard...
+      </div>
+    </div>
+  );
+}
+
 function Navbar() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [navigatingToDashboard, setNavigatingToDashboard] = useState(false);
+
+  const handleStartNow = (e) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    setNavigatingToDashboard(true);
+    setTimeout(() => {
+      window.location.href = "/dashboard/login";
+    }, 1200);
+  };
   const isHome = location.pathname === "/";
   const handleSectionClick = (id) => {
     if (!isHome) return;
@@ -321,6 +392,8 @@ function Navbar() {
   };
 
   return (
+    <>
+    {navigatingToDashboard && <LoadingOverlay />}
     <nav role="banner" aria-label="Main navigation" style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
       background: scrolled ? "rgba(8,8,8,0.94)" : "transparent",
@@ -378,9 +451,10 @@ function Navbar() {
               </Link>
             );
           })}
-          <Link
-            to="/dashboard/login"
+          <a
+            href="/dashboard/login"
             className="gold-btn nav-cta-btn"
+            onClick={handleStartNow}
             style={{
               padding: "14px 32px",
               fontSize: 11,
@@ -388,10 +462,11 @@ function Navbar() {
               textDecoration: "none",
               borderRadius: 999,
               boxShadow: "0 4px 24px rgba(201,162,39,0.25)",
+              cursor: "pointer",
             }}
           >
             Start Now
-          </Link>
+          </a>
         </div>
 
         <button type="button" className="mob-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-expanded={mobileOpen} aria-controls="mobile-nav" aria-label="Toggle menu" style={{
@@ -438,10 +513,10 @@ function Navbar() {
               </Link>
             );
           })}
-          <Link
-            to="/dashboard/login"
+          <a
+            href="/dashboard/login"
             className="gold-btn"
-            onClick={() => setMobileOpen(false)}
+            onClick={handleStartNow}
             style={{
               padding: "16px 28px",
               fontSize: 12,
@@ -451,13 +526,15 @@ function Navbar() {
               borderRadius: 12,
               textAlign: "center",
               boxShadow: "0 4px 20px rgba(201,162,39,0.3)",
+              cursor: "pointer",
             }}
           >
             Start Now
-          </Link>
+          </a>
         </div>
       )}
     </nav>
+    </>
   );
 }
 
