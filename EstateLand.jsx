@@ -91,7 +91,7 @@ function useMouseParallax(intensity = 0.02) {
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-// Shared pricing plan data (used by Pricing section and Onboarding)
+// Shared pricing plan data (used by Plans section and Onboarding)
 export const PRICING_PLANS = [
   { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "5 ZIP codes", "Double-verified leads", "Scheduled appointments", "Basic CRM setup", "Live support"], agreement: "https://drive.google.com/file/d/1K7wpDA-SLW8dI9zkgMsXIuoHwcdtuqeb/view?usp=sharing" },
   { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, features: ["Up to 5 exclusive leads / month", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "https://drive.google.com/file/d/1EgVSCUoFe8r3-Zccb0KFCQxWpHLX4g_r/view?usp=sharing" },
@@ -372,7 +372,7 @@ function Navbar() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [mobileOpen]);
 
-  const links = ["Home:hero", "About:about", "Services:services", "Process:process", "Results:results", "Why Estate Land:reviews", "Pricing:pricing", "FAQ:faq", "Contact:contact"];
+  const links = ["Home:hero", "About:about", "Services:services", "Process:process", "Results:results", "Why Estate Land:reviews", "Plans:plans", "FAQ:faq", "Contact:contact"];
 
   const navLinkBase = {
     fontFamily: font.body,
@@ -1759,14 +1759,14 @@ function Reviews() {
   );
 }
 
-// ─── PRICING (light theme) — Next-level premium cards ───
-function Pricing() {
+// ─── PLANS (light theme) — Next-level premium cards ───
+function Plans() {
   const [ref, vis] = useInView(0.15);
   const T = THEME.light;
   const plans = PRICING_PLANS;
 
   return (
-    <section id="pricing" ref={ref} style={{ background: T.bg, padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative", overflow: "hidden" }}>
+    <section id="plans" ref={ref} style={{ background: T.bg, padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative", overflow: "hidden" }}>
       {/* Subtle background gradient */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(166,124,0,0.04) 0%, transparent 60%)", pointerEvents: "none" }} />
 
@@ -1774,11 +1774,11 @@ function Pricing() {
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
             <div style={{ width: 40, height: 2, background: T.accent, borderRadius: 1 }} />
-            <span style={{ fontFamily: font.body, fontSize: 11, color: T.accent, letterSpacing: 0.2, textTransform: "uppercase", fontWeight: 600 }}>Pricing</span>
+            <span style={{ fontFamily: font.body, fontSize: 11, color: T.accent, letterSpacing: 0.2, textTransform: "uppercase", fontWeight: 600 }}>Plans</span>
             <div style={{ width: 40, height: 2, background: T.accent, borderRadius: 1 }} />
           </div>
           <h2 style={{ fontFamily: font.display, fontSize: "clamp(36px, 4.5vw, 52px)", color: T.text, lineHeight: 1.1, marginBottom: 14 }}>
-            Simple <em style={{ color: T.accent, fontStyle: "italic" }}>pricing.</em> Big results.
+            Simple <em style={{ color: T.accent, fontStyle: "italic" }}>plans.</em> Big results.
           </h2>
           <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, maxWidth: 480, margin: "0 auto" }}>Pay once for your term. Referral fee only at closing. No long-term contract.</p>
         </div>
@@ -1896,7 +1896,7 @@ function Pricing() {
 
       <style>{`
         @media (max-width: 1024px) {
-          #pricing [style*="grid-template-columns"] {
+          #plans [style*="grid-template-columns"] {
             grid-template-columns: 1fr !important;
             max-width: 480px;
             margin: 0 auto;
@@ -1904,35 +1904,35 @@ function Pricing() {
           }
         }
         @media (max-width: 768px) {
-          #pricing {
+          #plans {
             padding-left: 16px !important;
             padding-right: 16px !important;
           }
-          #pricing [style*="grid-template-columns"] {
+          #plans [style*="grid-template-columns"] {
             grid-template-columns: 1fr !important;
             max-width: 100% !important;
             margin: 0 auto;
             gap: 16px !important;
           }
-          #pricing [role="article"] {
+          #plans [role="article"] {
             padding: 28px 20px 24px !important;
             border-radius: 16px !important;
           }
-          #pricing h2 {
+          #plans h2 {
             font-size: clamp(28px, 6vw, 36px) !important;
           }
         }
         @media (max-width: 480px) {
-          #pricing {
+          #plans {
             padding-top: 48px !important;
             padding-bottom: 48px !important;
             padding-left: 12px !important;
             padding-right: 12px !important;
           }
-          #pricing [style*="grid-template-columns"] {
+          #plans [style*="grid-template-columns"] {
             gap: 14px !important;
           }
-          #pricing [role="article"] {
+          #plans [role="article"] {
             padding: 24px 16px 20px !important;
             border-radius: 14px !important;
           }
@@ -2302,7 +2302,7 @@ function Footer() {
     { title: "Company", items: [
       { label: "About Us", to: "/#about" },
       { label: "Services", to: "/#services" },
-      { label: "Pricing", to: "/#pricing" },
+      { label: "Plans", to: "/#plans" },
       { label: "Results", to: "/#results" },
       { label: "Careers", to: "/careers" },
     ]},
@@ -2402,7 +2402,7 @@ export function HomePage() {
       <Process />
       <Results />
       <Reviews />
-      <Pricing />
+      <Plans />
       <FAQ />
       <Contact />
     </>
