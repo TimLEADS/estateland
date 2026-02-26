@@ -202,19 +202,19 @@ export default function Onboarding() {
                 <div style={{ minHeight: "100vh", background: T.bg, position: "relative", overflow: "hidden" }}>
                           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 100% 60% at 50% 0%, rgba(166,124,0,0.06) 0%, transparent 50%)", pointerEvents: "none" }} />
                           <div style={{ position: "relative", zIndex: 1, maxWidth: 560, margin: "0 auto", padding: "clamp(80px, 12vw, 140px) 24px", textAlign: "center" }}>
-                                      <div style={{ width: 80, height: 80, borderRadius: "50%", background: "rgba(166,124,0,0.15)", border: `2px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 32px", fontSize: 36, color: T.accent }}>{"\u2713"}</div>div>
+                                      <div style={{ width: 80, height: 80, borderRadius: "50%", background: "rgba(166,124,0,0.15)", border: `2px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 32px", fontSize: 36, color: T.accent }}>{"\u2713"}</div>
                                       <h1 style={{ fontFamily: font.display, fontSize: "clamp(32px, 4.5vw, 44px)", color: T.text, lineHeight: 1.15, marginBottom: 16 }}>
-                                                    You're all <em style={{ color: T.accent, fontStyle: "italic" }}>set</em>em>
-                                      </h1>h1>
+                                                    You're all <em style={{ color: T.accent, fontStyle: "italic" }}>set</em>
+                                      </h1>
                                       <p style={{ fontFamily: font.body, fontSize: 17, color: T.mute, maxWidth: 420, margin: "0 auto 40px", lineHeight: 1.65 }}>
                                                     Payment received. Our team will contact you within 2 hours to complete your setup.
-                                      </p>p>
+                                      </p>
                                       <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
-                                                    <Link to="/" className="gold-btn" style={{ padding: "16px 40px", fontSize: 12, letterSpacing: 0.12, textDecoration: "none" }}>Back to home</Link>Link>
-                                                    <Link to="/dashboard/login" style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.accent, textDecoration: "none" }}>Go to dashboard {"\u2192"}</Link>Link>
-                                      </div>div>
-                          </div>div>
-                </div>div>
+                                                    <Link to="/" className="gold-btn" style={{ padding: "16px 40px", fontSize: 12, letterSpacing: 0.12, textDecoration: "none" }}>Back to home</Link>
+                                                    <Link to="/dashboard/login" style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.accent, textDecoration: "none" }}>Go to dashboard {"\u2192"}</Link>
+                                      </div>
+                          </div>
+                </div>
               );
   }
 
@@ -225,15 +225,15 @@ export default function Onboarding() {
                 <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "clamp(48px, 8vw, 80px) 24px 120px" }}>
 
                           <h1 style={{ fontFamily: font.display, fontSize: "clamp(32px, 4.5vw, 44px)", color: T.text, lineHeight: 1.15, marginBottom: 12 }}>
-                                      Get <em style={{ color: T.accent, fontStyle: "italic" }}>started</em>em>
-                          </h1>h1>
+                                      Get <em style={{ color: T.accent, fontStyle: "italic" }}>started</em>
+                          </h1>
                           <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, marginBottom: 48, lineHeight: 1.6 }}>
                                       Choose your plan, add your details, and complete payment — all on this page.
-                          </p>p>
+                          </p>
 
                   {/* ── Plan selection ── */}
                           <section style={sectionStyle}>
-                                      <h2 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.accent, letterSpacing: 0.1, marginBottom: 20, textTransform: "uppercase" }}>Choose plan</h2>h2>
+                                      <h2 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.accent, letterSpacing: 0.1, marginBottom: 20, textTransform: "uppercase" }}>Choose plan</h2>
                                       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                                         {PRICING_PLANS.map((p) => {
                         const isSelected = selectedPlan?.id === p.id;
@@ -253,82 +253,82 @@ export default function Onboarding() {
                                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
                                                                                 <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
                                                                                                       <div style={{ width: 24, height: 24, borderRadius: "50%", border: `2px solid ${isSelected ? T.accent : T.border}`, background: isSelected ? T.accent : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                                                                                        {isSelected && <span style={{ color: T.bg, fontSize: 12, fontWeight: 700 }}>{"\u2713"}</span>span>}
-                                                                                                        </div>div>
+                                                                                                        {isSelected && <span style={{ color: T.bg, fontSize: 12, fontWeight: 700 }}>{"\u2713"}</span>}
+                                                                                                        </div>
                                                                                                       <div>
-                                                                                                                              <div style={{ fontFamily: font.display, fontSize: 22, color: T.text, fontWeight: 600 }}>{p.name}</div>div>
+                                                                                                                              <div style={{ fontFamily: font.display, fontSize: 22, color: T.text, fontWeight: 600 }}>{p.name}</div>
                                                                                                                               <div style={{ fontFamily: font.body, fontSize: 14, color: T.mute, marginTop: 2 }}>
                                                                                                                                 {discountedPrice ? (
                                                                                           <>
-                                                                                                                        <span style={{ textDecoration: "line-through", opacity: 0.5 }}>{p.price}</span>span>
+                                                                                                                        <span style={{ textDecoration: "line-through", opacity: 0.5 }}>{p.price}</span>
                                                                                             {" "}
-                                                                                                                        <span style={{ color: "#c5a336", fontWeight: 700 }}>${discountedPrice}</span>span>
-                                                                                                                        <span style={{ color: "#2e7d32", fontSize: 12, marginLeft: 6 }}>({couponResult.percentOff}% off)</span>span>
-                                                                                            </>>
+                                                                                                                        <span style={{ color: "#c5a336", fontWeight: 700 }}>${discountedPrice}</span>
+                                                                                                                        <span style={{ color: "#2e7d32", fontSize: 12, marginLeft: 6 }}>({couponResult.percentOff}% off)</span>
+                                                                                            </>
                                                                                         ) : (
-                                                                                          <>{p.price}</>>
+                                                                                          <>{p.price}</>
                                                                                         )}
                                                                                                                                 {" \u00b7 "}{p.period}{" \u00b7 "}{p.fee}
-                                                                                                                                </div>div>
-                                                                                                        </div>div>
-                                                                                  </div>div>
-                                                              {p.popular && <span style={{ fontFamily: font.body, fontSize: 10, fontWeight: 700, letterSpacing: 0.12, color: T.accent, background: "rgba(166,124,0,0.15)", padding: "6px 12px", borderRadius: 20 }}>Most popular</span>span>}
-                                                            </div>div>
-                                          </button>button>
+                                                                                                                                </div>
+                                                                                                        </div>
+                                                                                  </div>
+                                                              {p.popular && <span style={{ fontFamily: font.body, fontSize: 10, fontWeight: 700, letterSpacing: 0.12, color: T.accent, background: "rgba(166,124,0,0.15)", padding: "6px 12px", borderRadius: 20 }}>Most popular</span>}
+                                                            </div>
+                                          </button>
                                         );
         })}
-                                      </div>div>
-                          </section>section>
+                                      </div>
+                          </section>
                 
                   {/* ── Your details ── */}
                         <section style={sectionStyle}>
-                                  <h2 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.accent, letterSpacing: 0.1, marginBottom: 20, textTransform: "uppercase" }}>Your details</h2>h2>
+                                  <h2 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.accent, letterSpacing: 0.1, marginBottom: 20, textTransform: "uppercase" }}>Your details</h2>
                                   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Name</span>span>
+                                                            <span style={labelStyle}>Name</span>
                                                             <input type="text" value={details.name} onChange={(e) => setDetails((d) => ({ ...d, name: e.target.value }))} placeholder="Full name" required style={inputStyle(T)} />
-                                              </label>label>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Phone</span>span>
+                                                            <span style={labelStyle}>Phone</span>
                                                             <input type="tel" value={details.phone} onChange={(e) => setDetails((d) => ({ ...d, phone: e.target.value }))} placeholder="(555) 123-4567" style={inputStyle(T)} />
-                                              </label>label>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Email</span>span>
+                                                            <span style={labelStyle}>Email</span>
                                                             <input type="email" value={details.email} onChange={(e) => setDetails((d) => ({ ...d, email: e.target.value }))} placeholder="you@example.com" required style={inputStyle(T)} />
-                                              </label>label>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>State</span>span>
+                                                            <span style={labelStyle}>State</span>
                                                             <select value={details.state} onChange={(e) => setDetails((d) => ({ ...d, state: e.target.value }))} style={{ ...inputStyle(T), cursor: "pointer" }}>
-                                                                            <option value="">Select state</option>option>
-                                                              {US_STATES.map((s) => <option key={s} value={s}>{s}</option>option>)}
-                                                            </select>select>
-                                              </label>label>
+                                                                            <option value="">Select state</option>
+                                                              {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+                                                            </select>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Primary areas</span>span>
+                                                            <span style={labelStyle}>Primary areas</span>
                                                             <input type="text" value={details.primaryAreas} onChange={(e) => setDetails((d) => ({ ...d, primaryAreas: e.target.value }))} placeholder="e.g. Phoenix, Scottsdale" style={inputStyle(T)} />
-                                              </label>label>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Secondary areas</span>span>
+                                                            <span style={labelStyle}>Secondary areas</span>
                                                             <input type="text" value={details.secondaryAreas} onChange={(e) => setDetails((d) => ({ ...d, secondaryAreas: e.target.value }))} placeholder="e.g. Tempe, Mesa" style={inputStyle(T)} />
-                                              </label>label>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Radius (miles)</span>span>
+                                                            <span style={labelStyle}>Radius (miles)</span>
                                                             <input type="text" value={details.radius} onChange={(e) => setDetails((d) => ({ ...d, radius: e.target.value }))} placeholder="e.g. 30" style={inputStyle(T)} />
-                                              </label>label>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Type of leads</span>span>
+                                                            <span style={labelStyle}>Type of leads</span>
                                                             <select value={details.leadType} onChange={(e) => setDetails((d) => ({ ...d, leadType: e.target.value }))} style={{ ...inputStyle(T), cursor: "pointer" }}>
-                                                              {LEAD_TYPES.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>option>)}
-                                                            </select>select>
-                                              </label>label>
+                                                              {LEAD_TYPES.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                                                            </select>
+                                              </label>
                                               <label style={{ display: "block" }}>
-                                                            <span style={labelStyle}>Note</span>span>
+                                                            <span style={labelStyle}>Note</span>
                                                             <textarea value={details.note} onChange={(e) => setDetails((d) => ({ ...d, note: e.target.value }))} placeholder="Any additional notes..." rows={3} style={{ ...inputStyle(T), resize: "vertical", minHeight: 80 }} />
-                                              </label>label>
+                                              </label>
                                   
                                     {/* ── Coupon Code Section ── */}
                                               <div style={{ padding: "24px", borderRadius: 16, background: "rgba(255,255,255,0.6)", border: `1px solid ${T.border}` }}>
-                                                            <span style={{ ...labelStyle, marginBottom: 12 }}>Coupon Code</span>span>
+                                                            <span style={{ ...labelStyle, marginBottom: 12 }}>Coupon Code</span>
                                                             <div style={{ display: "flex", gap: 12, alignItems: "stretch" }}>
                                                                             <input
                                                                                                 type="text"
@@ -353,7 +353,7 @@ export default function Onboarding() {
                                                   }}
                                                 >
                               {couponLoading ? "Checking\u2026" : "Apply"}
-                            </button>button>
+                            </button>
                           ) : (
                             <button
                                                   type="button"
@@ -366,36 +366,36 @@ export default function Onboarding() {
                                                   }}
                                                 >
                                                 Remove
-                            </button>button>
+                            </button>
                                                                             )}
-                                                            </div>div>
+                                                            </div>
                                               
                                                 {/* Coupon success message */}
                                                 {couponResult?.valid && (
                           <div style={{ marginTop: 14 }}>
                                             <p style={{ fontFamily: font.body, fontSize: 14, color: "#2e7d32", fontWeight: 600, margin: 0 }}>
                                               {"\u2705"} Coupon applied! You get {couponResult.percentOff}% off
-                                            </p>p>
+                                            </p>
                             {selectedPlan?.id && (
                                                 <div style={{ marginTop: 8, padding: "12px 16px", borderRadius: 10, background: "rgba(46,125,50,0.06)", border: "1px solid rgba(46,125,50,0.15)" }}>
                                                                       <span style={{ fontFamily: font.body, fontSize: 13, color: T.mute }}>
-                                                                                              <span style={{ textDecoration: "line-through" }}>${(getOriginalPriceCents(selectedPlan.id) / 100).toFixed(2)}</span>span>
+                                                                                              <span style={{ textDecoration: "line-through" }}>${(getOriginalPriceCents(selectedPlan.id) / 100).toFixed(2)}</span>
                                                                         {" \u2192 "}
-                                                                                              <span style={{ color: "#c5a336", fontWeight: 700, fontSize: 16 }}>${getDiscountedPrice(selectedPlan.id)}</span>span>
-                                                                                              <span style={{ marginLeft: 8, color: "#2e7d32", fontSize: 12 }}>({couponResult.percentOff}% discount)</span>span>
-                                                                      </span>span>
-                                                </div>div>
+                                                                                              <span style={{ color: "#c5a336", fontWeight: 700, fontSize: 16 }}>${getDiscountedPrice(selectedPlan.id)}</span>
+                                                                                              <span style={{ marginLeft: 8, color: "#2e7d32", fontSize: 12 }}>({couponResult.percentOff}% discount)</span>
+                                                                      </span>
+                                                </div>
                                             )}
-                          </div>div>
+                          </div>
                                                             )}
                                               
                                                 {/* Coupon error message */}
                                                 {couponError && (
-                          <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginTop: 10, marginBottom: 0 }}>{couponError}</p>p>
+                          <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginTop: 10, marginBottom: 0 }}>{couponError}</p>
                                                             )}
-                                              </div>div>
+                                              </div>
                                   
-                                    {paymentError && <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginBottom: 8 }}>{paymentError}</p>p>}
+                                    {paymentError && <p style={{ fontFamily: font.body, fontSize: 13, color: "#c62828", marginBottom: 8 }}>{paymentError}</p>}
                                   
                                               <div style={{ marginTop: 8 }}>
                                                             <button type="button" className="gold-btn" onClick={handleProceedToPayment}
@@ -403,12 +403,12 @@ export default function Onboarding() {
                                                                               style={{ padding: "18px 48px", fontSize: 12, letterSpacing: 0.12 }}
                                                                             >
                                                               {paymentLoading ? "Redirecting\u2026" : "Proceed to payment"}
-                                                            </button>button>
-                                              </div>div>
-                                  </div>div>
-                        </section>section>
-                </div>div>
-              <style>{`.gold-btn:disabled { cursor: not-allowed; opacity: 0.7; }`}</style>style>
-        </div>div>
+                                                            </button>
+                                              </div>
+                                  </div>
+                        </section>
+                </div>
+              <style>{`.gold-btn:disabled { cursor: not-allowed; opacity: 0.7; }`}</style>
+        </div>
       );
 }
