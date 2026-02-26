@@ -1207,6 +1207,231 @@ function Services() {
           .services-card-hover { transform: none !important; }
         }
       `}</style>
+
+      {/* ── Sample Leads Recordings ── */}
+      <div
+        style={{
+          marginTop: 80,
+          padding: "0 24px",
+          maxWidth: 1440,
+          margin: "80px auto 0",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        {/* Section header */}
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+            <div style={{ width: 48, height: 1, background: T.accent }} />
+            <span style={{ fontFamily: font.body, fontSize: 10, color: T.accent, letterSpacing: 0.15, textTransform: "uppercase", fontWeight: 600 }}>Hear The Proof</span>
+            <div style={{ width: 48, height: 1, background: T.accent }} />
+          </div>
+          <h2 style={{ fontFamily: font.display, fontSize: "clamp(28px, 3.5vw, 42px)", color: T.text, lineHeight: 1.15, marginBottom: 12 }}>
+            Sample Leads{" "}
+            <span style={{ color: T.accent, position: "relative", display: "inline-block" }}>
+              Recordings
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: -3,
+                  left: 0,
+                  height: 2,
+                  width: "100%",
+                  background: `linear-gradient(90deg, ${T.accent}, ${T.accentDim})`,
+                  borderRadius: 2,
+                }}
+              />
+            </span>
+          </h2>
+          <p style={{ fontFamily: font.body, fontSize: 15, color: T.textDim, maxWidth: 520, margin: "0 auto", lineHeight: 1.6, fontWeight: 400 }}>
+            Listen to real conversations with verified seller leads — this is the quality you can expect from every lead we deliver.
+          </p>
+        </div>
+
+        {/* Recording cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 24,
+          }}
+          className="recordings-grid"
+        >
+          {[
+            {
+              num: "01",
+              title: "Motivated Seller",
+              subtitle: "Pre-qualified homeowner",
+              duration: "3:24",
+              url: "https://drive.google.com/file/d/1u0MOvGQ9CtYri4TCXkX9oeC-x8vGCmk0/view?usp=sharing",
+              gradient: "linear-gradient(135deg, rgba(201,162,39,0.1) 0%, rgba(201,162,39,0.03) 100%)",
+            },
+            {
+              num: "02",
+              title: "Listing Appointment",
+              subtitle: "Appointment confirmed",
+              duration: "4:12",
+              url: "https://drive.google.com/file/d/1c8zYOAGTuCgX-w10fzKLTKuSI3uG7Kq9/view?usp=sharing",
+              gradient: "linear-gradient(135deg, rgba(201,162,39,0.12) 0%, rgba(201,162,39,0.04) 100%)",
+            },
+            {
+              num: "03",
+              title: "Warm Transfer",
+              subtitle: "Live call handoff",
+              duration: "2:58",
+              url: "https://drive.google.com/file/d/1yI4KxavdERmrm0S0bp-8Jpikcadh3ouv/view?usp=sharing",
+              gradient: "linear-gradient(135deg, rgba(201,162,39,0.08) 0%, rgba(201,162,39,0.02) 100%)",
+            },
+          ].map((rec, i) => (
+            <a
+              key={i}
+              href={rec.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="recording-card"
+              style={{
+                display: "block",
+                textDecoration: "none",
+                padding: "36px 32px",
+                background: "rgba(255,255,255,0.7)",
+                backdropFilter: "blur(12px)",
+                border: `1px solid ${T.border}`,
+                borderRadius: 16,
+                position: "relative",
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "all 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            >
+              {/* Top accent line */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 2,
+                  background: `linear-gradient(90deg, transparent, ${T.accent}, transparent)`,
+                  opacity: 0.6,
+                }}
+              />
+
+              {/* Background glow */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: -40,
+                  right: -40,
+                  width: 120,
+                  height: 120,
+                  borderRadius: "50%",
+                  background: rec.gradient,
+                  filter: "blur(40px)",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Number badge */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, position: "relative", zIndex: 1 }}>
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 12,
+                    background: `linear-gradient(135deg, ${T.accent}, ${T.accentDim})`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: `0 4px 16px rgba(201,162,39,0.25)`,
+                  }}
+                >
+                  {/* Play icon */}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 5.14v13.72a1 1 0 001.5.86l11.14-6.86a1 1 0 000-1.72L9.5 4.28A1 1 0 008 5.14z" fill="#fff" />
+                  </svg>
+                </div>
+                <span style={{ fontFamily: font.body, fontSize: 11, color: T.accent, fontWeight: 600, letterSpacing: 0.08, background: "rgba(201,162,39,0.08)", padding: "4px 12px", borderRadius: 20 }}>{rec.duration}</span>
+              </div>
+
+              {/* Recording number */}
+              <div style={{ fontFamily: font.body, fontSize: 10, color: T.accent, letterSpacing: 0.12, fontWeight: 600, marginBottom: 8, position: "relative", zIndex: 1 }}>
+                RECORDING {rec.num}
+              </div>
+
+              {/* Title */}
+              <h3 style={{ fontFamily: font.display, fontSize: 20, color: T.text, marginBottom: 6, lineHeight: 1.2, position: "relative", zIndex: 1 }}>
+                {rec.title}
+              </h3>
+
+              {/* Subtitle */}
+              <p style={{ fontFamily: font.body, fontSize: 13, color: T.textDim, fontWeight: 400, marginBottom: 24, position: "relative", zIndex: 1 }}>
+                {rec.subtitle}
+              </p>
+
+              {/* Sound wave visualization */}
+              <div style={{ display: "flex", alignItems: "center", gap: 3, marginBottom: 20, position: "relative", zIndex: 1 }}>
+                {Array.from({ length: 24 }, (_, j) => {
+                  const h = Math.sin((j + i * 8) * 0.5) * 12 + 14;
+                  return (
+                    <div
+                      key={j}
+                      style={{
+                        width: 3,
+                        height: h,
+                        borderRadius: 2,
+                        background: `linear-gradient(to top, ${T.accent}, ${T.accentDim})`,
+                        opacity: 0.3 + Math.sin((j + i * 5) * 0.4) * 0.35,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Listen button */}
+              <div
+                className="listen-btn"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  fontFamily: font.body,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: T.accent,
+                  letterSpacing: 0.06,
+                  textTransform: "uppercase",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <span>Listen Now</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ transition: "transform 0.3s" }} className="listen-arrow">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        .recordings-grid a.recording-card:hover {
+          transform: translateY(-6px) scale(1.01);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(201,162,39,0.3);
+          border-color: rgba(201,162,39,0.4);
+          background: rgba(255,255,255,0.9);
+        }
+        .recordings-grid a.recording-card:hover .listen-arrow {
+          transform: translate(3px, -3px);
+        }
+        @media (max-width: 1024px) {
+          .recordings-grid { grid-template-columns: 1fr !important; max-width: 480px; margin: 0 auto; }
+        }
+        @media (min-width: 601px) and (max-width: 1024px) {
+          .recordings-grid { grid-template-columns: repeat(2, 1fr) !important; max-width: 720px; }
+        }
+      `}</style>
+
     </section>
   );
 }
