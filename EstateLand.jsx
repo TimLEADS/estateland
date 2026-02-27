@@ -264,7 +264,7 @@ function GrainOverlay() {
 
 // ─── NAVBAR ───
 // ─── LOADING OVERLAY ───────────────────────────────────────────
-function LoadingOverlay({ message } = {}) {
+export function LoadingOverlay({ message } = {}) {
   return (
     <div style={{
       position: "fixed",
