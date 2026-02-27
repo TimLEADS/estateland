@@ -264,7 +264,7 @@ function GrainOverlay() {
 
 // ─── NAVBAR ───
 // ─── LOADING OVERLAY ───────────────────────────────────────────
-function LoadingOverlay() {
+function LoadingOverlay({ message } = {}) {
   return (
     <div style={{
       position: "fixed",
@@ -318,7 +318,7 @@ function LoadingOverlay() {
         marginTop: 8,
         letterSpacing: 1,
       }}>
-        Loading Dashboard...
+        {message || "Loading Dashboard..."}
       </div>
     </div>
   );
