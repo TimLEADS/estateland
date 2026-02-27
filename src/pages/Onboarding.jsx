@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { PRICING_PLANS, THEME, font } from "../../EstateLand.jsx";
+import { PRICING_PLANS, THEME, font, LoadingOverlay } from "../../EstateLand.jsx";
 import { useDashboard } from "../context/DashboardContext.jsx";
 
 const US_STATES = [
@@ -172,6 +172,7 @@ export default function Onboarding() {
   return (
     <div style={{ minHeight: "100vh", background: T.bg, position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 100% 60% at 50% 0%, rgba(166,124,0,0.06) 0%, transparent 50%)", pointerEvents: "none" }} />
+      {paymentLoading && <LoadingOverlay message="Preparing checkout..." />}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "40%", background: "linear-gradient(to top, rgba(0,0,0,0.02), transparent)", pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: "clamp(48px, 8vw, 80px) 24px 120px" }}>
         <h1 style={{ fontFamily: font.display, fontSize: "clamp(32px, 4.5vw, 44px)", color: T.text, lineHeight: 1.15, marginBottom: 12 }}>
