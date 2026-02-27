@@ -32,131 +32,76 @@ const PLAN_NAMES = {
     premier: "Premier — lifetime",
 };
 
-// ── Validate coupon endpoint ──
-app.post("/api/validate-coupon", async (req, res) => {
-    if (!stripe) {
-          return res.status(503).json({ valid: false, error: "Payment not configured" });
-    }
-
-           try {
-                 const { code } = req.body || {};
-                 if (!code || !String(code).trim()) {
-                         return res.json({ valid: false });
-                 }
-
-      const promoCodeStr = String(code).trim().toUpperCase();
-                 const codes = await stripe.promotionCodes.list({
-                         code: promoCodeStr,
-                         active: true,
-                 });
-
-      if (codes.data.length > 0) {
-              const promo = codes.data[0];
-              const coupon = promo.coupon;
-              const percentOff = coupon.percent_off || 0;
-              return res.json({
-                        valid: true,
-                        percentOff,
-                        promoCodeId: promo.id,
-                        code: promoCodeStr,
-              });
-      }
-
-      return res.json({ valid: false });
-           } catch (err) {
-                 console.error("Coupon validation error:", err.message);
-                 return res.json({ valid: false });
-           }
-});
-
 // ── Create checkout session ──
 app.post("/api/create-checkout-session", async (req, res) => {
     if (!stripe) {
-          return res.status(503).json({
-                  error: "Payment not configured. Add STRIPE_SECRET_KEY to server/.env and restart.",
-          });
+        return res.status(503).json({
+            error: "Payment not configured. Add STRIPE_SECRET_KEY to server/.env and restart.",
+        });
     }
 
-           try {
-                 const { planId, couponCode, promoCodeId, successUrl, cancelUrl, customerEmail } = req.body || {};
+    try {
+        const { planId, successUrl, cancelUrl, customerEmail } = req.body || {};
 
-      if (!planId || !PLAN_PRICES[planId]) {
-              return res.status(400).json({ error: "Invalid plan" });
-      }
+        if (!planId || !PLAN_PRICES[planId]) {
+            return res.status(400).json({ error: "Invalid plan" });
+        }
 
-      const amount = PLAN_PRICES[planId];
-                 const productName = PLAN_NAMES[planId] || planId;
-                 const origin = req.headers.origin || "http://localhost:5173";
+        const amount = PLAN_PRICES[planId];
+        const productName = PLAN_NAMES[planId] || planId;
+        const origin = req.headers.origin || "http://localhost:5173";
 
-      const sessionParams = {
-              mode: "payment",
-              line_items: [
+        const sessionParams = {
+            mode: "payment",
+            line_items: [
                 {
-                            price_data: {
-                                          currency: "usd",
-                                          product_data: { name: `Estate Land — ${productName}` },
-                                          unit_amount: amount,
-                            },
-                            quantity: 1,
+                    price_data: {
+                        currency: "usd",
+                        product_data: { name: `Estate Land — ${productName}` },
+                        unit_amount: amount,
+                    },
+                    quantity: 1,
                 },
-                      ],
-              success_url: successUrl || `${origin}/get-started?success=1`,
-              cancel_url: cancelUrl || `${origin}/get-started?payment=cancel`,
-              metadata: { planId },
-      };
+            ],
+            success_url: successUrl || `${origin}/get-started?success=1`,
+            cancel_url: cancelUrl || `${origin}/get-started?payment=cancel`,
+            metadata: { planId },
+            allow_promotion_codes: true,
+        };
 
-      if (customerEmail && typeof customerEmail === "string" && customerEmail.includes("@")) {
-              sessionParams.customer_email = customerEmail;
-      }
+        if (customerEmail && typeof customerEmail === "string" && customerEmail.includes("@")) {
+            sessionParams.customer_email = customerEmail;
+        }
 
-      // Use promoCodeId directly if provided (already validated on frontend)
-      if (promoCodeId && String(promoCodeId).trim()) {
-              sessionParams.discounts = [{ promotion_code: String(promoCodeId).trim() }];
-} else if (couponCode && String(couponCode).trim()) {
-              // Fallback: validate coupon code at checkout time
-                   try {
-                             const codes = await stripe.promotionCodes.list({
-                                         code: String(couponCode).trim().toUpperCase(),
-                                         active: true,
-                             });
-                             if (codes.data.length > 0) {
-                                         sessionParams.discounts = [{ promotion_code: codes.data[0].id }];
-                             }
-                   } catch (couponErr) {
-                             console.warn("Coupon lookup failed:", couponErr.message);
-                   }
-      }
-
-      const session = await stripe.checkout.sessions.create(sessionParams);
-                 return res.json({ url: session.url, sessionId: session.id });
-           } catch (err) {
-                 console.error("Checkout session error:", err);
-                 const message =
-                         (err && (err.message || err.raw?.message || err.code)) ||
-                         "Payment session failed";
-                 return res.status(500).json({ error: String(message) });
-           }
+        const session = await stripe.checkout.sessions.create(sessionParams);
+        return res.json({ url: session.url, sessionId: session.id });
+    } catch (err) {
+        console.error("Checkout session error:", err);
+        const message =
+            (err && (err.message || err.raw?.message || err.code)) ||
+            "Payment session failed";
+        return res.status(500).json({ error: String(message) });
+    }
 });
 
 app.get("/api/checkout-session/:id", async (req, res) => {
     if (!stripe) return res.status(503).json({ error: "Payment not configured" });
     try {
-          const session = await stripe.checkout.sessions.retrieve(req.params.id);
-          if (session.payment_status !== "paid") {
-                  return res.status(400).json({ error: "Payment not completed" });
-          }
-          return res.json({
-                  id: session.id,
-                  payment_status: session.payment_status,
-                  amount_total: session.amount_total,
-                  currency: session.currency,
-                  customer_email:
-                            session.customer_email || session.customer_details?.email,
-                  metadata: session.metadata || {},
-          });
+        const session = await stripe.checkout.sessions.retrieve(req.params.id);
+        if (session.payment_status !== "paid") {
+            return res.status(400).json({ error: "Payment not completed" });
+        }
+        return res.json({
+            id: session.id,
+            payment_status: session.payment_status,
+            amount_total: session.amount_total,
+            currency: session.currency,
+            customer_email: session.customer_email || session.customer_details?.email,
+            metadata: session.metadata || {},
+        });
     } catch (err) {
-          console.error("Retrieve session error:", err);
-          return res.status(500).json({ error: err.message || "Failed to load session" });
+        console.error("Retrieve session error:", err);
+        return res.status(500).json({ error: err.message || "Failed to load session" });
     }
 });
 
@@ -168,6 +113,6 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
     if (!secretKey || !secretKey.startsWith("sk_")) {
-          console.warn("Stripe key missing — add STRIPE_SECRET_KEY to server/.env");
+        console.warn("Stripe key missing — add STRIPE_SECRET_KEY to server/.env");
     }
 });
