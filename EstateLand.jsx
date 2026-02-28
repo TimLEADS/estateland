@@ -486,7 +486,7 @@ body { overflow-x: hidden; }
 
 /* ══════ ENHANCED SERVICES CARDS ══════ */
 #services {
-  background: #080808 !important;
+  background: #f5f0e8 !important;
 }
 .services-grid {
   display: grid !important;
@@ -494,7 +494,7 @@ body { overflow-x: hidden; }
   gap: clamp(20px, 3vw, 28px) !important;
 }
 .services-grid > * {
-  background: linear-gradient(145deg, rgba(22,22,22,0.95), rgba(12,12,12,0.98)) !important;
+  background: #fff !important;
   backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(201,162,39,0.1) !important;
   border-radius: clamp(16px, 2vw, 20px) !important;
@@ -502,14 +502,14 @@ body { overflow-x: hidden; }
   position: relative !important;
   overflow: hidden !important;
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(0,0,0,0.06) !important;
 }
 .services-grid > *::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.5) 30%, rgba(212,165,116,0.9) 50%, rgba(201,162,39,0.5) 70%, transparent 100%);
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.4) 20%, rgba(201,162,39,0.9) 50%, rgba(201,162,39,0.4) 80%, transparent 100%);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
@@ -518,25 +518,25 @@ body { overflow-x: hidden; }
   position: absolute;
   top: -50%; left: -50%;
   width: 200%; height: 200%;
-  background: radial-gradient(circle at 30% 20%, rgba(201,162,39,0.04) 0%, transparent 50%);
+  background: radial-gradient(circle at 80% -20%, rgba(201,162,39,0.06) 0%, transparent 60%);
   pointer-events: none;
 }
 .services-grid > *:hover {
   border-color: rgba(201,162,39,0.25) !important;
   transform: translateY(-8px) scale(1.01) !important;
-  box-shadow: 0 20px 50px rgba(201,162,39,0.08), 0 8px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(201,162,39,0.1) !important;
+  box-shadow: 0 8px 30px rgba(201,162,39,0.1), 0 20px 50px rgba(0,0,0,0.08) !important;
 }
 .services-grid > *:hover::before { opacity: 1; }
 .services-grid > * h3 {
-  color: #f5f0e8 !important;
+  color: #1a1a1a !important;
   font-size: clamp(18px, 1.4vw, 22px) !important;
 }
 .services-grid > * p {
-  color: rgba(245,240,232,0.55) !important;
+  color: rgba(30,30,30,0.55) !important;
   font-size: clamp(13px, 1vw, 15px) !important;
   line-height: 1.75 !important;
 }
-#services h2, #services h2 * { color: #f5f0e8 !important; }
+#services h2, #services h2 * { color: #1a1a1a !important; }
 #services h2 em, #services h2 i, #services h2 span[style*="italic"] { color: #c9a227 !important; }
 #services span[style*="uppercase"] { color: #c9a227 !important; }
 @media (max-width: 1024px) {
