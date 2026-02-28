@@ -178,6 +178,12 @@ function Styles() {
       @media(max-width:480px){body{font-size:14px}}
       @media(max-height:500px) and (orientation:landscape){.mobile-drawer{width:60vw}}
       @media print{body{background:#fff;color:#000}nav,.mobile-drawer,.mobile-backdrop{display:none!important}}
+      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+      .outline-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:16px 36px;min-height:48px;border:1.5px solid ${C.gold};background:transparent;color:${C.gold};cursor:pointer;font-family:${font.body};font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.4s cubic-bezier(.22,1,.36,1),color 0.4s,transform 0.35s cubic-bezier(.22,1,.36,1),box-shadow 0.35s;position:relative;overflow:hidden}
+      .outline-btn:after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(201,162,39,0.08),transparent);transition:left 0.5s ease}
+      .outline-btn:hover{background:${C.gold};color:${C.void};transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,162,39,0.18)}
+      .outline-btn:hover:after{left:100%}
+      .outline-btn:active{transform:translateY(0);box-shadow:none}
     `}</style>
   );
 }
@@ -2313,7 +2319,6 @@ function Footer() {
 export function Layout({ children }) {
   return (
     <div>
-      <a href="#main-content" className="sr-only">Skip to main content</a>
       <Styles />
       <GrainOverlay />
       <Navbar />
