@@ -142,7 +142,11 @@ function Styles() {
       @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
       @keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
       @keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-      @keyframes processStepNumPulse{0%,100%{opacity:0.06;transform:scale(1)}50%{opacity:0.12;transform:scale(1.02)}}
+      @keyframes processStepIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes processStepNumPulse{0%,100%{opacity:0.06;transform:scale(1)}50%{opacity:0.12;transform:scale(1.02)}}
       @keyframes processTimelineDraw{from{stroke-dashoffset:1200}to{stroke-dashoffset:0}}
       @keyframes processTimelineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
       @keyframes processStepIconPop{0%{opacity:0;transform:scale(0.3)}60%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
