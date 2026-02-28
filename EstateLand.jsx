@@ -413,11 +413,68 @@ body { overflow-x: hidden; }
   .gold-btn, .outline-btn { padding: 14px 24px !important; font-size: 13px !important; }
 }
 
+
+/* ══════ GOLD SEPARATOR ══════ */
+.gold-separator {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  overflow: visible;
+  z-index: 1;
+}
+.gold-separator-line {
+  position: relative;
+  width: min(85%, 1200px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.15) 10%, rgba(201,162,39,0.6) 35%, rgba(212,165,116,0.9) 50%, rgba(201,162,39,0.6) 65%, rgba(201,162,39,0.15) 90%, transparent 100%);
+  border-radius: 999px;
+}
+.gold-separator-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 6px;
+  background: radial-gradient(ellipse at center, rgba(201,162,39,0.4) 0%, rgba(212,165,116,0.2) 40%, transparent 70%);
+  filter: blur(4px);
+  border-radius: 999px;
+}
+.gold-separator-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 12px;
+  background: radial-gradient(ellipse at center, rgba(201,162,39,0.25) 0%, transparent 70%);
+  filter: blur(8px);
+  border-radius: 999px;
+}
+@media (max-width: 768px) {
+  .gold-separator-line { width: 90%; }
+}
 `}</style>
   );
 }
 
 // ─── GRAIN OVERLAY ───
+
+// ─── GOLD SEPARATOR ───
+function GoldSeparator() {
+  return (
+    <div className="gold-separator" aria-hidden="true">
+      <div className="gold-separator-line" />
+    </div>
+  );
+}
+
+
 function GrainOverlay() {
   return (
     <div
@@ -2570,14 +2627,23 @@ export function HomePage() {
   return (
     <>
       <Hero />
+          <GoldSeparator />
       <Services />
+          <GoldSeparator />
       <About />
+          <GoldSeparator />
       <Marquee />
+          <GoldSeparator />
       <Process />
+          <GoldSeparator />
       <Results />
+          <GoldSeparator />
       <Reviews />
+          <GoldSeparator />
       <Plans />
+          <GoldSeparator />
       <FAQ />
+          <GoldSeparator />
       <Contact />
     </>
   );
