@@ -99,27 +99,31 @@ export const PRICING_PLANS = [
 ];
 export { THEME, font, C };
 
-// ─── GLOBAL STYLES ───
+// —— GLOBAL STYLES ——
 function Styles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
       *{margin:0;padding:0;box-sizing:border-box}
-      html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
-      body{background:${C.void};color:${C.cream};overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-overflow-scrolling:touch}
+      html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}
+      body{background:${C.void};color:${C.cream};overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-overflow-scrolling:touch;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
       img,video{max-width:100%;height:auto;display:block}
       a,button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+      a,button,input,select,textarea{min-height:44px}
+      button{cursor:pointer}
       ::selection{background:${C.goldDim};color:${C.goldLight}}
       ::-webkit-scrollbar{width:6px}
       ::-webkit-scrollbar-track{background:${C.surface}}
       ::-webkit-scrollbar-thumb{background:${C.gold};border-radius:3px}
       input::placeholder,textarea::placeholder{color:${C.mute}}
       #contact input::placeholder,#contact textarea::placeholder{color:rgba(15,15,15,0.5)}
-      @media (prefers-reduced-motion: reduce){
-        *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+      .hover-lift,.plan-card,.service-card,.faq-item{will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+      @media (prefers-reduced-motion:reduce){
+        *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
         html{scroll-behavior:auto}
+        .hover-lift:hover{transform:none!important}
       }
-      
+      @media (hover:none){.hover-lift:hover{transform:none!important}}
       @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
       @keyframes slideLeft{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
       @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -133,32 +137,11 @@ function Styles() {
       @keyframes marqueeHeadlineIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
       @keyframes marqueeTrackIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
       @keyframes marqueeShineSweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-      @keyframes logoGoldGlow{0%,100%{box-shadow:0 0 20px rgba(201,162,39,0.25),0 0 40px rgba(201,162,39,0.12)}50%{box-shadow:0 0 28px rgba(201,162,39,0.4),0 0 56px rgba(201,162,39,0.2)}}
-      @keyframes glow{0%,100%{opacity:0.4}50%{opacity:0.8}}
-      @keyframes processOrbit{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-      @keyframes processPulse{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
-      @keyframes heroOrbit1{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-      @keyframes heroOrbit2{0%{transform:rotate(360deg)}100%{transform:rotate(0deg)}}
-      @keyframes heroOrbit3{0%{transform:rotate(0deg)}100%{transform:rotate(-360deg)}}
-      @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-      @keyframes heroPulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
-      @keyframes heroGlow{0%,100%{box-shadow:0 0 30px ${C.goldDim}}50%{box-shadow:0 0 50px ${C.goldDim}, 0 0 80px ${C.goldDim}}}
-      @keyframes heroLineFlow{0%{stroke-dashoffset:120}100%{stroke-dashoffset:0}}
-      @keyframes heroCardIn{0%{opacity:0;transform:translateY(20px) scale(0.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
-      @keyframes heroDotBlink{0%,100%{opacity:0.4}50%{opacity:1}}
-      @keyframes heroStageFocus{0%,100%{opacity:0.7;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
-      @keyframes heroStageText{0%{opacity:0;transform:translateY(6px)}30%,70%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-6px)}}
-      @keyframes processVideoProgress{0%{stroke-dashoffset:472}100%{stroke-dashoffset:0}}
-      @keyframes processVideoStepIn{0%{opacity:0;transform:scale(0.96) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
-      @keyframes processVideoNodeActive{0%,100%{box-shadow:0 0 0 0 ${C.goldDim}}50%{box-shadow:0 0 0 8px ${C.goldDim}, 0 0 24px ${C.goldDim}}}
-      
-      @keyframes processMapDraw{0%{stroke-dashoffset:2400}100%{stroke-dashoffset:0}}
-      @keyframes processDotPulse{0%,100%{opacity:0.5;filter:blur(0);transform:scale(1)}50%{opacity:1;filter:blur(2px);transform:scale(1.08)}}
-      @keyframes processTerritoryRing{0%{transform:scale(0.8);opacity:0.8}100%{transform:scale(2.5);opacity:0}}
-      @keyframes processLineFlow{0%{stroke-dashoffset:200;opacity:0.15}50%{opacity:0.4}100%{stroke-dashoffset:0;opacity:0.15}}
-      @keyframes processGoldUnderline{0%,100%{opacity:0.5;transform:scaleX(0.9)}50%{opacity:1;transform:scaleX(1)}}
-      @keyframes processTextReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-      @keyframes processStepIn{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes logoGoldGlow{0%,100%{box-shadow:0 0 20px rgba(201,162,39,0.25),0 0 40px rgba(201,162,39,0.12)}50%{box-shadow:0 0 30px rgba(201,162,39,0.35),0 0 60px rgba(201,162,39,0.18)}}
+      @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+      @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+      @keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+      @keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
       @keyframes processStepNumPulse{0%,100%{opacity:0.06;transform:scale(1)}50%{opacity:0.12;transform:scale(1.02)}}
       @keyframes processTimelineDraw{from{stroke-dashoffset:1200}to{stroke-dashoffset:0}}
       @keyframes processTimelineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
@@ -166,78 +149,35 @@ function Styles() {
       @keyframes processStepRing{0%,100%{transform:scale(1);opacity:0.4}50%{transform:scale(1.15);opacity:0}}
       @keyframes processMapPulse{0%,100%{opacity:0.9;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
       @keyframes processCardShine{0%{background-position:200% center}100%{background-position:-200% center}}
-      
       @keyframes faqItemIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
       @keyframes faqAccentLine{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
-      
       @keyframes servicesReveal{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
       @keyframes servicesTitleIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
       @keyframes servicesOwnUnderline{0%{width:0;opacity:0}70%{opacity:1}100%{width:100%;opacity:1}}
       @keyframes servicesGoldLine{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
       @keyframes servicesBgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-      
       .reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s cubic-bezier(.22,1,.36,1),transform 0.9s cubic-bezier(.22,1,.36,1)}
       .reveal.visible{opacity:1;transform:translateY(0)}
-      .reveal-d1{transition-delay:0.08s}.reveal-d2{transition-delay:0.16s}.reveal-d3{transition-delay:0.24s}.reveal-d4{transition-delay:0.32s}.reveal-d5{transition-delay:0.4s}.reveal-d6{transition-delay:0.48s}
-
+      .reveal-d1{transition-delay:0.08s}.reveal-d2{transition-delay:0.16s}.reveal-d3{transition-delay:0.24s}.reveal-d4{transition-delay:0.32s}
       .hover-lift{transition:transform 0.4s cubic-bezier(.22,1,.36,1);will-change:transform}
       .hover-lift:hover{transform:translateY(-4px)}
       @media (hover:none){.hover-lift:hover{transform:none}}
-      
-      .gold-btn{
-        display:inline-flex;align-items:center;justify-content:center;gap:10px;
-        padding:16px 36px;min-height:48px;border:none;cursor:pointer;
-        font-family:${font.body};font-size:12px;font-weight:600;
-        letter-spacing:0.12em;text-transform:uppercase;
-        background:${C.gold};color:${C.void};
-        transition:background 0.35s cubic-bezier(.22,1,.36,1),color 0.35s,transform 0.35s cubic-bezier(.22,1,.36,1),box-shadow 0.35s;
-        position:relative;overflow:hidden;
-      }
-      .gold-btn::after{
-        content:'';position:absolute;top:0;left:-100%;
-        width:100%;height:100%;
-        background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
-        transition:left 0.5s;
-      }
-      .gold-btn:hover{background:${C.goldLight};color:${C.void};transform:translateY(-1px)}
-      .gold-btn:hover::after{left:100%}
-      
-      .outline-btn{
-        display:inline-flex;align-items:center;gap:10px;
-        padding:16px 36px;background:transparent;cursor:pointer;
-        font-family:${font.body};font-size:12px;font-weight:600;
-        letter-spacing:0.12em;text-transform:uppercase;
-        border:1px solid ${C.border};color:${C.cream};
-        transition:all 0.35s cubic-bezier(.22,1,.36,1);
-      }
-      .outline-btn:hover{border-color:${C.gold};color:${C.gold}}
-      
-      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-      .sr-only:focus{position:fixed;top:8px;left:8px;z-index:99999;width:auto;height:auto;padding:12px 24px;margin:0;overflow:visible;clip:auto;white-space:normal;background:${C.gold};color:${C.void};font-family:${font.body};font-size:14px;font-weight:600;text-decoration:none;border-radius:4px}
-      @media(max-width:1024px){
-        .desk-nav{display:none!important}
-        .mob-toggle{display:flex!important}
-        .grid-2,.contact-grid,.faq-grid{grid-template-columns:1fr!important}
-        .contact-form-panel{border-left:none!important;border-top:1px solid rgba(240,235,227,0.12)!important}
-        .grid-3{grid-template-columns:1fr!important}
-        .grid-4{grid-template-columns:1fr 1fr!important}
-        .hero-grid{grid-template-columns:1fr!important}
-        .footer-grid{grid-template-columns:1fr 1fr!important}
-        .stats-row{grid-template-columns:1fr 1fr!important}
-      }
-      @media(max-width:640px){
-        .grid-4{grid-template-columns:1fr!important}
-        .footer-grid{grid-template-columns:1fr!important}
-        .stats-row{grid-template-columns:1fr!important}
-        .contact-form-grid{grid-template-columns:1fr!important}
-        .marquee-stat-pill{flex-wrap:wrap;justify-content:center;gap:12px;padding:12px 20px;max-width:320px}
-      }
-      @media(max-width:768px){
-        .reviews-why-grid{grid-template-columns:1fr!important}
-      }
-      @media(max-width:480px){
-        html{scroll-padding-top:60px}
-      }
+      .gold-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 36px;min-height:48px;border:none;cursor:pointer;font-family:${font.body};font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:${C.gold};color:${C.void};transition:background 0.35s cubic-bezier(.22,1,.36,1),color 0.35s,transform 0.35s cubic-bezier(.22,1,.36,1),box-shadow 0.35s;position:relative;overflow:hidden}
+      .gold-btn:after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);transition:left 0.5s ease}
+      .gold-btn:hover{background:${C.goldLight};transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,162,39,0.25)}
+      .gold-btn:hover:after{left:100%}
+      .gold-btn:active{transform:translateY(0);box-shadow:none}
+      .mobile-drawer{position:fixed;top:0;right:0;width:min(320px,85vw);height:100vh;height:100dvh;background:rgba(8,8,8,0.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);z-index:10001;padding:80px 32px 32px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+      .mobile-drawer.open{transform:translateX(0)}
+      .mobile-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:10000;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+      .mobile-backdrop.open{opacity:1;pointer-events:auto}
+      .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px);width:100%;max-width:1200px;margin:0 auto}
+      @media(max-width:1024px){.plans-grid{grid-template-columns:repeat(2,1fr)}.plans-grid>*:last-child{grid-column:1/-1;max-width:50%;justify-self:center}}
+      @media(max-width:768px){.plans-grid{grid-template-columns:1fr;max-width:480px}.plans-grid>*:last-child{max-width:100%}}
+      @media(max-width:640px){body{font-size:15px}}
+      @media(max-width:480px){body{font-size:14px}}
+      @media(max-height:500px) and (orientation:landscape){.mobile-drawer{width:60vw}}
+      @media print{body{background:#fff;color:#000}nav,.mobile-drawer,.mobile-backdrop{display:none!important}}
     `}</style>
   );
 }
@@ -472,9 +412,9 @@ function Navbar() {
         <button type="button" className="mob-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-expanded={mobileOpen} aria-controls="mobile-nav" aria-label="Toggle menu" style={{
           display: "none", flexDirection: "column", gap: 5, cursor: "pointer", padding: 12, minWidth: 44, minHeight: 44, justifyContent: "center", background: "transparent", border: "none",
         }}>
-          <div style={{ width: 24, height: 1.5, background: C.gold, transition: "all 0.3s", transform: mobileOpen ? "rotate(45deg) translate(3px,4px)" : "none" }} />
-          <div style={{ width: 24, height: 1.5, background: C.gold, transition: "all 0.3s", opacity: mobileOpen ? 0 : 1 }} />
-            <div style={{ width: mobileOpen ? 24 : 18, height: 1.5, background: C.gold, transition: "all 0.3s", transform: mobileOpen ? "rotate(-45deg) translate(4px,-4px)" : "none" }} />
+          <div style={{ width: 24, height: 1.5, background: C.gold, transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)", transform: mobileOpen ? "rotate(45deg) translate(3px,4px)" : "none" }} />
+          <div style={{ width: 24, height: 1.5, background: C.gold, transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)", opacity: mobileOpen ? 0 : 1 }} />
+            <div style={{ width: mobileOpen ? 24 : 18, height: 1.5, background: C.gold, transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)", transform: mobileOpen ? "rotate(-45deg) translate(4px,-4px)" : "none" }} />
         </button>
       </div>
 
@@ -546,7 +486,7 @@ function Hero() {
 
   return (
     <section id="hero" style={{
-      minHeight: "100vh", display: "flex", alignItems: "center",
+      minHeight: "100dvh", display: "flex", alignItems: "center",
       background: C.void, position: "relative", overflow: "hidden",
     }}>
       {/* Full hero video — muted, autoplay, loop */}
@@ -952,7 +892,7 @@ function About() {
               Every lead is exclusive to you — no sharing, no recycling, no race with other agents. We verify seller intent, confirm contact details, and in premium plans we set the listing appointment for you.
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 14 }}>
               {["Exclusive Territory Rights", "Double-Verified Sellers", "Appointment Setting", "CRM Integration", "All 50 States", "No Long-Term Contracts"].map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div style={{ width: 18, height: 18, borderRadius: "50%", background: T.accentDim, border: `1px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -1076,7 +1016,7 @@ function Services() {
         </div>
 
         {/* Service cards */}
-        <div className="grid-3 services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+        <div className="grid-3 services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: 24 }}>
           {services.map((s, i) => {
             const isHovered = hovered === i;
             return (
@@ -1252,7 +1192,7 @@ function Services() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
             gap: 24,
           }}
           className="recordings-grid"
@@ -1530,7 +1470,7 @@ function Process() {
         padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 24px) clamp(80px, 12vw, 140px)",
         position: "relative",
         overflow: "hidden",
-        minHeight: "100vh",
+        minHeight: "100dvh",
       }}
     >
       {/* Deep navy gradient overlay */}
@@ -1698,7 +1638,7 @@ function Results() {
           </h2>
         </div>
 
-        <div className="stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }}>
+        <div className="stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))", gap: 24 }}>
           {stats.map((s, i) => (
             <div key={i} className={`reveal ${vis ? "visible" : ""}`} style={{
               background: "rgba(255,255,255,0.8)", padding: "40px 28px", textAlign: "center",
@@ -1783,7 +1723,7 @@ function Plans() {
           <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, maxWidth: 480, margin: "0 auto" }}>Pay once for your term. Referral fee only at closing. No long-term contract.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28, alignItems: "stretch" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: 28, alignItems: "stretch" }}>
           {plans.map((p, i) => (
             <div
               key={i}
@@ -2079,7 +2019,7 @@ function FAQ() {
                     color: open === i ? T.accent : T.mute,
                     border: `1px solid ${open === i ? T.accent : T.border}`,
                     borderRadius: 8,
-                    transition: "all 0.3s",
+                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -2169,7 +2109,7 @@ function Contact() {
 
   return (
     <section id="contact" ref={ref} style={{ position: "relative", overflow: "hidden", background: T.bg }}>
-      <div className="grid-2 contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "100vh" }}>
+      <div className="grid-2 contact-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", minHeight: "100dvh" }}>
         <div style={{
           background: T.bg, padding: "clamp(40px, 8vw, 90px) clamp(20px, 5vw, 52px)", display: "flex", flexDirection: "column", justifyContent: "center",
           position: "relative", overflow: "hidden",
@@ -2228,7 +2168,7 @@ function Contact() {
                 <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.aria} style={{
                   padding: "10px 18px", border: `1px solid ${T.border}`, cursor: "pointer",
                   fontFamily: font.body, fontSize: 11, color: T.accent, letterSpacing: 0.1, fontWeight: 500,
-                  transition: "all 0.3s", textDecoration: "none",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)", textDecoration: "none",
                 }}
                   onMouseEnter={e => { e.currentTarget.style.background = T.accent; e.currentTarget.style.color = T.bg; e.currentTarget.style.borderColor = T.accent; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = T.accent; e.currentTarget.style.borderColor = T.border; }}
@@ -2244,7 +2184,7 @@ function Contact() {
             <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute, fontWeight: 400, marginBottom: 36 }}>Fill in the details below. Our team will reach out within 2 hours.</p>
 
             <form onSubmit={handleSubmit}>
-              <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 14 }}>
                 <label className="sr-only" htmlFor="firstName">First Name</label>
                 <input id="firstName" name="firstName" type="text" placeholder="First Name" required aria-required="true" autoComplete="given-name" style={{ ...inputStyle, gridColumn: "auto" }}
                   onFocus={e => { e.target.style.borderColor = T.accent; }} onBlur={e => { e.target.style.borderColor = T.border; }} />
