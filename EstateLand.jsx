@@ -421,26 +421,30 @@ body { overflow-x: hidden; }
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  padding: 8px 0;
   overflow: visible;
   z-index: 1;
 }
 .gold-separator-line {
   position: relative;
-  width: min(85%, 1200px);
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.15) 10%, rgba(201,162,39,0.6) 35%, rgba(212,165,116,0.9) 50%, rgba(201,162,39,0.6) 65%, rgba(201,162,39,0.15) 90%, transparent 100%);
+  flex: 1;
+  max-width: min(42%, 560px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.08) 15%, rgba(201,162,39,0.5) 50%, rgba(212,165,116,0.8) 80%, rgba(201,162,39,0.9) 100%);
   border-radius: 999px;
+}
+.gold-separator-line:last-child {
+  background: linear-gradient(90deg, rgba(201,162,39,0.9) 0%, rgba(212,165,116,0.8) 20%, rgba(201,162,39,0.5) 50%, rgba(201,162,39,0.08) 85%, transparent 100%);
 }
 .gold-separator-line::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-  height: 6px;
-  background: radial-gradient(ellipse at center, rgba(201,162,39,0.4) 0%, rgba(212,165,116,0.2) 40%, transparent 70%);
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  height: 8px;
+  background: linear-gradient(90deg, transparent, rgba(201,162,39,0.3), rgba(201,162,39,0.15), transparent);
   filter: blur(4px);
   border-radius: 999px;
 }
@@ -448,16 +452,32 @@ body { overflow-x: hidden; }
   content: '';
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 30%;
-  height: 12px;
-  background: radial-gradient(ellipse at center, rgba(201,162,39,0.25) 0%, transparent 70%);
-  filter: blur(8px);
+  left: 10%;
+  right: 10%;
+  transform: translateY(-50%);
+  height: 16px;
+  background: linear-gradient(90deg, transparent, rgba(201,162,39,0.15), transparent);
+  filter: blur(10px);
   border-radius: 999px;
 }
+.gold-separator-diamond {
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, rgba(212,165,116,0.9), rgba(201,162,39,1), rgba(212,165,116,0.9));
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  margin: 0 16px;
+  box-shadow: 0 0 8px rgba(201,162,39,0.5), 0 0 20px rgba(201,162,39,0.2), 0 0 40px rgba(201,162,39,0.1);
+  border-radius: 2px;
+  animation: diamondPulse 3s ease-in-out infinite;
+}
+@keyframes diamondPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(201,162,39,0.5), 0 0 20px rgba(201,162,39,0.2); opacity: 0.85; }
+  50% { box-shadow: 0 0 12px rgba(201,162,39,0.7), 0 0 30px rgba(201,162,39,0.35), 0 0 50px rgba(201,162,39,0.15); opacity: 1; }
+}
 @media (max-width: 768px) {
-  .gold-separator-line { width: 90%; }
+  .gold-separator-line { max-width: 40%; }
+  .gold-separator-diamond { width: 8px; height: 8px; margin: 0 12px; }
 }
 `}</style>
   );
@@ -469,6 +489,8 @@ body { overflow-x: hidden; }
 function GoldSeparator() {
   return (
     <div className="gold-separator" aria-hidden="true">
+      <div className="gold-separator-line" />
+      <div className="gold-separator-diamond" />
       <div className="gold-separator-line" />
     </div>
   );
