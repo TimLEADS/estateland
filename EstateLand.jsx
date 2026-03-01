@@ -255,11 +255,15 @@ function Styles() {
 /* ══════ FOOTER GRID ══════ */
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-  gap: clamp(24px, 4vw, 48px);
+  grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  gap: clamp(24px, 4vw, 52px);
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr !important; }
 }
 @media (max-width: 640px) {
   .footer-grid { grid-template-columns: 1fr !important; text-align: center; }
+  .footer-grid > div:first-child { display: flex; flex-direction: column; align-items: center; }
 }
 
 /* ══════ CONTACT GRID ══════ */
@@ -2617,7 +2621,9 @@ function Contact() {
 
 // ─── FOOTER ───
 function Footer() {
-  const footerLinkStyle = { fontFamily: font.body, fontSize: 13, color: C.mute, fontWeight: 400, textDecoration: "none", transition: "color 0.25s" };
+  const [email, setEmail] = useState("");
+  const [hoveredSocial, setHoveredSocial] = useState(null);
+  const footerLinkStyle = { fontFamily: font.body, fontSize: 13, color: C.mute, fontWeight: 400, textDecoration: "none", transition: "all 0.3s cubic-bezier(.4,0,.2,1)", display: "inline-block" };
   const footerLinks = [
     { title: "Company", items: [
       { label: "About Us", to: "/#about" },
@@ -2641,47 +2647,150 @@ function Footer() {
       { label: "Contact Us", to: "/#contact" },
     ]},
   ];
+
+  const socialLinks = [
+    { name: "Facebook", href: "#", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> },
+    { name: "Instagram", href: "#", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> },
+    { name: "LinkedIn", href: "#", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
+    { name: "Twitter", href: "#", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
+    { name: "YouTube", href: "#", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> },
+  ];
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
   return (
-    <footer role="contentinfo" style={{ background: C.void, padding: "clamp(48px, 8vw, 72px) clamp(20px, 5vw, 40px) 32px", borderTop: `1px solid ${C.border}` }}>
-      <div className="footer-grid" style={{ maxWidth: 1440, margin: "0 auto", display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr 1fr", gap: 52, marginBottom: 52 }}>
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-            <div style={{ width: 36, height: 36, border: `1px solid ${C.gold}`, transform: "rotate(45deg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ transform: "rotate(-45deg)", fontFamily: font.display, fontSize: 16, color: C.gold, fontWeight: 500 }}>E</span>
+    <footer role="contentinfo" style={{ background: `linear-gradient(180deg, ${C.void} 0%, #050505 100%)`, position: "relative", overflow: "hidden" }}>
+      {/* Decorative top gold line */}
+      <div style={{ height: 1, background: `linear-gradient(90deg, transparent 0%, ${C.gold} 20%, ${C.goldLight} 50%, ${C.gold} 80%, transparent 100%)` }} />
+
+      {/* CTA Banner Section */}
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "clamp(48px, 6vw, 80px) clamp(20px, 5vw, 40px) 0" }}>
+        <div style={{ background: `linear-gradient(135deg, ${C.surface} 0%, ${C.surfaceLight} 100%)`, borderRadius: 16, padding: "clamp(32px, 5vw, 56px)", border: `1px solid ${C.border}`, position: "relative", overflow: "hidden" }}>
+          {/* Decorative corner accent */}
+          <div style={{ position: "absolute", top: 0, right: 0, width: 200, height: 200, background: `radial-gradient(circle at top right, ${C.goldDim}, transparent 70%)`, pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, width: 150, height: 150, background: `radial-gradient(circle at bottom left, ${C.goldDim}, transparent 70%)`, pointerEvents: "none" }} />
+          
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 32, position: "relative", zIndex: 1 }}>
+            <div style={{ maxWidth: 500 }}>
+              <div style={{ fontFamily: font.display, fontSize: "clamp(22px, 3vw, 32px)", color: C.cream, letterSpacing: 1, lineHeight: 1.3 }}>
+                Ready to Dominate Your Market?
+              </div>
+              <p style={{ fontFamily: font.body, fontSize: 14, color: C.mute, marginTop: 10, lineHeight: 1.6 }}>
+                Join top-performing realtors who close more deals with Estate Land's exclusive seller leads.
+              </p>
             </div>
-            <div>
-              <div style={{ fontFamily: font.display, fontSize: 16, color: C.cream, letterSpacing: 2 }}>ESTATE</div>
-              <div style={{ fontFamily: font.body, fontSize: 8, color: C.gold, letterSpacing: 4, fontWeight: 600 }}>LAND</div>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link to="/#plans" className="gold-btn" style={{ padding: "14px 32px", fontSize: 13, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>
+                View Plans
+              </Link>
+              <Link to="/#contact" style={{ padding: "14px 32px", fontSize: 13, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600, fontFamily: font.body, color: C.cream, border: `1px solid ${C.border}`, borderRadius: 6, textDecoration: "none", transition: "all 0.3s", display: "inline-flex", alignItems: "center", gap: 8 }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.cream; }}
+              >
+                Book a Call <span style={{ fontSize: 16 }}>→</span>
+              </Link>
             </div>
           </div>
-          <p style={{ fontFamily: font.body, fontSize: 13, color: C.mute, lineHeight: 1.75, fontWeight: 400, maxWidth: 280 }}>
-            The exclusive lead platform for realtors across the United States. estateland.us — exclusive leads, proven systems.
-          </p>
-          <a href="https://estateland.us" target="_blank" rel="noopener noreferrer" style={{ ...footerLinkStyle, color: C.gold, display: "block", marginTop: 14, fontWeight: 500 }}>www.estateland.us</a>
         </div>
+      </div>
 
-        {footerLinks.map((col, i) => (
-          <div key={i}>
-            <div style={{ fontFamily: font.body, fontSize: 10, color: C.gold, letterSpacing: 0.12, textTransform: "uppercase", fontWeight: 600, marginBottom: 20 }}>{col.title}</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {col.items.map((item, j) => (
-                <Link key={j} to={item.to} style={footerLinkStyle}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = C.gold; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = C.mute; }}
-                >{item.label}</Link>
+      {/* Main Footer Content */}
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "clamp(48px, 6vw, 72px) clamp(20px, 5vw, 40px) 32px" }}>
+        <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr 1fr", gap: 52, marginBottom: 52 }}>
+          {/* Brand Column */}
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 36, height: 36, border: `1px solid ${C.gold}`, transform: "rotate(45deg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ transform: "rotate(-45deg)", fontFamily: font.display, fontSize: 16, color: C.gold, fontWeight: 500 }}>E</span>
+              </div>
+              <div>
+                <div style={{ fontFamily: font.display, fontSize: 16, color: C.cream, letterSpacing: 2 }}>ESTATE</div>
+                <div style={{ fontFamily: font.body, fontSize: 8, color: C.gold, letterSpacing: 4, fontWeight: 600 }}>LAND</div>
+              </div>
+            </div>
+            <p style={{ fontFamily: font.body, fontSize: 13, color: C.mute, lineHeight: 1.75, fontWeight: 400, maxWidth: 280 }}>
+              The exclusive lead platform for realtors across the United States. estateland.us — exclusive leads, proven systems.
+            </p>
+            <a href="https://estateland.us" target="_blank" rel="noopener noreferrer" style={{ ...footerLinkStyle, color: C.gold, display: "inline-block", marginTop: 14, fontWeight: 500 }}>www.estateland.us</a>
+            
+            {/* Social Icons */}
+            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+              {socialLinks.map((social, i) => (
+                <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.name}
+                  onMouseEnter={() => setHoveredSocial(i)}
+                  onMouseLeave={() => setHoveredSocial(null)}
+                  style={{
+                    width: 36, height: 36, borderRadius: "50%",
+                    border: `1px solid ${hoveredSocial === i ? C.gold : C.border}`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: hoveredSocial === i ? C.gold : C.mute,
+                    background: hoveredSocial === i ? C.goldDim : "transparent",
+                    transition: "all 0.3s cubic-bezier(.4,0,.2,1)",
+                    transform: hoveredSocial === i ? "translateY(-2px)" : "translateY(0)",
+                  }}
+                >{social.icon}</a>
               ))}
             </div>
           </div>
-        ))}
-      </div>
 
-      <div style={{ maxWidth: 1440, margin: "0 auto", borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
-        <span style={{ fontFamily: font.body, fontSize: 11, color: C.mute, fontWeight: 400 }}>
-          © 2026 Estate Land. All rights reserved. | estateland.us
-        </span>
-        <span style={{ fontFamily: font.body, fontSize: 11, color: C.mute, fontWeight: 400 }}>
-          United States · Serving all 50 states
-        </span>
+          {/* Link Columns */}
+          {footerLinks.map((col, i) => (
+            <div key={i}>
+              <div style={{ fontFamily: font.body, fontSize: 11, color: C.gold, letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 600, marginBottom: 24, display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ width: 16, height: 1, background: C.gold, display: "inline-block" }} />
+                {col.title}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {col.items.map((item, j) => (
+                  <Link key={j} to={item.to} style={footerLinkStyle}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = C.gold; e.currentTarget.style.transform = "translateX(4px)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = C.mute; e.currentTarget.style.transform = "translateX(0)"; }}
+                  >{item.label}</Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Newsletter / Email Signup */}
+        <div style={{ borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`, padding: "32px 0", marginBottom: 32, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
+          <div>
+            <div style={{ fontFamily: font.display, fontSize: 16, color: C.cream, letterSpacing: 0.5 }}>Stay Ahead of the Market</div>
+            <p style={{ fontFamily: font.body, fontSize: 12, color: C.mute, marginTop: 4 }}>Get exclusive insights and lead generation tips delivered weekly.</p>
+          </div>
+          <div style={{ display: "flex", gap: 0, maxWidth: 400, width: "100%" }}>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" style={{
+              flex: 1, padding: "12px 16px", background: C.surface, border: `1px solid ${C.border}`, borderRight: "none", borderRadius: "6px 0 0 6px",
+              fontFamily: font.body, fontSize: 13, color: C.cream, outline: "none", transition: "border-color 0.3s",
+            }}
+            onFocus={(e) => e.target.style.borderColor = C.gold}
+            onBlur={(e) => e.target.style.borderColor = C.border}
+            />
+            <button className="gold-btn" style={{ padding: "12px 24px", fontSize: 12, borderRadius: "0 6px 6px 0", letterSpacing: 0.5, whiteSpace: "nowrap" }}>
+              Subscribe
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
+          <span style={{ fontFamily: font.body, fontSize: 11, color: C.mute, fontWeight: 400 }}>
+            © 2026 Estate Land. All rights reserved. | estateland.us
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <span style={{ fontFamily: font.body, fontSize: 11, color: C.mute, fontWeight: 400, display: "flex", alignItems: "center", gap: 6 }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              United States · Serving all 50 states
+            </span>
+            <button onClick={scrollToTop} aria-label="Back to top"
+              style={{ width: 32, height: 32, borderRadius: "50%", border: `1px solid ${C.border}`, background: "transparent", color: C.mute, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.3s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.mute; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 15l-6-6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </footer>
   );
