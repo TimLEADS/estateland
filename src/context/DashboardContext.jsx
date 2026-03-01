@@ -183,7 +183,7 @@ export function DashboardProvider({ children }) {
         addChatMessage,
   };
 
-  return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>DashboardContext.Provider>;
+  return (<DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>);
 }
 
 export function useDashboard() {
