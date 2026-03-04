@@ -178,12 +178,12 @@ app.post("/api/users", (req, res) => {
               const today = now.slice(0, 10);
               db.prepare(`INSERT INTO users (id, name, email, phone, brokerage, planId, region, zips, state, county,
                     primaryArea, primarySMR, secondaryArea, secondarySMR, signupDate, documentSignDate,
-                          lastLeadSent, leadSentCount, ha, remarks, leadType, note, createdAt)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+                          lastLeadSent, leadSentCount, ha, remarks, leadType, note, createdAt, password)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
                         id, u.name||"", u.email||"", u.phone||"", u.brokerage||"", u.planId||"", u.region||"", u.zips||"",
                         u.state||"", u.county||"", u.primaryArea||"", u.primarySMR||"", u.secondaryArea||"", u.secondarySMR||"",
                         u.signupDate||today, u.documentSignDate||today, u.lastLeadSent||"", u.leadSentCount||0,
-                        u.ha||"", u.remarks||"", u.leadType||"", u.note||"", u.createdAt||now
+                        u.ha||"", u.remarks||"", u.leadType||"", u.note||"", u.createdAt||now, u.password||""
                       );
               res.json({ id });
       } catch (err) {
