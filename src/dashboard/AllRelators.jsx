@@ -22,6 +22,7 @@ function daysSince(dateStr) {
 }
 
 const COLUMNS = [
+  { key: "_sn", label: "S/N", width: 55, sortKey: null, editable: false, isSN: true },
   { key: "plan", label: "Pricing Plan", width: 120, sortKey: "planId", editable: false },
   { key: "state", label: "State", width: 100, sortKey: "state", editable: true },
   { key: "name", label: "Name", width: 140, sortKey: "name", editable: false },
@@ -45,18 +46,41 @@ const COLUMNS = [
 ];
 
 function AllRelators() {
-  const { users, leads, updateUser, removeUser } = useDashboard();
+  const { users, leads, onboardingSessions, updateUser, removeUser } = useDashboard();
   const [sortBy, setSortBy] = useState("signupDate");
   const [sortDir, setSortDir] = useState("desc");
   const [editing, setEditing] = useState(null); // { userId, key }
   const [editValue, setEditValue] = useState("");
+
+  // Build a set of emails that have a submitted onboarding session
+  const onboardedEmails = useMemo(() => {
+    const submitted = (onboardingSessions || []).filter((s) => s.status === "submitted");
+    const emailSet = new Set();
+    submitted.forEach((s) => {
+      if (s.contact?.email) emailSet.add(s.contact.email.toLowerCase().trim());
+    });
+    return emailSet;
+  }, [onboardingSessions]);
+
+  // Filter: only show one relator per onboarding email (no duplicate second relator)
+  const filteredUsers = useMemo(() => {
+    const seenOnboardedEmails = new Set();
+    return users.filter((u) => {
+      const email = (u.email || "").toLowerCase().trim();
+      if (onboardedEmails.has(email)) {
+        if (seenOnboardedEmails.has(email)) return false; // skip duplicate
+        seenOnboardedEmails.add(email);
+      }
+      return true;
+    });
+  }, [users, onboardedEmails]);
 
   const handleRemove = (u) => {
     if (window.confirm(`Remove ${u.name || u.email}? This cannot be undone.`)) removeUser(u.id);
   };
 
   const relatorsWithDerived = useMemo(() => {
-    return users.map((u) => {
+    return filteredUsers.map((u) => {
       const userLeads = leads.filter((l) => l.assignedToUserId === u.id);
       const leadSentCount = userLeads.length;
       const lastLeadSentRaw = userLeads.length
@@ -73,7 +97,7 @@ function AllRelators() {
         daysSinceSign: daysSinceSign === "" ? "" : String(daysSinceSign),
       };
     });
-  }, [users, leads]);
+  }, [filteredUsers, leads]);
 
   const sorted = useMemo(() => {
     const list = [...relatorsWithDerived];
@@ -105,7 +129,7 @@ function AllRelators() {
   }, [relatorsWithDerived, sortBy, sortDir]);
 
   const handleSort = (col) => {
-    if (col.isAction || col.sortKey === null) return;
+    if (col.isAction || col.isSN || col.sortKey === null) return;
     const key = col.sortKey || col.key;
     if (sortBy === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     else {
@@ -141,7 +165,6 @@ function AllRelators() {
           Sheet view: onboarding data pre-filled; edit State, County, areas, dates, Ha, and Remarks as needed.
         </p>
       </div>
-
       <div
         style={{
           background: C.surface,
@@ -165,12 +188,13 @@ function AllRelators() {
                     textAlign: "left",
                     color: T.mute,
                     fontWeight: 600,
-                    cursor: "pointer",
+                    cursor: col.isSN || col.isAction ? "default" : "pointer",
                     whiteSpace: "nowrap",
                     userSelect: "none",
                   }}
                 >
-                  {col.label} {sortBy === (col.sortKey || col.key) ? (sortDir === "asc" ? " ↑" : " ↓") : ""}
+                  {col.label}
+                  {sortBy === (col.sortKey || col.key) ? (sortDir === "asc" ? " ↑" : " ↓") : ""}
                 </th>
               ))}
             </tr>
@@ -183,7 +207,7 @@ function AllRelators() {
                 </td>
               </tr>
             ) : (
-              sorted.map((u) => (
+              sorted.map((u, index) => (
                 <tr
                   key={u.id}
                   style={{
@@ -192,6 +216,24 @@ function AllRelators() {
                   }}
                 >
                   {COLUMNS.map((col) => {
+                    if (col.isSN) {
+                      return (
+                        <td
+                          key={col.key}
+                          style={{
+                            padding: "8px 10px",
+                            color: T.mute,
+                            borderRight: `1px solid ${C.border}`,
+                            verticalAlign: "middle",
+                            textAlign: "center",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {index + 1}
+                        </td>
+                      );
+                    }
+
                     if (col.isAction) {
                       return (
                         <td
@@ -207,8 +249,14 @@ function AllRelators() {
                             type="button"
                             onClick={() => handleRemove(u)}
                             style={{
-                              fontFamily: font.body, fontSize: 11, color: "#e57373", background: "transparent",
-                              border: "1px solid rgba(229,115,115,0.5)", padding: "6px 10px", borderRadius: 6, cursor: "pointer",
+                              fontFamily: font.body,
+                              fontSize: 11,
+                              color: "#e57373",
+                              background: "transparent",
+                              border: "1px solid rgba(229,115,115,0.5)",
+                              padding: "6px 10px",
+                              borderRadius: 6,
+                              cursor: "pointer",
                             }}
                             title="Remove relator"
                           >
@@ -217,17 +265,18 @@ function AllRelators() {
                         </td>
                       );
                     }
+
                     const isEditing = editing?.userId === u.id && editing?.key === col.key;
                     let display =
                       col.key === "plan"
                         ? u.planLabel
                         : col.key === "daysSinceSign"
-                          ? u.daysSinceSign
-                          : col.key === "lastLeadSent"
-                            ? u.lastLeadSent
-                            : col.key === "leadSentCount"
-                              ? u.leadSentCount
-                              : u[col.key];
+                        ? u.daysSinceSign
+                        : col.key === "lastLeadSent"
+                        ? u.lastLeadSent
+                        : col.key === "leadSentCount"
+                        ? u.leadSentCount
+                        : u[col.key];
                     if (display == null) display = "";
 
                     return (
@@ -267,7 +316,15 @@ function AllRelators() {
                             />
                           </span>
                         ) : (
-                          <span style={{ display: "block", minHeight: 20, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          <span
+                            style={{
+                              display: "block",
+                              minHeight: 20,
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
                             {String(display)}
                             {col.editable && !display && (
                               <span style={{ color: T.mute, fontStyle: "italic" }}>—</span>
