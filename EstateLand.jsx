@@ -8,7 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 // ══════════════════════════════════════════
 
 const C = {
-  void: "#080808",h
+  void: "#080808",
   surface: "#0f0f0f",
   surfaceLight: "#161616",
   cream: "#f5f0e8",
