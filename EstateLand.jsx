@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 // ══════════════════════════════════════════
@@ -8,7 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 // ══════════════════════════════════════════
 
 const C = {
-  void: "#080808",
+  void: "#080808",h
   surface: "#0f0f0f",
   surfaceLight: "#161616",
   cream: "#f5f0e8",
@@ -93,9 +93,9 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 // Shared pricing plan data (used by Plans section and Onboarding)
 export const PRICING_PLANS = [
-  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "5 ZIP codes", "Double-verified leads", "Scheduled appointments", "Basic CRM setup", "Live support"], agreement: "https://drive.google.com/file/d/1K7wpDA-SLW8dI9zkgMsXIuoHwcdtuqeb/view?usp=sharing" },
-  { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, features: ["Up to 5 exclusive leads / month", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "https://drive.google.com/file/d/1EgVSCUoFe8r3-Zccb0KFCQxWpHLX4g_r/view?usp=sharing" },
-  { id: "premier", name: "Premier", price: "$1,050", period: "lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 exclusive leads / month", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Dedicated account manager", "Live support"], agreement: "https://drive.google.com/file/d/1Nm-r92niPhiXyTfhKKzMV5xjM8W1cAd8GN13p/view?usp=sharing" },
+  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "5 ZIP codes", "Double-verified leads", "Scheduled appointments", "Basic CRM setup", "Live support"], agreement: "https://drive.google.com/file/d/1K7wpDA-SLW8dI9zkgMsXIuoHwcdtuqeb/view?usp=sharing" , discountedPrice: "$263"},
+  { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, features: ["Up to 5 exclusive leads / month", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "https://drive.google.com/file/d/1EgVSCUoFe8r3-Zccb0KFCQxWpHLX4g_r/view?usp=sharing" , discountedPrice: "$439"},
+  { id: "premier", name: "Premier", price: "$1,050", period: "lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 exclusive leads / month", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Dedicated account manager", "Live support"], agreement: "https://drive.google.com/file/d/1Nm-r92niPhiXyTfhKKzMV5xjM8W1cAd8GN13p/view?usp=sharing" , discountedPrice: "$840"},
 ];
 export { THEME, font, C };
 
@@ -2083,6 +2083,279 @@ function Reviews() {
   );
 }
 
+
+// — PRICING COUNTDOWN — 75-hour flash sale
+function PricingCountdown() {
+  const SALE_HOURS = 75;
+  const STORAGE_KEY = "estateland_sale_deadline";
+
+  function getOrSetDeadline() {
+    let stored = null;
+    try { stored = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+    if (stored) {
+      const t = parseInt(stored, 10);
+      if (!isNaN(t) && t > Date.now()) return t;
+    }
+    const deadline = Date.now() + SALE_HOURS * 60 * 60 * 1000;
+    try { localStorage.setItem(STORAGE_KEY, String(deadline)); } catch(e) {}
+    return deadline;
+  }
+
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const deadline = getOrSetDeadline();
+    return Math.max(0, deadline - Date.now());
+  });
+  const [pulse, setPulse] = useState(false);
+
+  useEffect(() => {
+    const deadline = getOrSetDeadline();
+    const tick = setInterval(() => {
+      const remaining = Math.max(0, deadline - Date.now());
+      setTimeLeft(remaining);
+      setPulse(p => !p);
+      if (remaining === 0) clearInterval(tick);
+    }, 1000);
+    return () => clearInterval(tick);
+  }, []);
+
+  const totalSecs = Math.floor(timeLeft / 1000);
+  const hrs  = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+  const pad  = n => String(n).padStart(2, "0");
+
+  const pct = Math.min(100, Math.max(0, (timeLeft / (SALE_HOURS * 3600 * 1000)) * 100));
+
+  return (
+    <div style={{
+      margin: "0 auto 52px",
+      maxWidth: 860,
+      borderRadius: 20,
+      overflow: "hidden",
+      background: "linear-gradient(135deg, #0a0a0a 0%, #1a1200 40%, #0a0a0a 100%)",
+      border: "1px solid rgba(201,162,39,0.35)",
+      boxShadow: "0 0 60px rgba(201,162,39,0.12), 0 20px 60px rgba(0,0,0,0.5)",
+      position: "relative",
+    }}>
+      {/* Animated shimmer top bar */}
+      <div style={{
+        height: 3,
+        background: `linear-gradient(90deg, transparent ${100 - pct}%, #c9a227 ${100 - pct}%, #f0d060 ${100 - pct + 2}%, #c9a227 100%)`,
+        transition: "background 1s linear",
+      }} />
+
+      {/* Sparkle particles - decorative */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+        {[...Array(6)].map((_, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            width: 4, height: 4,
+            borderRadius: "50%",
+            background: "#c9a227",
+            opacity: 0.15 + (i * 0.05),
+            left: `${10 + i * 15}%`,
+            top: `${20 + (i % 3) * 25}%`,
+            animation: `floatParticle${i % 3} ${3 + i * 0.7}s ease-in-out infinite alternate`,
+          }} />
+        ))}
+      </div>
+
+      <div style={{ padding: "32px 40px 36px", position: "relative", zIndex: 1 }}>
+        {/* Top badge row */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 18 }}>
+          <div style={{
+            background: "linear-gradient(135deg, #c9a227, #f0d060)",
+            color: "#0a0a0a",
+            fontFamily: "Inter, sans-serif",
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: 2,
+            textTransform: "uppercase",
+            padding: "5px 16px",
+            borderRadius: 100,
+          }}>⚡ Flash Sale</div>
+          <div style={{
+            background: "rgba(201,162,39,0.12)",
+            border: "1px solid rgba(201,162,39,0.3)",
+            color: "#c9a227",
+            fontFamily: "Inter, sans-serif",
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: 1.5,
+            textTransform: "uppercase",
+            padding: "5px 16px",
+            borderRadius: 100,
+          }}>Limited Time</div>
+        </div>
+
+        {/* Main headline */}
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{
+            fontFamily: "Cormorant Garamond, serif",
+            fontSize: "clamp(28px, 4vw, 44px)",
+            fontWeight: 700,
+            color: "#f5f0e8",
+            lineHeight: 1.1,
+            marginBottom: 10,
+          }}>
+            Save <span style={{
+              background: "linear-gradient(135deg, #c9a227, #f0d060)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontStyle: "italic",
+            }}>20%</span> on Every Plan
+          </div>
+          <div style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: 14,
+            color: "rgba(245,240,232,0.55)",
+            letterSpacing: 0.3,
+          }}>
+            This exclusive discount disappears when the timer hits zero
+          </div>
+        </div>
+
+        {/* Countdown blocks */}
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "clamp(8px, 2vw, 20px)",
+          marginBottom: 28,
+          flexWrap: "wrap",
+        }}>
+          {[
+            { value: pad(hrs),  label: "Hours"   },
+            { value: pad(mins), label: "Minutes" },
+            { value: pad(secs), label: "Seconds" },
+          ].map((unit, idx) => (
+            <Fragment key={idx}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{
+                  background: "linear-gradient(180deg, #1a1200 0%, #0f0c00 100%)",
+                  border: `1px solid ${idx === 2 && pulse ? "rgba(201,162,39,0.6)" : "rgba(201,162,39,0.25)"}`,
+                  borderRadius: 14,
+                  padding: "clamp(14px, 2.5vw, 22px) clamp(16px, 3vw, 30px)",
+                  minWidth: "clamp(70px, 10vw, 90px)",
+                  boxShadow: idx === 2 && pulse
+                    ? "0 0 20px rgba(201,162,39,0.2), inset 0 1px 0 rgba(255,255,255,0.05)"
+                    : "0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
+                  transition: "border-color 0.3s, box-shadow 0.3s",
+                }}>
+                  <div style={{
+                    fontFamily: "Cormorant Garamond, serif",
+                    fontSize: "clamp(36px, 5vw, 54px)",
+                    fontWeight: 700,
+                    color: "#c9a227",
+                    lineHeight: 1,
+                    letterSpacing: -1,
+                    textShadow: "0 0 20px rgba(201,162,39,0.4)",
+                  }}>{unit.value}</div>
+                </div>
+                <div style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: 10,
+                  fontWeight: 600,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                  color: "rgba(245,240,232,0.4)",
+                  marginTop: 8,
+                }}>{unit.label}</div>
+              </div>
+              {idx < 2 && (
+                <div style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: "clamp(28px, 4vw, 42px)",
+                  color: "#c9a227",
+                  opacity: pulse ? 1 : 0.3,
+                  transition: "opacity 0.5s",
+                  marginTop: -16,
+                  userSelect: "none",
+                }}>:</div>
+              )}
+            </Fragment>
+          ))}
+        </div>
+
+        {/* Progress bar */}
+        <div style={{
+          background: "rgba(255,255,255,0.06)",
+          borderRadius: 100,
+          height: 6,
+          overflow: "hidden",
+          maxWidth: 420,
+          margin: "0 auto 20px",
+        }}>
+          <div style={{
+            height: "100%",
+            width: pct + "%",
+            background: "linear-gradient(90deg, #8a6910, #c9a227, #f0d060)",
+            borderRadius: 100,
+            transition: "width 1s linear",
+            boxShadow: "0 0 10px rgba(201,162,39,0.5)",
+          }} />
+        </div>
+
+        {/* Savings callout */}
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 12,
+          flexWrap: "wrap",
+        }}>
+          {[
+            { plan: "Launch", was: "$329", now: "$263" },
+            { plan: "Growth", was: "$549", now: "$439" },
+            { plan: "Premier", was: "$1,050", now: "$840" },
+          ].map((item, i) => (
+            <div key={i} style={{
+              background: "rgba(201,162,39,0.07)",
+              border: "1px solid rgba(201,162,39,0.18)",
+              borderRadius: 10,
+              padding: "8px 16px",
+              textAlign: "center",
+              minWidth: 100,
+            }}>
+              <div style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: 10,
+                fontWeight: 600,
+                letterSpacing: 1.5,
+                textTransform: "uppercase",
+                color: "rgba(245,240,232,0.4)",
+                marginBottom: 3,
+              }}>{item.plan}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>
+                <span style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: 12,
+                  textDecoration: "line-through",
+                  color: "rgba(245,240,232,0.3)",
+                }}>{item.was}</span>
+                <span style={{
+                  fontFamily: "Cormorant Garamond, serif",
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: "#c9a227",
+                }}>{item.now}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom accent */}
+      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(201,162,39,0.25), transparent)" }} />
+
+      <style>{`
+        @keyframes floatParticle0 { from { transform: translateY(0px); } to { transform: translateY(-12px); } }
+        @keyframes floatParticle1 { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-18px) rotate(180deg); } }
+        @keyframes floatParticle2 { from { transform: translateY(0px) scale(1); } to { transform: translateY(-8px) scale(1.5); } }
+      `}</style>
+    </div>
+  );
+}
+
 // ─── PLANS (light theme) — Next-level premium cards ───
 function Plans() {
   const [ref, vis] = useInView(0.15);
@@ -2106,6 +2379,8 @@ function Plans() {
           </h2>
           <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, maxWidth: 480, margin: "0 auto" }}>Pay once for your term. Referral fee only at closing. No long-term contract.</p>
         </div>
+
+          <PricingCountdown />
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: 28, alignItems: "stretch" }}>
           {plans.map((p, i) => (
@@ -2147,7 +2422,13 @@ function Plans() {
               <div style={{ textAlign: "center", marginBottom: 28 }}>
                 <h3 style={{ fontFamily: font.display, fontSize: 26, color: T.text, marginBottom: 12, fontWeight: 600 }}>{p.name}</h3>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 4 }}>
-                  <span style={{ fontFamily: font.display, fontSize: 42, color: T.accent, fontWeight: 600, lineHeight: 1 }}>{p.price}</span>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                    <span style={{ fontFamily: font.body, fontSize: 13, color: T.mute, textDecoration: "line-through", opacity: 0.6 }}>{p.price}</span>
+                    <span style={{ fontFamily: font.display, fontSize: 42, color: T.accent, fontWeight: 700, lineHeight: 1 }}>
+                      {p.discountedPrice}
+                    </span>
+                    <span style={{ fontFamily: font.body, fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", background: "linear-gradient(135deg, #c9a227, #f0d060)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginTop: 2 }}>20% OFF</span>
+                  </div>
                 </div>
                 <p style={{ fontFamily: font.body, fontSize: 13, color: T.mute, marginTop: 8 }}>{p.period}</p>
                 <p style={{ fontFamily: font.body, fontSize: 12, color: T.mute, marginTop: 4, opacity: 0.9 }}>{p.fee}</p>
