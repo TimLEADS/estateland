@@ -42,6 +42,7 @@ const COLUMNS = [
   { key: "leadType", label: "Lead type", width: 100, sortKey: "leadType", editable: true },
   { key: "remarks", label: "Remarks", width: 160, sortKey: "remarks", editable: true },
   { key: "note", label: "Note", width: 160, sortKey: "note", editable: true },
+  { key: "password", label: "Password", width: 130, sortKey: null, editable: true, isPassword: true },
   { key: "_action", label: "Actions", width: 90, sortKey: null, editable: false, isAction: true },
 ];
 
@@ -129,7 +130,7 @@ function AllRelators() {
   }, [relatorsWithDerived, sortBy, sortDir]);
 
   const handleSort = (col) => {
-    if (col.isAction || col.isSN || col.sortKey === null) return;
+    if (col.isAction || col.isSN || col.isPassword || col.sortKey === null) return;
     const key = col.sortKey || col.key;
     if (sortBy === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     else {
@@ -230,6 +231,55 @@ function AllRelators() {
                           }}
                         >
                           {index + 1}
+                        </td>
+                      );
+                    }
+
+                    if (col.isPassword) {
+                      const isEditingPw = editing?.userId === u.id && editing?.key === "password";
+                      return (
+                        <td
+                          key={col.key}
+                          style={{
+                            padding: "8px 10px",
+                            color: T.text,
+                            borderRight: `1px solid ${C.border}`,
+                            verticalAlign: "middle",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => startEdit(u, col)}
+                        >
+                          {isEditingPw ? (
+                            <input
+                              type="text"
+                              value={editValue}
+                              onChange={(e) => setEditValue(e.target.value)}
+                              onBlur={() => saveEdit(u.id)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") saveEdit(u.id);
+                                if (e.key === "Escape") cancelEdit();
+                              }}
+                              autoFocus
+                              placeholder="Set password"
+                              style={{
+                                width: "100%",
+                                maxWidth: 110,
+                                padding: "6px 8px",
+                                fontFamily: font.body,
+                                fontSize: 12,
+                                color: T.text,
+                                background: C.void,
+                                border: `1px solid ${C.gold}`,
+                                borderRadius: 6,
+                              }}
+                            />
+                          ) : (
+                            <span style={{ display: "block", minHeight: 20, whiteSpace: "nowrap" }}>
+                              {u.password ? "••••••••" : (
+                                <span style={{ color: C.gold, fontStyle: "italic", fontSize: 11 }}>Set password</span>
+                              )}
+                            </span>
+                          )}
                         </td>
                       );
                     }
