@@ -7,6 +7,13 @@ import { C, font } from "./theme.js";
 const ADMIN_EMAIL = "admin@estateland.us";
 const ADMIN_PASSWORD = "Admin123!";
 
+// Passwords are stored in localStorage keyed by user id
+// Key: "user_pw_<userId>", Value: plaintext password
+// This lets login work even when the backend DB doesn't return the password field
+function getStoredPassword(userId) {
+  try { return localStorage.getItem("user_pw_" + userId) || ""; } catch { return ""; }
+}
+
 export default function DashboardLogin() {
   const navigate = useNavigate();
   const { users } = useDashboard();
@@ -26,21 +33,28 @@ export default function DashboardLogin() {
       return;
     }
 
-    // ── Real user login — match by email + password ──
-    const match = users.find(
-      (u) =>
-        u.email &&
-        u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
-        u.password &&
-        u.password === password
+    // ── Real user login ──
+    // Match by email first
+    const matchedUser = users.find(
+      (u) => u.email && u.email.trim().toLowerCase() === email.trim().toLowerCase()
     );
 
-    if (match) {
-      sessionStorage.setItem("dashboard_role", "user");
-      sessionStorage.setItem("dashboard_user_id", match.id);
-      sessionStorage.setItem("dashboard_user_name", match.name || match.email);
-      navigate("/dashboard/me", { replace: true });
-      return;
+    if (matchedUser) {
+      // Check password: prefer localStorage (set by admin UI), fallback to DB field
+      const storedPw = getStoredPassword(matchedUser.id);
+      const dbPw = matchedUser.password || "";
+      const validPassword = storedPw || dbPw;
+
+      if (validPassword && validPassword === password) {
+        sessionStorage.setItem("dashboard_role", "user");
+        sessionStorage.setItem("dashboard_user_id", matchedUser.id);
+        sessionStorage.setItem("dashboard_user_name", matchedUser.name || matchedUser.email);
+        navigate("/dashboard/me", { replace: true });
+        return;
+      } else if (!validPassword) {
+        setError("No password set for this account. Ask your admin to set a password.");
+        return;
+      }
     }
 
     setError("Invalid email or password.");
@@ -58,7 +72,6 @@ export default function DashboardLogin() {
         padding: 24,
       }}
     >
-      {/* CSS-only background */}
       <div
         style={{
           position: "absolute",
