@@ -378,20 +378,28 @@ app.put("/api/onboarding/:id", (req, res) => {
       if (fields.length === 0) return res.json({ ok: true });
           db.prepare("UPDATE onboarding_sessions SET " + fields.join(", ") + " WHERE id = ?").run(...vals, req.params.id);
 
-      // On submit → sync to Google Sheets Onboarding tab
-      if (SHEETS_READY && s.status === "submitted") {
-              const full = db.prepare("SELECT * FROM onboarding_sessions WHERE id = ?").get(req.params.id);
-              if (full) {
-                        upsertOnboarding({
-                                    ...full,
-                                    plan: JSON.parse(full.plan || "{}"),
-                                    territory: JSON.parse(full.territory || "{}"),
-                                    contact: JSON.parse(full.contact || "{}"),
-                        }).catch(e => console.error("Sheets upsertOnboarding error:", e));
-              }
+      // Sync to Google Sheets whenever contact has a name or email
+    // (fires on every update so we capture data before Stripe redirect)
+    if (SHEETS_READY) {
+      const full = db.prepare("SELECT * FROM onboarding_sessions WHERE id = ?").get(req.params.id);
+      if (full) {
+        try {
+          const parsedContact = JSON.parse(full.contact || "{}");
+          const parsedPlan = JSON.parse(full.plan || "{}");
+          if (parsedContact.email || parsedContact.name || full.status === "submitted") {
+            upsertOnboarding({
+              ...full,
+              plan: parsedPlan,
+              territory: JSON.parse(full.territory || "{}"),
+              contact: parsedContact,
+            }).catch(e => console.error("Sheets upsertOnboarding error:", e));
+          }
+        } catch (parseErr) {
+          console.error("Parse error in onboarding sync:", parseErr);
+        }
       }
-
-      res.json({ ok: true });
+    }
+        res.json({ ok: true });
     } catch (err) {
           console.error("PUT /api/onboarding error:", err);
           res.status(500).json({ error: err.message });
