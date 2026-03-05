@@ -12,8 +12,8 @@ export default function AdminOverview() {
     { label: "All Relators (sheet)", value: users.length, to: "/dashboard/relators", color: C.goldLight },
     { label: "Leads", value: leads.length, to: "/dashboard/leads", color: C.goldLight },
     { label: "Payments (successful)", value: (payments || []).length, to: "/dashboard/payments", color: "#22c55e" },
-    { label: "Onboarding in progress", value: inProgressSessions.length, to: "/dashboard/live", color: C.cream },
-    { label: "Submissions (total)", value: submittedSessions.length, to: "/dashboard/live", color: C.mute },
+    { label: "Onboarding in progress", value: inProgressSessions.length, to: "/dashboard/relators", color: C.cream },
+    { label: "Submissions (total)", value: submittedSessions.length, to: "/dashboard/relators", color: C.mute },
     { label: "Chat sessions", value: (chatSessions || []).length, to: "/dashboard/chat", color: C.cream },
   ];
 
@@ -51,7 +51,7 @@ export default function AdminOverview() {
       <div style={{ marginTop: 40 }}>
         <h2 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: T.text, marginBottom: 16 }}>Quick actions</h2>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <Link to="/dashboard/live" style={{ fontFamily: font.body, fontSize: 13, color: C.gold, textDecoration: "none" }}>View live onboarding →</Link>
+          
           <Link to="/dashboard/payments" style={{ fontFamily: font.body, fontSize: 13, color: C.gold, textDecoration: "none" }}>Payments →</Link>
           <Link to="/dashboard/users" style={{ fontFamily: font.body, fontSize: 13, color: C.gold, textDecoration: "none" }}>Manage users →</Link>
           <Link to="/dashboard/relators" style={{ fontFamily: font.body, fontSize: 13, color: C.gold, textDecoration: "none" }}>All Relators sheet →</Link>
