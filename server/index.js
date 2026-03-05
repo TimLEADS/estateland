@@ -9,7 +9,7 @@ import express from "express";
 import cors from "cors";
 import Stripe from "stripe";
 import Database from "better-sqlite3";
-import { appendPayment, upsertRelator, removeRelator, upsertOnboarding } from "./sheets.js";
+import { appendPayment, upsertRelator, removeRelator, upsertOnboarding, restoreFromSheets } from "./sheets.js";
 
 // -- SQLite setup --
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, "data", "estateland.db");
@@ -105,6 +105,12 @@ const SHEETS_READY = !!(
   );
 if (!SHEETS_READY) {
     console.warn("Google Sheets env vars not set -- sheets sync disabled.");
+}
+
+// -- Restore data from Google Sheets on startup --
+// Reloads users/onboarding/payments into SQLite so data survives Render restarts.
+if (SHEETS_READY) {
+  restoreFromSheets(db).catch(e => console.error("[Restore] startup error:", e.message));
 }
 
 // -- Stripe setup --
