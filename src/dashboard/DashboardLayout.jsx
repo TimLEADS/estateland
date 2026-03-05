@@ -45,7 +45,7 @@ export default function DashboardLayout() {
                         />
                 <style>{`
                         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-                              `}</style>style>
+                              `}</style>
         
           {/* Top bar */}
               <header style={{
@@ -59,21 +59,21 @@ export default function DashboardLayout() {
                                 <button type="button" onClick={() => setSidebarOpen((o) => !o)} aria-label="Toggle sidebar"
                                               style={{ width: 40, height: 40, borderRadius: 8, border: `1px solid ${C.border}`, background: "transparent", color: C.cream, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>
                                             &#9776;
-                                </button>button>
+                                </button>
                                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                                            <div style={{ width: 32, height: 32, border: `1px solid ${C.gold}`, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: font.body, fontSize: 12, color: C.gold, fontWeight: 600 }}>E</div>div>
-                                            <span style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: C.cream, letterSpacing: 0.5 }}>Dashboard</span>span>
-                                </div>div>
-                      </div>div>
+                                            <div style={{ width: 32, height: 32, border: `1px solid ${C.gold}`, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: font.body, fontSize: 12, color: C.gold, fontWeight: 600 }}>E</div>
+                                            <span style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: C.cream, letterSpacing: 0.5 }}>Dashboard</span>
+                                </div>
+                      </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                                <span style={{ fontFamily: font.body, fontSize: 13, color: C.mute }}>{userName}</span>span>
-                                <span style={{ fontFamily: font.body, fontSize: 11, color: C.gold, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.1 }}>{role}</span>span>
+                                <span style={{ fontFamily: font.body, fontSize: 13, color: C.mute }}>{userName}</span>
+                                <span style={{ fontFamily: font.body, fontSize: 11, color: C.gold, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.1 }}>{role}</span>
                                 <button type="button" onClick={handleLogout}
                                               style={{ fontFamily: font.body, fontSize: 12, fontWeight: 500, color: C.mute, background: "transparent", border: `1px solid ${C.border}`, padding: "8px 16px", borderRadius: 8, cursor: "pointer" }}>
                                             Log out
-                                </button>button>
-                      </div>div>
-              </header>header>
+                                </button>
+                      </div>
+              </header>
         
               <div style={{ position: "relative", zIndex: 1, display: "flex", flex: 1, overflow: "hidden" }}>
                 {/* Sidebar */}
@@ -90,21 +90,21 @@ export default function DashboardLayout() {
                                                                                 background: active ? "rgba(201,162,39,0.08)" : "transparent",
                                                           }}>
                                                             {link.label}
-                                                          </Link>Link>
+                                                          </Link>
                                                         );
                     })}
-                                </nav>nav>
+                                </nav>
                                 <div style={{ marginTop: 32, padding: "0 24px" }}>
-                                              <Link to="/" style={{ fontFamily: font.body, fontSize: 12, color: C.mute, textDecoration: "none" }}>&#8592; Back to website</Link>Link>
-                                </div>div>
-                    </aside>aside>
+                                              <Link to="/" style={{ fontFamily: font.body, fontSize: 12, color: C.mute, textDecoration: "none" }}>&#8592; Back to website</Link>
+                                </div>
+                    </aside>
                       )}
               
                 {/* Main content */}
                       <main style={{ flex: 1, overflow: "auto", background: "rgba(22, 22, 22, 0.82)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", padding: 32 }}>
                                 <Outlet />
-                      </main>main>
-              </div>div>
-        </div>div>
+                      </main>
+              </div>
+        </div>
       );
 }</style>
