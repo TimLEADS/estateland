@@ -93,9 +93,9 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 // Shared pricing plan data (used by Plans section and Onboarding)
 export const PRICING_PLANS = [
-  { id: "launch", name: "Launch", price: "$329", period: "per year", fee: "20% at closing", popular: false, features: ["Up to 3 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Live support", "Dedicated ZIP codes"], agreement: "/Estate_Land_Membership_Agreement - Launch.pdf" },
-  { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, badge: "Most popular", features: ["Up to 5 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "/Estate_Land_Membership_Agreement -Growth.pdf" },
-  { id: "premier", name: "Premier", price: "$1,050", period: "per year", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Live support", "Dedicated account manager"], agreement: "/Estate_Land_Membership_Agreement - Premier.pdf" }
+  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Live support", "Dedicated ZIP codes"], agreement: "/Estate_Land_Membership_Agreement - Launch.pdf" },
+  { id: "growth", name: "Growth", price: "$549", period: "1 year", fee: "15% at closing", popular: true, badge: "Most popular", features: ["Up to 5 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "/Estate_Land_Membership_Agreement -Growth.pdf" },
+  { id: "premier", name: "Premier", price: "$1,050", period: "Lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Live support", "Dedicated account manager"], agreement: "/Estate_Land_Membership_Agreement - Premier.pdf" }
 ];
 export { THEME, font, C };
 
