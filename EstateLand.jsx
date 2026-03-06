@@ -11,7 +11,7 @@ const C = {
   void: "#080808",
   surface: "#0f0f0f",
   surfaceLight: "#161616",
-  cream: "#f5f0e8",
+  cream: "#f5f0e8",h
   creamDim: "rgba(245,240,232,0.95)",
   mute: "rgba(245,240,232,0.82)",
   gold: "#c9a227",
@@ -93,9 +93,9 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 // Shared pricing plan data (used by Plans section and Onboarding)
 export const PRICING_PLANS = [
-  { id: "launch", name: "Launch", price: "$329", originalPrice: "$399", period: "6 months", fee: "20% at closing", popular: false, features: ["12+ Leads / 6 months", "5 ZIP codes", "Double-verified leads", "Basic CRM setup", "Live support"], agreement: "/Estate_Land_Membership_Agreement - Launch.pdf" },
-  { id: "growth", name: "Growth", price: "$549", originalPrice: "$649", period: "per year", fee: "15% at closing", popular: true, features: ["27+ Leads / Year", "10 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "/Estate_Land_Membership_Agreement -Growth.pdf" },
-  { id: "premier", name: "Premier", price: "$1,050", originalPrice: "$1,149", period: "lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["60+ Leads per year", "18 ZIP codes", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Live support", "Dedicated account manager"], agreement: "/Estate_Land_Membership_Agreement - Premier.pdf" },
+  { id: "launch", name: "Launch", price: "$329", period: "per year", fee: "20% at closing", popular: false, features: ["Up to 3 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Live support", "Dedicated ZIP codes"], agreement: "/Estate_Land_Membership_Agreement - Launch.pdf" },
+  { id: "growth", name: "Growth", price: "$549", period: "per year", fee: "15% at closing", popular: true, badge: "Most popular", features: ["Up to 5 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "/Estate_Land_Membership_Agreement -Growth.pdf" },
+  { id: "premier", name: "Premier", price: "$1,050", period: "per year", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Live support", "Dedicated account manager"], agreement: "/Estate_Land_Membership_Agreement - Premier.pdf" }
 ];
 export { THEME, font, C };
 
@@ -2084,154 +2084,6 @@ function Reviews() {
 }
 
 
-// — PRICING COUNTDOWN — compact banner + mini card badge
-function useSaleCountdown() {
-  const SALE_HOURS = 75;
-  const STORAGE_KEY = "estateland_sale_deadline";
-  function getOrSetDeadline() {
-    let stored = null;
-    try { stored = localStorage.getItem(STORAGE_KEY); } catch(e) {}
-    if (stored) { const t = parseInt(stored, 10); if (!isNaN(t) && t > Date.now()) return t; }
-    const deadline = Date.now() + SALE_HOURS * 60 * 60 * 1000;
-    try { localStorage.setItem(STORAGE_KEY, String(deadline)); } catch(e) {}
-    return deadline;
-  }
-  const [timeLeft, setTimeLeft] = useState(() => Math.max(0, getOrSetDeadline() - Date.now()));
-  const [pulse, setPulse] = useState(false);
-  useEffect(() => {
-    const deadline = getOrSetDeadline();
-    const tick = setInterval(() => {
-      const remaining = Math.max(0, deadline - Date.now());
-      setTimeLeft(remaining);
-      setPulse(p => !p);
-      if (remaining === 0) clearInterval(tick);
-    }, 1000);
-    return () => clearInterval(tick);
-  }, []);
-  const totalSecs = Math.floor(timeLeft / 1000);
-  const hrs  = Math.floor(totalSecs / 3600);
-  const mins = Math.floor((totalSecs % 3600) / 60);
-  const secs = totalSecs % 60;
-  const pad  = n => String(n).padStart(2, "0");
-  const pct  = Math.min(100, Math.max(0, (timeLeft / (75 * 3600 * 1000)) * 100));
-  return { hrs, mins, secs, pad, pct, pulse, timeLeft };
-}
-
-// Compact banner shown above the plan grid
-function PricingCountdown() {
-  const { hrs, mins, secs, pad, pct, pulse } = useSaleCountdown();
-  return (
-    <div style={{
-      margin: "0 auto 36px",
-      maxWidth: 780,
-      borderRadius: 16,
-      overflow: "hidden",
-      background: "linear-gradient(135deg, #0a0a0a 0%, #150e00 50%, #0a0a0a 100%)",
-      border: "1px solid rgba(201,162,39,0.3)",
-      boxShadow: "0 0 40px rgba(201,162,39,0.08), 0 12px 40px rgba(0,0,0,0.45)",
-      position: "relative",
-    }}>
-      {/* Top shimmer bar */}
-      <div style={{ height: 3, background: `linear-gradient(90deg, #8a6910 ${100 - pct}%, #c9a227 ${100 - pct}%, #f0d060 ${Math.min(100, 100 - pct + 3)}%, #c9a227 100%)`, transition: "background 1s linear" }} />
-
-      <div style={{ padding: "18px 28px 20px", display: "flex", alignItems: "center", flexWrap: "wrap", gap: 16, justifyContent: "space-between" }}>
-        {/* Left: label */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ background: "linear-gradient(135deg,#c9a227,#f0d060)", color: "#0a0a0a", fontFamily: "Inter,sans-serif", fontSize: 10, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase", padding: "4px 12px", borderRadius: 100 }}>⚡ Flash Sale</div>
-          <div>
-            <div style={{ fontFamily: "Cormorant Garamond,serif", fontSize: "clamp(15px,2vw,19px)", fontWeight: 700, color: "#f5f0e8", lineHeight: 1.15 }}>
-              Prices rise after this weekend
-            </div>
-            <div style={{ fontFamily: "Inter,sans-serif", fontSize: 11, color: "rgba(245,240,232,0.45)", marginTop: 2 }}>
-              This exclusive discount ends when the timer hits zero
-            </div>
-          </div>
-        </div>
-
-        {/* Right: countdown + savings */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-          {/* Timer blocks */}
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            {[
-              { value: pad(hrs),  label: "HRS"  },
-              { value: pad(mins), label: "MIN"  },
-              { value: pad(secs), label: "SEC"  },
-            ].map((unit, idx) => (
-              <Fragment key={idx}>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{
-                    background: "linear-gradient(180deg,#1a1200,#0f0c00)",
-                    border: `1px solid ${idx === 2 && pulse ? "rgba(201,162,39,0.55)" : "rgba(201,162,39,0.2)"}`,
-                    borderRadius: 8,
-                    padding: "6px 10px",
-                    minWidth: 44,
-                    transition: "border-color 0.3s",
-                  }}>
-                    <div style={{ fontFamily: "Cormorant Garamond,serif", fontSize: "clamp(22px,3vw,28px)", fontWeight: 700, color: "#c9a227", lineHeight: 1, textShadow: "0 0 12px rgba(201,162,39,0.35)" }}>{unit.value}</div>
-                  </div>
-                  <div style={{ fontFamily: "Inter,sans-serif", fontSize: 9, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", color: "rgba(245,240,232,0.35)", marginTop: 4 }}>{unit.label}</div>
-                </div>
-                {idx < 2 && <div style={{ fontFamily: "Cormorant Garamond,serif", fontSize: 22, color: "#c9a227", opacity: pulse ? 1 : 0.25, transition: "opacity 0.5s", marginBottom: 16 }}>:</div>}
-              </Fragment>
-            ))}
-          </div>
-
-          {/* Savings mini tags */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-            {[
-              { plan: "Launch",  now: "$329", after: "$399" },
-              { plan: "Growth",  now: "$549", after: "$649" },
-              { plan: "Premier", now: "$1,050", after: "$1,149" },
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ fontFamily: "Inter,sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: 1.2, textTransform: "uppercase", color: "rgba(245,240,232,0.35)", minWidth: 42 }}>{item.plan}</span>
-                <span style={{ fontFamily: "Inter,sans-serif", fontSize: 11, fontWeight: 700, color: "#c9a227" }}>{item.now}</span>
-                <span style={{ fontFamily: "Inter,sans-serif", fontSize: 9, color: "rgba(245,240,232,0.3)", textDecoration: "line-through" }}>{item.after}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      <div style={{ height: 2, background: "rgba(255,255,255,0.04)" }}>
-        <div style={{ height: "100%", width: pct + "%", background: "linear-gradient(90deg,#8a6910,#c9a227,#f0d060)", transition: "width 1s linear", boxShadow: "0 0 8px rgba(201,162,39,0.4)" }} />
-      </div>
-    </div>
-  );
-}
-
-// Mini countdown badge for plan card corner
-function MiniCountdown() {
-  const { hrs, mins, secs, pad, pulse } = useSaleCountdown();
-  return (
-    <div style={{
-      position: "absolute",
-      top: 12,
-      right: 12,
-      zIndex: 10,
-      background: "linear-gradient(135deg,#0f0c00,#1a1200)",
-      border: `1px solid ${pulse ? "rgba(201,162,39,0.5)" : "rgba(201,162,39,0.25)"}`,
-      borderRadius: 8,
-      padding: "5px 9px",
-      display: "flex",
-      alignItems: "center",
-      gap: 4,
-      boxShadow: "0 2px 12px rgba(0,0,0,0.35)",
-      transition: "border-color 0.4s",
-      backdropFilter: "blur(4px)",
-    }}>
-      <div style={{ fontFamily: "Inter,sans-serif", fontSize: 9, fontWeight: 700, color: "#c9a227", letterSpacing: 0.5 }}>⏱</div>
-      <div style={{ fontFamily: "Cormorant Garamond,serif", fontSize: 13, fontWeight: 700, color: "#c9a227", lineHeight: 1, letterSpacing: 0.5, textShadow: "0 0 8px rgba(201,162,39,0.3)" }}>
-        {pad(hrs)}:{pad(mins)}:{pad(secs)}
-      </div>
-    </div>
-  );
-}
-
-
-
-// ─── PLANS (light theme) — Next-level premium cards ───
 function Plans() {
   const [ref, vis] = useInView(0.15);
   const T = THEME.light;
@@ -2254,8 +2106,6 @@ function Plans() {
           </h2>
           <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, maxWidth: 480, margin: "0 auto" }}>Pay once for your term. Referral fee only at closing. No long-term contract.</p>
         </div>
-
-          <PricingCountdown />
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: 28, alignItems: "stretch" }}>
           {plans.map((p, i) => (
@@ -2294,20 +2144,12 @@ function Plans() {
                   {p.badge || "Most popular"}
                 </div>
               )}
-              <MiniCountdown />
               <div style={{ textAlign: "center", marginBottom: 28 }}>
                 <h3 style={{ fontFamily: font.display, fontSize: 26, color: T.text, marginBottom: 12, fontWeight: 600 }}>{p.name}</h3>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 4 }}>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{ fontFamily: font.body, fontSize: 12, color: T.mute, textDecoration: "line-through", opacity: 0.5 }}>{p.originalPrice}</span>
-                      <span style={{ fontFamily: font.body, fontSize: 9, fontWeight: 700, letterSpacing: 1.2, textTransform: "uppercase", color: "rgba(201,162,39,0.7)", background: "rgba(201,162,39,0.08)", border: "1px solid rgba(201,162,39,0.2)", borderRadius: 4, padding: "1px 5px" }}>after this weekend</span>
-                    </div>
                     <span style={{ fontFamily: font.display, fontSize: 42, color: T.accent, fontWeight: 700, lineHeight: 1 }}>
                       {p.price}
                     </span>
-                    <span style={{ fontFamily: font.body, fontSize: 10, fontWeight: 600, letterSpacing: 0.5, color: "rgba(201,162,39,0.6)", marginTop: 1 }}>Current sale price</span>
-                  </div>
                 </div>
                 <p style={{ fontFamily: font.body, fontSize: 13, color: T.mute, marginTop: 8 }}>{p.period}</p>
                 <p style={{ fontFamily: font.body, fontSize: 12, color: T.mute, marginTop: 4, opacity: 0.9 }}>{p.fee}</p>
