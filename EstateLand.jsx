@@ -11,7 +11,7 @@ const C = {
   void: "#080808",
   surface: "#0f0f0f",
   surfaceLight: "#161616",
-  cream: "#f5f0e8",h
+  cream: "#f5f0e8",
   creamDim: "rgba(245,240,232,0.95)",
   mute: "rgba(245,240,232,0.82)",
   gold: "#c9a227",
