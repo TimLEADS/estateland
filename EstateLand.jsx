@@ -11,7 +11,7 @@ const C = {
   void: "#080808",
   surface: "#0f0f0f",
   surfaceLight: "#161616",
-  cream: "#f5f0e8",
+  cream: "#f5f0e8",h
   creamDim: "rgba(245,240,232,0.95)",
   mute: "rgba(245,240,232,0.82)",
   gold: "#c9a227",
@@ -2217,6 +2217,62 @@ function Plans() {
               )}
             </div>
           ))}
+        </div>
+
+        {/* Money-Back Guarantee */}
+        <div style={{
+          marginTop: 48,
+          padding: "36px 40px",
+          background: "rgba(255,255,255,0.95)",
+          borderRadius: 20,
+          border: `1.5px solid rgba(166,124,0,0.35)`,
+          boxShadow: "0 12px 40px rgba(0,0,0,0.06)",
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 24,
+          maxWidth: 800,
+          margin: "48px auto 0",
+        }}>
+          <div style={{
+            flexShrink: 0,
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            background: "rgba(166,124,0,0.12)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 26,
+          }}>
+            🛡️
+          </div>
+          <div>
+            <h3 style={{
+              fontFamily: font.display,
+              fontSize: 22,
+              color: T.text,
+              fontWeight: 600,
+              marginBottom: 10,
+              letterSpacing: "-0.01em",
+            }}>
+              Money-Back Guarantee
+            </h3>
+            <p style={{
+              fontFamily: font.body,
+              fontSize: 15,
+              color: T.textDim,
+              lineHeight: 1.65,
+              margin: 0,
+            }}>
+              If you haven't closed any leads or received any services within 6 months, or received six instances of bad/bogus leads, you're eligible for a full refund of your one-time fee. Contact{" "}
+              <a
+                href="mailto:support@estaeland.us"
+                style={{ color: T.accent, textDecoration: "none", fontWeight: 500 }}
+              >
+                support@estaeland.us
+              </a>
+            </p>
+          </div>
         </div>
       </div>
 
