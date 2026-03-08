@@ -10,6 +10,8 @@ import cors from "cors";
 import Stripe from "stripe";
 import Database from "better-sqlite3";
 import { appendPayment, upsertRelator, removeRelator, upsertOnboarding, restoreFromSheets } from "./sheets.js";
+import createEmailRoutes from "./emailRoutes.js";
+import createTemplateRoutes from "./templateRoutes.js";
 
 // -- SQLite setup --
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, "data", "estateland.db");
@@ -89,6 +91,69 @@ db.exec(`
                                                                                                                                                                                                                                 );
                                                                                                                                                                                                                                 `);
 
+// ── Gmail / Email tables ──
+db.exec(`
+  CREATE TABLE IF NOT EXISTS gmail_tokens (
+    id TEXT PRIMARY KEY DEFAULT 'default',
+    encrypted_tokens TEXT DEFAULT '',
+    iv TEXT DEFAULT '',
+    auth_tag TEXT DEFAULT '',
+    email TEXT DEFAULT '',
+    createdAt TEXT DEFAULT ''
+  );
+
+  CREATE TABLE IF NOT EXISTS email_templates (
+    id TEXT PRIMARY KEY,
+    name TEXT DEFAULT '',
+    subject TEXT DEFAULT '',
+    body TEXT DEFAULT '',
+    createdAt TEXT DEFAULT '',
+    updatedAt TEXT DEFAULT ''
+  );
+
+  CREATE TABLE IF NOT EXISTS email_contacts (
+    id TEXT PRIMARY KEY,
+    name TEXT DEFAULT '',
+    email TEXT DEFAULT '' UNIQUE,
+    lastMessageDate TEXT DEFAULT '',
+    messageCount INTEGER DEFAULT 0,
+    createdAt TEXT DEFAULT ''
+  );
+`);
+
+// Seed default email templates if none exist
+{
+  const count = db.prepare("SELECT COUNT(*) as c FROM email_templates").get().c;
+  if (count === 0) {
+    const now = new Date().toISOString();
+    const seeds = [
+      {
+        id: "tpl_welcome", name: "Welcome Email",
+        subject: "Welcome to EstateLand Lead Network",
+        body: `Hello [Name],\n\nWelcome to EstateLand.\n\nWe are excited to have you join our real estate lead network. Our system connects realtors with verified buyers and sellers actively looking for properties.\n\nInside our platform you will receive high-intent prospects, allowing you to focus on closing deals instead of chasing cold leads.\n\nIf you have any questions, feel free to reply to this email.\n\nBest regards\nEstateLand Team`,
+      },
+      {
+        id: "tpl_realtor_intro", name: "Realtor Introduction",
+        subject: "Verified Real Estate Leads Available in Your Area",
+        body: `Hello [Name],\n\nWe are reaching out from EstateLand.\n\nOur platform connects real estate professionals with verified buyers, sellers, and investors actively looking for opportunities.\n\nOur leads go through a verification process to ensure they are genuine prospects.\n\nWould you be open to a short call so we can explain how the system works?\n\nEstateLand Team`,
+      },
+      {
+        id: "tpl_follow_up", name: "Follow Up Email",
+        subject: "Quick Follow Up",
+        body: `Hello [Name],\n\nJust following up on my previous email regarding verified real estate leads through EstateLand.\n\nIf you are currently looking for additional buyer or seller opportunities, we would be happy to connect.\n\nLet me know if you are available for a quick conversation.\n\nBest regards\nEstateLand Team`,
+      },
+      {
+        id: "tpl_meeting", name: "Meeting Confirmation",
+        subject: "Meeting Confirmation",
+        body: `Hello [Name],\n\nThank you for scheduling a call with the EstateLand team.\n\nWe look forward to speaking with you and explaining how our verified lead system works.\n\nTalk soon.\n\nEstateLand Team`,
+      },
+    ];
+    const insert = db.prepare("INSERT OR IGNORE INTO email_templates (id, name, subject, body, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)");
+    for (const t of seeds) insert.run(t.id, t.name, t.subject, t.body, now, now);
+    console.log("Seeded 4 default email templates.");
+  }
+}
+
 // Migrate: add password column if missing
 try {
     db.prepare("ALTER TABLE users ADD COLUMN password TEXT DEFAULT ''").run();
@@ -125,7 +190,7 @@ const app = express();
 // Raw body parser MUST come before json() for the webhook route
 app.use("/api/stripe-webhook", express.raw({ type: "application/json" }));
 app.use(cors({ origin: true }));
-app.use(express.json());
+app.use(express.json({ limit: "25mb" }));
 
 const PLAN_PRICES = { launch: 32900, growth: 54900, premier: 105000 };
 const PLAN_NAMES  = { launch: "Launch - 6 months", growth: "Growth - per year", premier: "Premier - lifetime" };
@@ -469,6 +534,10 @@ app.put("/api/chat-sessions/:id", (req, res) => {
           res.status(500).json({ error: err.message });
     }
 });
+
+// ── Email & Template routes ──
+app.use("/api", createEmailRoutes(db));
+app.use("/api/templates", createTemplateRoutes(db));
 
 // -- Serve static frontend build --
 const staticDir = path.join(__dirname, "../dist");

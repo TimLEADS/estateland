@@ -22,6 +22,7 @@ import UserDashboard from "./dashboard/UserDashboard.jsx";
 import Payments from "./dashboard/Payments.jsx";
 import AllRelators from "./dashboard/AllRelators.jsx";
 import Chat from "./dashboard/Chat.jsx";
+import EmailCenter from "./dashboard/EmailCenter.jsx";
 import WebsiteChatbot from "./components/WebsiteChatbot.jsx";
 
 function ScrollToTop() {
@@ -56,6 +57,7 @@ export default function App() {
             <Route path="relators" element={<AllRelators />} />
             <Route path="users" element={<Users />} />
             <Route path="leads" element={<Leads />} />
+            <Route path="email" element={<EmailCenter />} />
             <Route path="chat" element={<Chat />} />
             <Route path="me" element={<UserDashboard />} />
           </Route>
