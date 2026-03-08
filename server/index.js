@@ -121,36 +121,201 @@ db.exec(`
   );
 `);
 
-// Seed default email templates if none exist
+// Seed default email templates (HTML branded)
 {
   const count = db.prepare("SELECT COUNT(*) as c FROM email_templates").get().c;
-  if (count === 0) {
+  // Always reseed if templates were plain text (upgrade path)
+  const firstTpl = db.prepare("SELECT body FROM email_templates WHERE id = 'tpl_welcome'").get();
+  const needsReseed = count === 0 || (firstTpl && !firstTpl.body.includes("<!DOCTYPE"));
+
+  if (needsReseed) {
+    // Clear old plain-text templates
+    if (count > 0) db.prepare("DELETE FROM email_templates WHERE id IN ('tpl_welcome','tpl_realtor_intro','tpl_follow_up','tpl_meeting')").run();
+
     const now = new Date().toISOString();
+
+    // Shared HTML wrapper
+    const wrap = (content) => `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#080808;font-family:'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#080808;padding:40px 0;">
+<tr><td align="center">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#0f0f0f;border:1px solid rgba(240,235,227,0.12);border-radius:12px;overflow:hidden;">
+
+<!-- Header -->
+<tr><td style="background:linear-gradient(135deg,#0f0f0f 0%,#161616 100%);padding:32px 40px;border-bottom:1px solid rgba(240,235,227,0.12);">
+<table width="100%" cellpadding="0" cellspacing="0"><tr>
+<td><table cellpadding="0" cellspacing="0"><tr>
+<td style="width:40px;height:40px;border:2px solid #c9a227;border-radius:8px;text-align:center;vertical-align:middle;font-size:20px;color:#c9a227;font-weight:700;font-family:Georgia,serif;">E</td>
+<td style="padding-left:14px;font-size:18px;font-weight:600;color:#f5f0e8;letter-spacing:1.5px;font-family:Georgia,serif;">ESTATE LAND</td>
+</tr></table></td>
+<td align="right" style="font-size:11px;color:rgba(245,240,232,0.5);letter-spacing:0.5px;">estateland.us</td>
+</tr></table>
+</td></tr>
+
+<!-- Gold accent line -->
+<tr><td style="height:3px;background:linear-gradient(90deg,#c9a227,#d4a574,#c9a227);"></td></tr>
+
+<!-- Body -->
+<tr><td style="padding:40px;">
+${content}
+</td></tr>
+
+<!-- Footer -->
+<tr><td style="padding:0 40px 12px;border-top:1px solid rgba(240,235,227,0.12);">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="padding:24px 0 8px;">
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="width:28px;height:28px;border:1px solid #c9a227;border-radius:6px;text-align:center;vertical-align:middle;font-size:14px;color:#c9a227;font-weight:700;font-family:Georgia,serif;">E</td>
+<td style="padding-left:10px;font-size:13px;font-weight:600;color:#f5f0e8;letter-spacing:1px;font-family:Georgia,serif;">ESTATE LAND</td>
+</tr></table>
+</td></tr>
+<tr><td style="font-size:12px;color:rgba(245,240,232,0.5);line-height:1.7;padding-bottom:16px;">
+The exclusive lead platform for realtors across the United States.<br>
+Exclusive leads. Your territory. No competition.
+</td></tr>
+<tr><td style="font-size:11px;color:rgba(245,240,232,0.35);padding-bottom:20px;">
+www.estateland.us &nbsp;&middot;&nbsp; United States &middot; Serving all 50 states<br>
+&copy; 2026 Estate Land. All rights reserved.
+</td></tr>
+</table>
+</td></tr>
+
+</table>
+</td></tr></table>
+</body></html>`;
+
     const seeds = [
       {
         id: "tpl_welcome", name: "Welcome Email",
         subject: "Welcome to EstateLand Lead Network",
-        body: `Hello [Name],\n\nWelcome to EstateLand.\n\nWe are excited to have you join our real estate lead network. Our system connects realtors with verified buyers and sellers actively looking for properties.\n\nInside our platform you will receive high-intent prospects, allowing you to focus on closing deals instead of chasing cold leads.\n\nIf you have any questions, feel free to reply to this email.\n\nBest regards\nEstateLand Team`,
+        body: wrap(`<h1 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#f5f0e8;margin:0 0 8px;">Welcome to Estate Land</h1>
+<p style="font-size:14px;color:#c9a227;margin:0 0 28px;letter-spacing:0.5px;">Your exclusive lead network starts here.</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Hello [Name],</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">We are excited to have you join our real estate lead network. Estate Land connects realtors with <strong style="color:#f5f0e8;">double-verified seller leads</strong> — exclusive to you, straight to your CRM.</p>
+
+<table cellpadding="0" cellspacing="0" style="margin:28px 0;width:100%;">
+<tr><td style="padding:16px 20px;background:rgba(201,162,39,0.08);border-left:3px solid #c9a227;border-radius:0 8px 8px 0;">
+<p style="font-size:14px;color:rgba(245,240,232,0.9);line-height:1.7;margin:0;"><strong style="color:#c9a227;">What to expect:</strong><br>
+&bull; High-intent, verified seller prospects in your territory<br>
+&bull; Leads delivered exclusively to you — never shared or recycled<br>
+&bull; Appointments pre-set by our team so you can focus on closing</p>
+</td></tr></table>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 28px;">If you have any questions, feel free to reply directly to this email. We are here to help you dominate your market.</p>
+
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="background:#c9a227;border-radius:8px;padding:14px 32px;">
+<a href="https://www.estateland.us/get-started" style="font-size:13px;font-weight:600;color:#080808;text-decoration:none;letter-spacing:0.5px;">Get Started</a>
+</td></tr></table>
+
+<p style="font-size:14px;color:rgba(245,240,232,0.7);line-height:1.8;margin:28px 0 0;">Best regards,<br><strong style="color:#f5f0e8;">Estate Land Team</strong></p>`),
       },
       {
         id: "tpl_realtor_intro", name: "Realtor Introduction",
         subject: "Verified Real Estate Leads Available in Your Area",
-        body: `Hello [Name],\n\nWe are reaching out from EstateLand.\n\nOur platform connects real estate professionals with verified buyers, sellers, and investors actively looking for opportunities.\n\nOur leads go through a verification process to ensure they are genuine prospects.\n\nWould you be open to a short call so we can explain how the system works?\n\nEstateLand Team`,
+        body: wrap(`<h1 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#f5f0e8;margin:0 0 8px;">Exclusive Leads in Your Area</h1>
+<p style="font-size:14px;color:#c9a227;margin:0 0 28px;letter-spacing:0.5px;">Verified sellers. Your territory. No competition.</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Hello [Name],</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">We are reaching out from <strong style="color:#f5f0e8;">Estate Land</strong> — the exclusive lead platform for top-performing realtors across the United States.</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Our platform connects real estate professionals with <strong style="color:#f5f0e8;">double-verified buyers, sellers, and investors</strong> actively looking for opportunities in their market.</p>
+
+<table cellpadding="0" cellspacing="0" style="margin:28px 0;width:100%;">
+<tr>
+<td style="width:33%;padding:16px;text-align:center;background:rgba(201,162,39,0.06);border-radius:8px 0 0 8px;border-right:1px solid rgba(240,235,227,0.08);">
+<div style="font-family:Georgia,serif;font-size:28px;color:#c9a227;font-weight:600;">89+</div>
+<div style="font-size:11px;color:rgba(245,240,232,0.5);margin-top:4px;">Active Realtors</div>
+</td>
+<td style="width:33%;padding:16px;text-align:center;background:rgba(201,162,39,0.06);border-right:1px solid rgba(240,235,227,0.08);">
+<div style="font-family:Georgia,serif;font-size:28px;color:#c9a227;font-weight:600;">50+</div>
+<div style="font-size:11px;color:rgba(245,240,232,0.5);margin-top:4px;">US Markets</div>
+</td>
+<td style="width:33%;padding:16px;text-align:center;background:rgba(201,162,39,0.06);border-radius:0 8px 8px 0;">
+<div style="font-family:Georgia,serif;font-size:28px;color:#c9a227;font-weight:600;">8+</div>
+<div style="font-size:11px;color:rgba(245,240,232,0.5);margin-top:4px;">Years Experience</div>
+</td>
+</tr></table>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 28px;">Every lead goes through our verification process to ensure they are genuine prospects. Would you be open to a short call so we can explain how the system works?</p>
+
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="background:#c9a227;border-radius:8px;padding:14px 32px;">
+<a href="https://www.estateland.us/get-started" style="font-size:13px;font-weight:600;color:#080808;text-decoration:none;letter-spacing:0.5px;">Schedule a Call</a>
+</td></tr></table>
+
+<p style="font-size:14px;color:rgba(245,240,232,0.7);line-height:1.8;margin:28px 0 0;">Looking forward to connecting,<br><strong style="color:#f5f0e8;">Estate Land Team</strong></p>`),
       },
       {
         id: "tpl_follow_up", name: "Follow Up Email",
-        subject: "Quick Follow Up",
-        body: `Hello [Name],\n\nJust following up on my previous email regarding verified real estate leads through EstateLand.\n\nIf you are currently looking for additional buyer or seller opportunities, we would be happy to connect.\n\nLet me know if you are available for a quick conversation.\n\nBest regards\nEstateLand Team`,
+        subject: "Quick Follow Up — Exclusive Leads for Your Market",
+        body: wrap(`<h1 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#f5f0e8;margin:0 0 8px;">Quick Follow Up</h1>
+<p style="font-size:14px;color:#c9a227;margin:0 0 28px;letter-spacing:0.5px;">Still interested in growing your listings?</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Hello [Name],</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Just following up on my previous email regarding <strong style="color:#f5f0e8;">exclusive, verified real estate leads</strong> through Estate Land.</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">If you are currently looking for additional buyer or seller opportunities in your market, we would be happy to show you how our system works:</p>
+
+<table cellpadding="0" cellspacing="0" style="margin:24px 0;width:100%;">
+<tr><td style="padding:14px 20px;border-left:3px solid #c9a227;background:rgba(201,162,39,0.06);border-radius:0 8px 8px 0;">
+<p style="font-size:14px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0;">
+&bull; Leads exclusive to your territory — <strong style="color:#c9a227;">never shared</strong><br>
+&bull; Double-verified sellers ready to list<br>
+&bull; Appointments booked directly into your calendar<br>
+&bull; No long-term contracts required</p>
+</td></tr></table>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 28px;">Let me know if you are available for a quick 10-minute conversation. I would love to walk you through it.</p>
+
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="background:#c9a227;border-radius:8px;padding:14px 32px;">
+<a href="https://www.estateland.us/get-started" style="font-size:13px;font-weight:600;color:#080808;text-decoration:none;letter-spacing:0.5px;">Let&rsquo;s Connect</a>
+</td></tr></table>
+
+<p style="font-size:14px;color:rgba(245,240,232,0.7);line-height:1.8;margin:28px 0 0;">Best regards,<br><strong style="color:#f5f0e8;">Estate Land Team</strong></p>`),
       },
       {
         id: "tpl_meeting", name: "Meeting Confirmation",
-        subject: "Meeting Confirmation",
-        body: `Hello [Name],\n\nThank you for scheduling a call with the EstateLand team.\n\nWe look forward to speaking with you and explaining how our verified lead system works.\n\nTalk soon.\n\nEstateLand Team`,
+        subject: "Your Call with Estate Land is Confirmed",
+        body: wrap(`<h1 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#f5f0e8;margin:0 0 8px;">Meeting Confirmed</h1>
+<p style="font-size:14px;color:#c9a227;margin:0 0 28px;letter-spacing:0.5px;">We look forward to speaking with you.</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Hello [Name],</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">Thank you for scheduling a call with the <strong style="color:#f5f0e8;">Estate Land</strong> team. We are looking forward to connecting with you.</p>
+
+<table cellpadding="0" cellspacing="0" style="margin:28px 0;width:100%;background:rgba(201,162,39,0.06);border-radius:12px;overflow:hidden;">
+<tr><td style="padding:28px 24px;text-align:center;">
+<div style="font-size:12px;color:#c9a227;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;font-weight:600;">During Our Call</div>
+<div style="font-size:14px;color:rgba(245,240,232,0.85);line-height:2;">
+How our exclusive lead system works<br>
+Your territory and market opportunity<br>
+Lead verification and delivery process<br>
+Pricing and membership options
+</div>
+</td></tr></table>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 20px;">If you need to reschedule, simply reply to this email and we will accommodate you.</p>
+
+<p style="font-size:15px;color:rgba(245,240,232,0.85);line-height:1.8;margin:0 0 28px;">Talk soon.</p>
+
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="background:#c9a227;border-radius:8px;padding:14px 32px;">
+<a href="https://www.estateland.us" style="font-size:13px;font-weight:600;color:#080808;text-decoration:none;letter-spacing:0.5px;">Visit Estate Land</a>
+</td></tr></table>
+
+<p style="font-size:14px;color:rgba(245,240,232,0.7);line-height:1.8;margin:28px 0 0;">Warm regards,<br><strong style="color:#f5f0e8;">Estate Land Team</strong></p>`),
       },
     ];
-    const insert = db.prepare("INSERT OR IGNORE INTO email_templates (id, name, subject, body, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)");
+    const insert = db.prepare("INSERT OR REPLACE INTO email_templates (id, name, subject, body, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)");
     for (const t of seeds) insert.run(t.id, t.name, t.subject, t.body, now, now);
-    console.log("Seeded 4 default email templates.");
+    console.log("Seeded 4 branded HTML email templates.");
   }
 }
 

@@ -247,19 +247,23 @@ function ComposeEmail({ onClose, onSend, templates, replyTo, connectedEmail }) {
   const [to, setTo] = useState(replyTo ? (replyTo.from?.email || "") : "");
   const [subject, setSubject] = useState(replyTo ? `Re: ${(replyTo.subject || "").replace(/^Re:\s*/i, "")}` : "");
   const [body, setBody] = useState("");
+  const [isHtmlTemplate, setIsHtmlTemplate] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const [sending, setSending] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
   const fileRef = useRef(null);
 
   const handleTemplateChange = (e) => {
     const tplId = e.target.value;
     setSelectedTemplate(tplId);
-    if (!tplId) return;
+    if (!tplId) { setIsHtmlTemplate(false); return; }
     const tpl = templates.find(t => t.id === tplId);
     if (tpl) {
       setSubject(tpl.subject);
       setBody(tpl.body);
+      setIsHtmlTemplate(tpl.body.includes("<!DOCTYPE") || tpl.body.includes("<html"));
+      setShowPreview(tpl.body.includes("<!DOCTYPE") || tpl.body.includes("<html"));
     }
   };
 
@@ -280,7 +284,8 @@ function ComposeEmail({ onClose, onSend, templates, replyTo, connectedEmail }) {
     if (!to.trim()) return;
     setSending(true);
     try {
-      const htmlBody = body.replace(/\n/g, "<br>");
+      // If it's an HTML template, send the HTML directly; otherwise convert newlines
+      const htmlBody = isHtmlTemplate ? body : body.replace(/\n/g, "<br>");
       await onSend({
         to: to.trim(), subject, body: htmlBody, attachments,
         inReplyTo: replyTo?.messageId || "",
@@ -305,14 +310,24 @@ function ComposeEmail({ onClose, onSend, templates, replyTo, connectedEmail }) {
       background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
     }}>
       <div style={{
-        ...slideIn, width: "100%", maxWidth: 640, maxHeight: "90vh", background: C.surface, border: `1px solid ${C.border}`,
+        ...slideIn, width: "100%", maxWidth: isHtmlTemplate ? 900 : 640, maxHeight: "90vh", background: C.surface, border: `1px solid ${C.border}`,
         borderRadius: 16, display: "flex", flexDirection: "column", overflow: "hidden",
       }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 24px", borderBottom: `1px solid ${C.border}` }}>
           <h3 style={{ fontFamily: font.body, fontSize: 16, fontWeight: 600, color: C.cream, margin: 0 }}>
             {replyTo ? "Reply" : "New Email"}
           </h3>
-          <button onClick={onClose} style={{ background: "none", border: "none", color: C.mute, fontSize: 20, cursor: "pointer", padding: 4 }}>&times;</button>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {isHtmlTemplate && (
+              <button
+                onClick={() => setShowPreview(p => !p)}
+                style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: showPreview ? C.gold : C.creamDim, cursor: "pointer" }}
+              >
+                {showPreview ? "Edit HTML" : "Preview"}
+              </button>
+            )}
+            <button onClick={onClose} style={{ background: "none", border: "none", color: C.mute, fontSize: 20, cursor: "pointer", padding: 4 }}>&times;</button>
+          </div>
         </div>
 
         <div style={{ flex: 1, overflow: "auto", padding: 24, display: "flex", flexDirection: "column", gap: 14 }}>
@@ -336,14 +351,29 @@ function ComposeEmail({ onClose, onSend, templates, replyTo, connectedEmail }) {
             </select>
           )}
 
-          <textarea
-            className="email-compose-input"
-            placeholder="Write your message..."
-            value={body}
-            onChange={e => setBody(e.target.value)}
-            rows={12}
-            style={{ ...inputStyle, resize: "vertical", lineHeight: 1.7 }}
-          />
+          {isHtmlTemplate && showPreview ? (
+            <div style={{ border: `1px solid ${C.border}`, borderRadius: 8, overflow: "hidden", background: "#080808" }}>
+              <div style={{ padding: "8px 14px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontFamily: font.body, fontSize: 11, color: C.gold }}>Template Preview</span>
+                <span style={{ fontFamily: font.body, fontSize: 10, color: C.mute }}>Replace [Name] with recipient's name before sending</span>
+              </div>
+              <iframe
+                srcDoc={body}
+                style={{ width: "100%", height: 480, border: "none", background: "#080808" }}
+                title="Email preview"
+                sandbox="allow-same-origin"
+              />
+            </div>
+          ) : (
+            <textarea
+              className="email-compose-input"
+              placeholder="Write your message..."
+              value={body}
+              onChange={e => { setBody(e.target.value); setIsHtmlTemplate(false); setShowPreview(false); }}
+              rows={12}
+              style={{ ...inputStyle, resize: "vertical", lineHeight: 1.7, fontFamily: isHtmlTemplate ? "monospace" : font.body, fontSize: isHtmlTemplate ? 11 : 13 }}
+            />
+          )}
 
           {attachments.length > 0 && (
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -388,10 +418,13 @@ function TemplateManager({ templates, onRefresh }) {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ name: "", subject: "", body: "" });
   const [saving, setSaving] = useState(false);
+  const [previewId, setPreviewId] = useState(null);
+  const [editShowPreview, setEditShowPreview] = useState(false);
 
   const startEdit = (tpl) => {
     setEditing(tpl ? tpl.id : "new");
     setForm(tpl ? { name: tpl.name, subject: tpl.subject, body: tpl.body } : { name: "", subject: "", body: "" });
+    setEditShowPreview(false);
   };
 
   const handleSave = async () => {
@@ -417,26 +450,42 @@ function TemplateManager({ templates, onRefresh }) {
     onRefresh();
   };
 
+  const isHtml = (body) => body && (body.includes("<!DOCTYPE") || body.includes("<html"));
+
   const inputStyle = {
     width: "100%", padding: "12px 16px", background: C.surfaceLight, border: `1px solid ${C.border}`,
     borderRadius: 8, fontFamily: font.body, fontSize: 13, color: C.cream,
   };
 
   if (editing !== null) {
+    const formIsHtml = isHtml(form.body);
     return (
       <div style={{ ...fadeIn, padding: 24 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
           <h3 style={{ fontFamily: font.body, fontSize: 16, fontWeight: 600, color: C.cream, margin: 0 }}>
             {editing === "new" ? "New Template" : "Edit Template"}
           </h3>
-          <button onClick={() => setEditing(null)} className="email-btn" style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, padding: "8px 14px", fontFamily: font.body, fontSize: 12, color: C.creamDim, cursor: "pointer", transition: "all 0.15s" }}>
-            Cancel
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            {formIsHtml && (
+              <button onClick={() => setEditShowPreview(p => !p)} style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: editShowPreview ? C.gold : C.creamDim, cursor: "pointer" }}>
+                {editShowPreview ? "Edit HTML" : "Preview"}
+              </button>
+            )}
+            <button onClick={() => setEditing(null)} className="email-btn" style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 8, padding: "8px 14px", fontFamily: font.body, fontSize: 12, color: C.creamDim, cursor: "pointer", transition: "all 0.15s" }}>
+              Cancel
+            </button>
+          </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <input className="email-compose-input" placeholder="Template Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} style={inputStyle} />
           <input className="email-compose-input" placeholder="Subject Line" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} style={inputStyle} />
-          <textarea className="email-compose-input" placeholder="Email Body" value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={14} style={{ ...inputStyle, resize: "vertical", lineHeight: 1.7 }} />
+          {formIsHtml && editShowPreview ? (
+            <div style={{ border: `1px solid ${C.border}`, borderRadius: 8, overflow: "hidden" }}>
+              <iframe srcDoc={form.body} style={{ width: "100%", height: 500, border: "none", background: "#080808" }} title="Template preview" sandbox="allow-same-origin" />
+            </div>
+          ) : (
+            <textarea className="email-compose-input" placeholder="Email Body (HTML or plain text)" value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} rows={16} style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6, fontFamily: formIsHtml ? "monospace" : font.body, fontSize: formIsHtml ? 11 : 13 }} />
+          )}
           <button onClick={handleSave} disabled={saving || !form.name.trim()} style={{ alignSelf: "flex-start", padding: "12px 28px", background: C.gold, color: C.void, border: "none", borderRadius: 10, fontFamily: font.body, fontSize: 13, fontWeight: 600, cursor: "pointer", opacity: saving ? 0.5 : 1 }}>
             {saving ? "Saving..." : "Save Template"}
           </button>
@@ -456,25 +505,42 @@ function TemplateManager({ templates, onRefresh }) {
       {templates.length === 0 && (
         <p style={{ fontFamily: font.body, fontSize: 13, color: C.mute }}>No templates yet.</p>
       )}
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {templates.map(tpl => (
-          <div
-            key={tpl.id}
-            style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, transition: "border-color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(201,162,39,0.3)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
-          >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-              <h4 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: C.cream, margin: 0 }}>{tpl.name}</h4>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={() => startEdit(tpl)} style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: C.creamDim, cursor: "pointer" }}>Edit</button>
-                <button onClick={() => handleDelete(tpl.id)} style={{ background: "transparent", border: "1px solid rgba(229,57,53,0.3)", borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: "#e53935", cursor: "pointer" }}>Delete</button>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {templates.map(tpl => {
+          const tplIsHtml = isHtml(tpl.body);
+          const isPreviewing = previewId === tpl.id;
+          return (
+            <div
+              key={tpl.id}
+              style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.15s" }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(201,162,39,0.3)"}
+              onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+            >
+              <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div>
+                  <h4 style={{ fontFamily: font.body, fontSize: 14, fontWeight: 600, color: C.cream, margin: "0 0 4px" }}>{tpl.name}</h4>
+                  <div style={{ fontFamily: font.body, fontSize: 12, color: C.gold }}>{tpl.subject}</div>
+                </div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {tplIsHtml && (
+                    <button onClick={() => setPreviewId(isPreviewing ? null : tpl.id)} style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: isPreviewing ? C.gold : C.creamDim, cursor: "pointer" }}>
+                      {isPreviewing ? "Hide" : "Preview"}
+                    </button>
+                  )}
+                  <button onClick={() => startEdit(tpl)} style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: C.creamDim, cursor: "pointer" }}>Edit</button>
+                  <button onClick={() => handleDelete(tpl.id)} style={{ background: "transparent", border: "1px solid rgba(229,57,53,0.3)", borderRadius: 6, padding: "6px 12px", fontFamily: font.body, fontSize: 11, color: "#e53935", cursor: "pointer" }}>Delete</button>
+                </div>
               </div>
+              {isPreviewing && tplIsHtml ? (
+                <div style={{ borderTop: `1px solid ${C.border}` }}>
+                  <iframe srcDoc={tpl.body} style={{ width: "100%", height: 520, border: "none", background: "#080808" }} title={`Preview ${tpl.name}`} sandbox="allow-same-origin" />
+                </div>
+              ) : !tplIsHtml ? (
+                <div style={{ padding: "0 20px 16px", fontFamily: font.body, fontSize: 12, color: C.mute, lineHeight: 1.6, whiteSpace: "pre-wrap", maxHeight: 80, overflow: "hidden" }}>{tpl.body}</div>
+              ) : null}
             </div>
-            <div style={{ fontFamily: font.body, fontSize: 12, color: C.gold, marginBottom: 6 }}>{tpl.subject}</div>
-            <div style={{ fontFamily: font.body, fontSize: 12, color: C.mute, lineHeight: 1.6, whiteSpace: "pre-wrap", maxHeight: 80, overflow: "hidden" }}>{tpl.body}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
