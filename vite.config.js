@@ -12,9 +12,9 @@ function runServerPlugin() {
     name: "run-api-server",
     configureServer() {
       const serverPath = path.join(__dirname, "server", "index.js");
-      child = spawn("node", [serverPath], {
+      child = spawn("node", [`"${serverPath}"`], {
         stdio: "inherit",
-        shell: process.platform === "win32",
+        shell: true,
       });
       child.on("error", (err) => console.error("API server error:", err));
       child.on("exit", (code) => code !== null && code !== 0 && console.warn("API server exited with code", code));
