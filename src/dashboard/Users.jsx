@@ -64,7 +64,7 @@ export default function Users() {
         }}
       >
         <div>
-          <h1 style={{ fontFamily: font.display, fontSize: 28, color: T.text, marginBottom: 8 }}>Users</h1>
+          <h1 style={{ fontFamily: font.display, fontSize: "clamp(24px, 3vw, 30px)", color: T.text, marginBottom: 6 }}>Users</h1>
           <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute }}>
             Realtors created from onboarding or manually.
           </p>

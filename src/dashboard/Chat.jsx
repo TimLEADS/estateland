@@ -19,7 +19,7 @@ export default function Chat() {
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: font.display, fontSize: 28, color: T.text, marginBottom: 8 }}>Chat</h1>
+        <h1 style={{ fontFamily: font.display, fontSize: "clamp(24px, 3vw, 30px)", color: T.text, marginBottom: 6 }}>Chat</h1>
         <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute }}>
           Conversations from the website chatbot. All sessions are stored here and synced with the main site.
         </p>

@@ -24,10 +24,10 @@ export default function Leads() {
   const getUserName = (userId) => users.find((u) => u.id === userId)?.name || users.find((u) => u.id === userId)?.email || userId || "Unassigned";
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
+    <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
         <div>
-          <h1 style={{ fontFamily: font.display, fontSize: 28, color: T.text, marginBottom: 8 }}>Leads</h1>
+          <h1 style={{ fontFamily: font.display, fontSize: "clamp(24px, 3vw, 30px)", color: T.text, marginBottom: 6 }}>Leads</h1>
           <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute }}>Create leads and assign them to realtors.</p>
         </div>
         <button
