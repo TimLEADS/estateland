@@ -39,7 +39,7 @@ export default function Careers() {
         </ul>
       </div>
 
-      <Link to="/#contact" className="gold-btn" style={{ display: "inline-flex", marginTop: 48, textDecoration: "none" }}>
+      <Link to="/contact" className="gold-btn" style={{ display: "inline-flex", marginTop: 48, textDecoration: "none" }}>
         Get In Touch
       </Link>
     </section>

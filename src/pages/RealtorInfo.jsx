@@ -176,7 +176,7 @@ export default function RealtorInfo() {
           <div style={{ ...cardStyle, marginBottom: 28 }}>
             <h3 style={{ fontFamily: font.display, fontSize: 20, color: C.gold, marginBottom: 10 }}>Verified Lead Sheet Sample</h3>
             <p style={{ ...bodyText, marginBottom: 16 }}>A real sample of our structured lead sheet — exactly what you receive upon each approved lead delivery.</p>
-            <Link to="/#contact" style={{ fontFamily: font.body, fontSize: 13, fontWeight: 600, color: C.gold, textDecoration: "none" }}>View Lead Sheet Sample →</Link>
+            <Link to="/contact" style={{ fontFamily: font.body, fontSize: 13, fontWeight: 600, color: C.gold, textDecoration: "none" }}>View Lead Sheet Sample →</Link>
           </div>
 
           <h3 style={{ fontFamily: font.display, fontSize: 20, color: C.cream, marginBottom: 20 }}>Live ISA Verification Call Recordings</h3>
@@ -201,7 +201,7 @@ export default function RealtorInfo() {
           <p style={{ ...bodyText, marginBottom: 24 }}>
             We offer structured partnership tiers designed to align with your production goals and market coverage: Launch (6 months), Growth (per year), and Premier (lifetime). Each plan is built around exclusivity, volume, and the level of active support your business demands.
           </p>
-          <Link to="/#pricing" style={{
+          <Link to="/pricing" style={{
             display: "inline-block", fontFamily: font.body, fontSize: 13, fontWeight: 600, letterSpacing: 0.08, textTransform: "uppercase",
             padding: "14px 28px", background: C.gold, color: C.void, borderRadius: 4, textDecoration: "none",
           }}>
@@ -222,7 +222,7 @@ export default function RealtorInfo() {
               Please review the full agreement and return a signed copy to support@estateland.us to begin onboarding.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              <Link to="/#contact" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, color: C.gold, textDecoration: "none" }}>Review Agreement</Link>
+              <Link to="/contact" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, color: C.gold, textDecoration: "none" }}>Review Agreement</Link>
               <span style={{ color: C.mute }}>|</span>
               <a href="mailto:support@estateland.us" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, color: C.gold, textDecoration: "none" }}>Email Signed Copy</a>
             </div>
@@ -262,8 +262,8 @@ export default function RealtorInfo() {
             estateland.us · support@estateland.us · +1 (800) XXX-XXXX
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
-            <Link to="/#pricing" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, padding: "12px 24px", background: C.gold, color: C.void, borderRadius: 4, textDecoration: "none" }}>View Pricing and Plans</Link>
-            <Link to="/#contact" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, padding: "12px 24px", background: "transparent", color: C.cream, border: `1px solid ${C.border}`, borderRadius: 4, textDecoration: "none" }}>Schedule a Strategy Call</Link>
+            <Link to="/pricing" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, padding: "12px 24px", background: C.gold, color: C.void, borderRadius: 4, textDecoration: "none" }}>View Pricing and Plans</Link>
+            <Link to="/contact" style={{ fontFamily: font.body, fontSize: 12, fontWeight: 600, padding: "12px 24px", background: "transparent", color: C.cream, border: `1px solid ${C.border}`, borderRadius: 4, textDecoration: "none" }}>Schedule a Strategy Call</Link>
           </div>
         </section>
       </div>

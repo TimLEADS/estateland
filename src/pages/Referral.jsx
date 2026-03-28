@@ -33,7 +33,7 @@ export default function Referral() {
         </p>
       </div>
 
-      <Link to="/#contact" className="gold-btn" style={{ display: "inline-flex", marginTop: 40, textDecoration: "none" }}>
+      <Link to="/contact" className="gold-btn" style={{ display: "inline-flex", marginTop: 40, textDecoration: "none" }}>
         Get Your Referral Link
       </Link>
     </section>

@@ -33,7 +33,7 @@ export default function Blog() {
         ))}
       </div>
 
-      <Link to="/#contact" className="gold-btn" style={{ display: "inline-flex", marginTop: 48, textDecoration: "none" }}>
+      <Link to="/contact" className="gold-btn" style={{ display: "inline-flex", marginTop: 48, textDecoration: "none" }}>
         Get Exclusive Leads
       </Link>
     </section>
