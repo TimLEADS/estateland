@@ -93,9 +93,9 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 // Shared pricing plan data (used by Plans section and Onboarding)
 export const PRICING_PLANS = [
-  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Live support", "Dedicated ZIP codes"], agreement: "/Estate_Land_Membership_Agreement - Launch.pdf" },
-  { id: "growth", name: "Growth", price: "$549", period: "1 year", fee: "15% at closing", popular: true, badge: "Most popular", features: ["Up to 5 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Full CRM setup", "Live call transfer", "Live support"], agreement: "/Estate_Land_Membership_Agreement -Growth.pdf" },
-  { id: "premier", name: "Premier", price: "$1,050", period: "Lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 referrals / month", "Exclusive buyer & seller leads", "Double-verified leads", "Scheduled appointments", "Agent profile & SEO", "Unified CRM platform", "Live call transfer", "Live support", "Dedicated account manager"], agreement: "/Estate_Land_Membership_Agreement - Premier.pdf" }
+  { id: "launch", name: "Launch", price: "$329", period: "6 months", fee: "20% at closing", popular: false, features: ["Up to 3 exclusive leads / month", "Exclusive buyer & seller leads", "Double-verified seller intent", "Dedicated ZIP code territory", "CRM setup & integration", "Live support & onboarding", "Money-back guarantee"], agreement: "/Estate_Land_Membership_Agreement - Launch.pdf" },
+  { id: "growth", name: "Growth", price: "$549", period: "1 year", fee: "15% at closing", popular: true, badge: "Most popular", features: ["Up to 5 exclusive leads / month", "Exclusive buyer & seller leads", "Double-verified seller intent", "Listing appointments set for you", "Agent profile & SEO optimization", "Full CRM setup & automation", "Live call transfer to sellers", "Priority live support", "Weekly campaign reporting", "Money-back guarantee"], agreement: "/Estate_Land_Membership_Agreement -Growth.pdf" },
+  { id: "premier", name: "Premier", price: "$1,050", period: "Lifetime", fee: "10% at closing", popular: false, badge: "Best Results", features: ["Up to 7 exclusive leads / month", "Exclusive buyer & seller leads", "Double-verified seller intent", "Listing appointments set for you", "Custom IDX website & branding", "Unified CRM platform & automation", "Live call transfer to sellers", "Priority 24/7 support", "Dedicated account manager", "Quarterly strategy reviews", "Referral network access", "Money-back guarantee"], agreement: "/Estate_Land_Membership_Agreement - Premier.pdf" }
 ];
 export { THEME, font, C };
 
@@ -919,11 +919,11 @@ function Hero() {
             opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(40px)",
             transition: "all 1s cubic-bezier(.22,1,.36,1) 0.35s",
           }}>
-            Exclusive leads.
+            Stop chasing.
             <br />
-            <em style={{ color: C.gold, fontStyle: "italic", fontWeight: 500 }}>Your territory.</em>
+            <em style={{ color: C.gold, fontStyle: "italic", fontWeight: 500 }}>Start closing.</em>
             <br />
-            No competition.
+            Own your market.
           </h1>
 
           <p style={{
@@ -932,7 +932,7 @@ function Hero() {
             opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(30px)",
             transition: "all 0.9s cubic-bezier(.22,1,.36,1) 0.5s",
           }}>
-            Estate Land onboard realtors across the United States and delivers double-verified seller leads — exclusive to you, straight to your CRM, with appointments set. Not shared. Not recycled.
+            Estate Land delivers exclusive, double-verified seller leads directly to your CRM with listing appointments already booked. 500+ top-producing realtors trust us across all 50 states. Zero competition. Zero shared leads. Just closings.
           </p>
 
           <div style={{
@@ -963,8 +963,8 @@ function Hero() {
               ))}
             </div>
             <div>
-              <div style={{ fontFamily: font.body, fontSize: 14, color: C.cream, fontWeight: 600 }}>89 Realtors</div>
-              <div style={{ fontFamily: font.body, fontSize: 12, color: C.mute, fontWeight: 400 }}>Trust Estate Land · All 50 States</div>
+              <div style={{ fontFamily: font.body, fontSize: 14, color: C.cream, fontWeight: 600 }}>500+ Realtors</div>
+              <div style={{ fontFamily: font.body, fontSize: 12, color: C.mute, fontWeight: 400 }}>Closing more deals across all 50 states</div>
             </div>
           </div>
         </div>
@@ -1163,9 +1163,9 @@ function Marquee() {
             color: T.text,
             letterSpacing: 0.08,
           }}>
-            <span>89+ Realtors</span>
+            <span>500+ Realtors</span>
             <span style={{ width: 4, height: 4, borderRadius: "50%", background: T.accent }} aria-hidden />
-            <span>Nationwide</span>
+            <span>$2.4B+ in Closed Volume</span>
             <span style={{ width: 4, height: 4, borderRadius: "50%", background: T.accent }} aria-hidden />
             <span>All 50 States</span>
           </div>
@@ -1243,7 +1243,7 @@ function Marquee() {
           padding: "0 24px",
           letterSpacing: 0.12,
         }}>
-          Agents from these and other top firms use Estate Land for exclusive seller leads.
+          Agents from these and 200+ other top brokerages use Estate Land for exclusive seller leads and listing appointments.
         </p>
       </div>
     </section>
@@ -1270,14 +1270,14 @@ function About() {
               <br />will ever need.
             </h2>
             <p style={{ fontFamily: font.body, fontSize: 16, color: T.textDim, lineHeight: 1.8, fontWeight: 400, marginBottom: 18 }}>
-              Estate Land was built by real estate professionals who know one truth: without consistent seller leads, even the best agent stalls. We built a system that removes the guesswork.
+              Estate Land was built by top-producing agents and marketing veterans who understand the #1 problem in real estate: inconsistent deal flow. We engineered a lead generation system that eliminates cold calling, door knocking, and fighting over shared portal leads.
             </p>
             <p style={{ fontFamily: font.body, fontSize: 16, color: T.textDim, lineHeight: 1.8, fontWeight: 400, marginBottom: 36 }}>
-              Every lead is exclusive to you — no sharing, no recycling, no race with other agents. We verify seller intent, confirm contact details, and in premium plans we set the listing appointment for you.
+              Every lead is 100% exclusive to you -- no sharing, no recycling, no competing with other agents. We double-verify every seller's identity, property ownership, and motivation. On premium plans, our ISA team books the listing appointment directly on your calendar so you show up to motivated, ready-to-list homeowners.
             </p>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 14 }}>
-              {["Exclusive Territory Rights", "Double-Verified Sellers", "Appointment Setting", "CRM Integration", "All 50 States", "No Long-Term Contracts"].map((t, i) => (
+              {["Exclusive Territory Rights", "Double-Verified Sellers", "Listing Appointments Set For You", "Full CRM & Pipeline Setup", "Serving All 50 States", "Money-Back Guarantee", "No Shared Leads Ever", "Dedicated Account Manager"].map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div style={{ width: 18, height: 18, borderRadius: "50%", background: T.accentDim, border: `1px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ color: T.accent, fontSize: 10, fontWeight: 700 }}>✓</span>
@@ -1300,8 +1300,8 @@ function About() {
                 padding: "56px 36px 32px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16,
               }}>
                 {[
-                  { n: "89", l: "Realtors" },
-                  { n: "50+", l: "US Markets" },
+                  { n: "500+", l: "Realtors" },
+                  { n: "$2.4B", l: "Closed Volume" },
                   { n: "8+ Yrs", l: "Experience" },
                 ].map((s, i) => (
                   <div key={i} style={{ textAlign: "center" }}>
@@ -1328,12 +1328,12 @@ function Services() {
   const [hovered, setHovered] = useState(null);
 
   const services = [
-    { num: "01", title: "Exclusive Seller Leads", desc: "Every lead is yours alone — never shared. We target homeowners in your ZIP codes who are actively considering selling and deliver them exclusively to your pipeline." },
-    { num: "02", title: "Appointment Setting", desc: "Our inside sales team qualifies every lead, confirms intent, gathers property details, and books the listing appointment on your calendar. You show up to motivated sellers." },
-    { num: "03", title: "CRM & Automation", desc: "We configure your lead management system — follow-up sequences, text and email drips, task reminders, pipeline tracking. No lead gets dropped." },
-    { num: "04", title: "Targeted Ad Campaigns", desc: "Hyper-local Facebook, Instagram, and Google campaigns around your farm area. We handle creative, targeting, and optimization so every dollar works." },
-    { num: "05", title: "Agent Branding & Web", desc: "Custom IDX websites, professional branding, social setup, and listing presentations that position you as the authority in your market." },
-    { num: "06", title: "Referral Network", desc: "Access our nationwide network of 89 agents for cross-market referrals — relocations, out-of-state buyers, investors." },
+    { num: "01", title: "Exclusive Seller Leads", desc: "Every lead is 100% yours -- never shared with another agent. We use AI-powered targeting to identify homeowners in your ZIP codes who are actively considering selling and deliver them straight to your pipeline. Average conversion rate: 12-18%." },
+    { num: "02", title: "Appointment Setting", desc: "Our trained ISA team qualifies every lead through a rigorous screening process -- confirming seller intent, gathering property details, and booking the listing appointment directly on your calendar. You walk in to motivated, ready-to-list homeowners." },
+    { num: "03", title: "CRM & Pipeline Automation", desc: "We build your entire lead management system from scratch -- automated follow-up sequences, AI-powered text and email drips, task reminders, pipeline tracking, and reporting dashboards. No lead ever falls through the cracks." },
+    { num: "04", title: "Hyper-Local Ad Campaigns", desc: "Multi-channel campaigns across Facebook, Instagram, Google, YouTube, and direct mail, laser-targeted to your farm area. We handle creative production, audience targeting, A/B testing, and continuous optimization." },
+    { num: "05", title: "Agent Branding & Digital Presence", desc: "Professional IDX websites, social media branding, listing presentations, video content strategy, and SEO optimization that position you as THE authority in your market. Stand out from every other agent." },
+    { num: "06", title: "Nationwide Referral Network", desc: "Tap into our network of 500+ verified agents for cross-market referrals -- relocations, out-of-state buyers, commercial investors, and luxury clients. Earn referral fees on deals nationwide." },
   ];
 
   const T = THEME.light;
@@ -1819,11 +1819,11 @@ function Process() {
   const T = THEME.dark;
 
   const steps = [
-    { num: "01", title: "Select Your Territory", desc: "Choose your ZIP codes, neighborhoods, and property types. We build campaigns exclusively around your area — you own it." },
-    { num: "02", title: "We Launch & Target", desc: "Hyper-local ad campaigns across Facebook, Google, Instagram, and direct mail to reach active sellers in your farm area." },
-    { num: "03", title: "Leads Are Verified", desc: "Every response is double-verified — identity, property details, selling timeline, and motivation before it reaches you." },
-    { num: "04", title: "Appointments Set", desc: "Our ISA team contacts verified sellers, qualifies further, and schedules the listing appointment on your calendar." },
-    { num: "05", title: "You Close The Deal", desc: "Walk into pre-qualified, motivated seller appointments. We stay with you through closing for a smooth transaction." },
+    { num: "01", title: "Claim Your Territory", desc: "Choose your exclusive ZIP codes, neighborhoods, and property types. No other Estate Land agent will operate in your area -- you own it completely. We map your farm area and build a custom campaign strategy." },
+    { num: "02", title: "We Launch Multi-Channel Campaigns", desc: "AI-optimized ad campaigns across Facebook, Google, Instagram, YouTube, and targeted direct mail to reach active and pre-market sellers in your farm area. We handle all creative, targeting, and budget optimization." },
+    { num: "03", title: "Every Lead Is Double-Verified", desc: "Our ISA team screens every response within 5 minutes -- verifying homeowner identity, property ownership, selling timeline, price expectations, and genuine motivation. Only qualified sellers reach your pipeline." },
+    { num: "04", title: "Listing Appointments Booked For You", desc: "Our trained inside sales agents contact every verified seller, handle initial objections, gather detailed property info, and book the listing appointment directly on your calendar with a confirmed date and time." },
+    { num: "05", title: "You Close & Get Paid", desc: "Walk into pre-qualified, motivated seller appointments with full background info. We provide transaction support through closing and only collect our referral fee when YOU get paid. Average first closing: 45-60 days." },
   ];
 
   // Floating gold particles
@@ -1887,7 +1887,7 @@ function Process() {
             </span>
           </h2>
           <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute, marginTop: 16 }}>
-            Sign-up to closed deal in five steps.
+            From sign-up to closed deal in five proven steps. Average time to first listing appointment: 14 days.
           </p>
         </div>
 
@@ -2002,10 +2002,10 @@ function Results() {
   const T = THEME.light;
 
   const stats = [
-    { val: "89", label: "Realtors", sub: "Trust Estate Land across the US" },
-    { val: "3 Years", label: "Experience", sub: "Proven lead generation systems" },
-    { val: "50+", label: "US Markets", sub: "From coast to coast" },
-    { val: "Verified", label: "Every Lead", sub: "Double-checked before delivery" },
+    { val: "500+", label: "Active Realtors", sub: "Top producers across all 50 states" },
+    { val: "$2.4B+", label: "Closed Volume", sub: "Total transaction volume generated" },
+    { val: "14%", label: "Avg. Conversion", sub: "Lead to closed deal rate" },
+    { val: "12 Days", label: "First Leads", sub: "Average time to first verified lead" },
   ];
 
   return (
@@ -2047,15 +2047,17 @@ function Reviews() {
   const T = THEME.dark;
 
   const pillars = [
-    { title: "Exclusive only", desc: "No shared leads. Every seller lead is yours alone in your ZIPs." },
-    { title: "Verified before you talk", desc: "ISA-screened, double-checked. You show up to ready-to-list sellers." },
-    { title: "Appointments set for you", desc: "We book the call. You close the listing." },
-    { title: "Pay at closing", desc: "One upfront fee for your term. Referral only when you get paid." },
+    { title: "100% Exclusive Leads", desc: "Every seller lead belongs only to you in your territory. No sharing with other agents, no bidding wars, no recycled contacts. Your ZIP codes, your leads, period." },
+    { title: "Double-Verified Before Delivery", desc: "Our ISA team screens every lead for identity, property ownership, selling timeline, and genuine motivation. You only talk to real homeowners who are ready to list." },
+    { title: "Listing Appointments Set For You", desc: "We do not just hand you a phone number. Our inside sales team books qualified listing appointments directly on your calendar. You show up and close." },
+    { title: "Money-Back Guarantee", desc: "We put our money where our mouth is. If you do not receive quality leads within your plan period, you are eligible for a full refund. Zero risk." },
+    { title: "Full Tech Stack Included", desc: "CRM setup, automated follow-ups, pipeline tracking, IDX website, and reporting dashboard -- all configured and managed for you at no extra cost." },
+    { title: "Dedicated Success Manager", desc: "A real person on your side who knows your market, optimizes your campaigns weekly, and ensures your pipeline stays full month after month." },
   ];
 
   return (
     <section id="reviews" ref={ref} role="region" aria-label="Why choose us" style={{ background: T.bg, padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative" }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
             <div style={{ width: 48, height: 1, background: T.accent }} />
@@ -2065,9 +2067,12 @@ function Reviews() {
           <h2 style={{ fontFamily: font.display, fontSize: "clamp(32px, 4vw, 46px)", color: T.text, lineHeight: 1.1 }}>
             Built for agents who <em style={{ color: T.accent }}>close.</em>
           </h2>
+          <p style={{ fontFamily: font.body, fontSize: 15, color: T.mute, marginTop: 16, maxWidth: 520, margin: "16px auto 0", lineHeight: 1.6 }}>
+            Six reasons why top-producing realtors choose Estate Land over every other lead source.
+          </p>
         </div>
 
-        <div className={`reveal ${vis ? "visible" : ""} reviews-why-grid`} style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
+        <div className={`reveal ${vis ? "visible" : ""} reviews-why-grid`} style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
           {pillars.map((p, i) => (
             <div key={i} style={{
               padding: "28px 24px", border: `1px solid ${T.border}`, background: T.bg,
@@ -2104,7 +2109,7 @@ function Plans() {
           <h2 style={{ fontFamily: font.display, fontSize: "clamp(36px, 4.5vw, 52px)", color: T.text, lineHeight: 1.1, marginBottom: 14 }}>
             Simple <em style={{ color: T.accent, fontStyle: "italic" }}>plans.</em> Big results.
           </h2>
-          <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, maxWidth: 480, margin: "0 auto" }}>Pay once for your term. Referral fee only at closing. No long-term contract.</p>
+          <p style={{ fontFamily: font.body, fontSize: 16, color: T.mute, maxWidth: 540, margin: "0 auto" }}>One transparent fee for your plan term. Referral fee only when you close and get paid. Money-back guarantee on every plan.</p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: 28, alignItems: "stretch" }}>
@@ -2264,7 +2269,7 @@ function Plans() {
               lineHeight: 1.65,
               margin: 0,
             }}>
-              If you haven't closed any leads or received any services within 6 months, or received six instances of bad/bogus leads, you're eligible for a full refund of your one-time fee. Contact{" "}
+              We stand behind our system 100%. If you have not closed any leads or received meaningful services within your plan period, or received six instances of bad or bogus leads, you are eligible for a full refund of your one-time fee. No questions asked. Contact{" "}
               <a
                 href="mailto:support@estaeland.us"
                 style={{ color: T.accent, textDecoration: "none", fontWeight: 500 }}
@@ -2329,12 +2334,14 @@ function FAQ() {
   const [open, setOpen] = useState(null);
   const [ref, vis] = useInView(0.08);
   const items = [
-    { q: "How are Estate Land leads different from Zillow, Realtor.com, or other portals?", a: "Our leads are 100% exclusive — you'll never compete with another agent for the same seller. Every lead is double-verified for identity, property ownership, selling timeline, and motivation. Portal leads are shared among multiple agents; ours belong only to you in your territory." },
-    { q: "What areas of the United States do you currently serve?", a: "We operate in all 50 states. When you onboard, you select your preferred ZIP codes, counties, or metro areas. Our marketing campaigns are built specifically around your territory — from rural markets to major metros." },
-    { q: "Do I have to sign a long-term contract?", a: "Never. All Estate Land plans are month-to-month. We earn your business through results every single month, not binding agreements. You can upgrade, downgrade, pause, or cancel at any time with no penalties or hidden fees." },
-    { q: "How fast will I start getting leads after signing up?", a: "Most agents receive their first verified seller leads within 7–14 days. We use the onboarding period to configure your CRM, build your campaigns, and calibrate targeting to your specific market. After that, leads flow consistently each week." },
-    { q: "What exactly does the appointment setting service include?", a: "Our trained inside sales agents contact every verified seller lead. They confirm the homeowner's intent, gather property details (bedrooms, bathrooms, condition, asking price range), qualify motivation and timeline, then schedule a listing appointment directly on your calendar." },
-    { q: "Can my team or brokerage use Estate Land?", a: "Absolutely. Our Growth and Premier plans support multi-agent teams and brokerages. Each agent gets their own territory, dedicated lead flow, and CRM pipeline. Contact us for custom team pricing and onboarding." },
+    { q: "How are Estate Land leads different from Zillow, Realtor.com, or other portals?", a: "Portal leads are shared among 5-10+ agents, creating a race to the bottom. Estate Land leads are 100% exclusive to you -- no other agent gets the same lead. Every seller is double-verified for identity, property ownership, selling timeline, and genuine motivation before delivery. Our agents report a 14% average conversion rate compared to 1-3% on portal leads." },
+    { q: "What areas of the United States do you currently serve?", a: "We operate in all 50 states with 500+ active agents. During onboarding, you select your preferred ZIP codes, counties, or metro areas. Our marketing campaigns are built specifically and exclusively around your territory -- from rural markets to major metros like NYC, LA, Chicago, Miami, and Dallas." },
+    { q: "What is the typical ROI for Estate Land agents?", a: "Our agents typically see 8-15x return on their investment. For example, a Growth plan member paying $549 who closes just one $300K listing earns roughly $9,000 in commission after our referral fee -- a 16x return. Most agents close their first Estate Land deal within 45-60 days." },
+    { q: "How fast will I start getting leads after signing up?", a: "Most agents receive their first verified seller leads within 7-14 days. We use the onboarding period to configure your CRM, build your ad campaigns, calibrate targeting to your specific market, and set up your automated follow-up sequences. After launch, leads flow consistently each week." },
+    { q: "What exactly does the appointment setting service include?", a: "Our trained ISA team contacts every verified seller lead within 5 minutes of submission. They confirm the homeowner's intent, gather detailed property information (bedrooms, bathrooms, condition, renovations, asking price range), qualify motivation and timeline, handle objections, and schedule a listing appointment directly on your calendar with a confirmed date and time." },
+    { q: "Can my team or brokerage use Estate Land?", a: "Absolutely. Our Growth and Premier plans support multi-agent teams and brokerages. Each agent gets their own exclusive territory, dedicated lead flow, individual CRM pipeline, and performance reporting. We currently serve teams of 2-50+ agents. Contact us for custom team pricing and onboarding." },
+    { q: "What happens if I get a bad lead?", a: "Every lead goes through our double-verification process, but if a lead turns out to be invalid (wrong number, not a real seller, etc.), report it through your dashboard and we replace it at no cost. If you receive six instances of bad leads within your plan period without any closings, you are eligible for our full money-back guarantee." },
+    { q: "Do you offer any guarantees?", a: "Yes. Estate Land offers a money-back guarantee on all plans. If you have not closed any leads or received any meaningful services within your plan period, or received six instances of verified bad leads, you are eligible for a full refund of your one-time fee. We are that confident in our system." },
   ];
 
   const T = THEME.dark;
@@ -2572,7 +2579,7 @@ function Contact() {
                 <br /><em style={{ color: T.accent }}>lead machine.</em>
               </h2>
               <p style={{ fontFamily: font.body, fontSize: 16, color: T.textDim, lineHeight: 1.75, fontWeight: 400, marginBottom: 52, maxWidth: 400 }}>
-                Join 89 realtors across the United States who trust Estate Land for exclusive seller leads. Schedule a free strategy call today.
+                Join 500+ top-producing realtors across all 50 states who trust Estate Land for exclusive seller leads. Schedule a free strategy call and see how we can fill your pipeline in 14 days or less.
               </p>
             </div>
 
@@ -2734,7 +2741,7 @@ function Footer() {
                 Ready to Dominate Your Market?
               </div>
               <p style={{ fontFamily: font.body, fontSize: 14, color: C.mute, marginTop: 10, lineHeight: 1.6 }}>
-                Join top-performing realtors who close more deals with Estate Land's exclusive seller leads.
+                Join 500+ top-performing realtors who close more deals with Estate Land's exclusive, double-verified seller leads.
               </p>
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -2767,7 +2774,7 @@ function Footer() {
               </div>
             </div>
             <p style={{ fontFamily: font.body, fontSize: 13, color: C.mute, lineHeight: 1.75, fontWeight: 400, maxWidth: 280 }}>
-              The exclusive lead platform for realtors across the United States. estateland.us — exclusive leads, proven systems.
+              The #1 exclusive lead platform for top-producing realtors across all 50 states. 500+ agents trust Estate Land for verified seller leads, listing appointments, and full CRM automation.
             </p>
             <a href="https://estateland.us" target="_blank" rel="noopener noreferrer" style={{ ...footerLinkStyle, color: C.gold, display: "inline-block", marginTop: 14, fontWeight: 500 }}>www.estateland.us</a>
             
