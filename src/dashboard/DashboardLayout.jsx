@@ -131,6 +131,11 @@ export default function DashboardLayout() {
 
   return (
     <div style={{ minHeight: "100vh", background: C.surface, position: "relative", display: "flex", flexDirection: "column" }}>
+      {/* Premium ambient background */}
+      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.4 }}>
+        <div style={{ position: "absolute", top: "-10%", right: "-5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,162,39,0.04) 0%, transparent 70%)" }} />
+        <div style={{ position: "absolute", bottom: "-10%", left: "-5%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,162,39,0.03) 0%, transparent 70%)" }} />
+      </div>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         .sidebar-link { transition: all 0.2s cubic-bezier(.22,1,.36,1); }

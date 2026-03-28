@@ -129,6 +129,15 @@ function Styles() {
       @keyframes fadeIn{from{opacity:0}to{opacity:1}}
       @keyframes expandLine{from{width:0}to{width:64px}}
       @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+      @keyframes premiumGlow{0%,100%{box-shadow:0 0 20px rgba(201,162,39,0.15),0 0 60px rgba(201,162,39,0.05)}50%{box-shadow:0 0 40px rgba(201,162,39,0.25),0 0 80px rgba(201,162,39,0.1)}}
+      @keyframes premiumShine{0%{background-position:-200% center}100%{background-position:200% center}}
+      @keyframes premiumBorderGlow{0%,100%{border-color:rgba(201,162,39,0.15)}50%{border-color:rgba(201,162,39,0.4)}}
+      @keyframes premiumFloat{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-6px) rotate(0.5deg)}50%{transform:translateY(-10px) rotate(0deg)}75%{transform:translateY(-4px) rotate(-0.5deg)}}
+      @keyframes goldParticle{0%{opacity:0;transform:translateY(20px) scale(0.5)}50%{opacity:1;transform:translateY(-10px) scale(1)}100%{opacity:0;transform:translateY(-40px) scale(0.3)}}
+      .premium-card{transition:all 0.5s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+      .premium-card::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:100%;background:linear-gradient(90deg,transparent,rgba(201,162,39,0.04),transparent);transition:left 0.8s ease}
+      .premium-card:hover::before{left:100%}
+      .premium-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.1),0 0 0 1px rgba(201,162,39,0.2)}
       @keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
       @keyframes marqueeScrollReverse{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
       @keyframes marqueeShine{0%{opacity:0.3}50%{opacity:0.6}100%{opacity:0.3}}
@@ -954,11 +963,17 @@ function Hero() {
             opacity: loaded ? 1 : 0, transition: "all 0.9s ease 1s",
           }}>
             <div style={{ display: "flex" }}>
-              {[1, 2, 3, 4].map((i) => (
+              {[
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+                "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
+              ].map((url, i) => (
                 <div key={i} style={{
-                  width: 34, height: 34, borderRadius: "50%", border: `2px solid ${C.surface}`,
-                  marginLeft: i > 1 ? -8 : 0,
-                  background: `url(https://i.pravatar.cc/80?img=${i + 10})`, backgroundSize: "cover",
+                  width: 36, height: 36, borderRadius: "50%", border: `2px solid ${C.surface}`,
+                  marginLeft: i > 0 ? -10 : 0,
+                  background: `url(${url})`, backgroundSize: "cover",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
                 }} />
               ))}
             </div>
@@ -1277,7 +1292,7 @@ function About() {
             </p>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 14 }}>
-              {["Exclusive Territory Rights", "Double-Verified Sellers", "Listing Appointments Set For You", "Full CRM & Pipeline Setup", "Serving All 50 States", "Money-Back Guarantee", "No Shared Leads Ever", "Dedicated Account Manager"].map((t, i) => (
+              {["Exclusive Territory Rights", "Double-Verified Sellers", "Appointment Setting", "CRM Integration", "All 50 States", "No Long-Term Contracts"].map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div style={{ width: 18, height: 18, borderRadius: "50%", background: T.accentDim, border: `1px solid ${T.accent}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ color: T.accent, fontSize: 10, fontWeight: 700 }}>✓</span>
@@ -1291,9 +1306,21 @@ function About() {
           <div style={{ position: "relative" }}>
             <div style={{
               width: "100%", paddingTop: "108%", position: "relative",
-              backgroundImage: "url(https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=85)",
+              backgroundImage: "url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=90)",
               backgroundSize: "cover", backgroundPosition: "center",
+              borderRadius: 4,
+              animation: "premiumBorderGlow 4s ease-in-out infinite",
+              border: `1px solid rgba(201,162,39,0.15)`,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(201,162,39,0.08)",
             }}>
+              {/* Premium overlay shimmer */}
+              <div style={{
+                position: "absolute", inset: 0, zIndex: 1,
+                background: "linear-gradient(135deg, transparent 40%, rgba(201,162,39,0.06) 50%, transparent 60%)",
+                backgroundSize: "200% 200%",
+                animation: "premiumShine 6s ease-in-out infinite",
+                pointerEvents: "none",
+              }} />
               <div style={{
                 position: "absolute", bottom: 0, left: 0, right: 0,
                 background: `linear-gradient(to top, ${T.bg}ee, transparent)`,
@@ -1311,7 +1338,8 @@ function About() {
                 ))}
               </div>
             </div>
-            <div style={{ position: "absolute", top: -16, left: -16, width: 52, height: 52, borderTop: `2px solid ${T.accent}`, borderLeft: `2px solid ${T.accent}` }} />
+            <div style={{ position: "absolute", top: -16, left: -16, width: 52, height: 52, borderTop: `2px solid ${T.accent}`, borderLeft: `2px solid ${T.accent}`, animation: "premiumBorderGlow 3s ease-in-out infinite" }} />
+            <div style={{ position: "absolute", bottom: -12, right: -12, width: 40, height: 40, borderBottom: `2px solid ${T.accent}`, borderRight: `2px solid ${T.accent}`, animation: "premiumBorderGlow 3s ease-in-out infinite 1.5s" }} />
           </div>
         </div>
       </div>
@@ -2024,15 +2052,22 @@ function Results() {
 
         <div className="stats-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))", gap: 24 }}>
           {stats.map((s, i) => (
-            <div key={i} className={`reveal ${vis ? "visible" : ""}`} style={{
-              background: "rgba(255,255,255,0.8)", padding: "40px 28px", textAlign: "center",
-              border: `1px solid ${T.border}`,
-              transition: "opacity 0.6s ease, transform 0.6s ease",
+            <div key={i} className={`reveal premium-card ${vis ? "visible" : ""}`} style={{
+              background: "rgba(255,255,255,0.9)", padding: "44px 32px", textAlign: "center",
+              border: `1px solid rgba(201,162,39,0.15)`,
+              borderRadius: 16,
+              transition: "all 0.5s cubic-bezier(.22,1,.36,1)",
               transitionDelay: `${i * 0.1}s`,
+              position: "relative",
+              overflow: "hidden",
             }}>
-              <div style={{ fontFamily: font.display, fontSize: 40, color: T.accent, lineHeight: 1, marginBottom: 10, fontWeight: 500 }}>{s.val}</div>
-              <div style={{ fontFamily: font.body, fontSize: 14, color: T.text, fontWeight: 600, marginBottom: 6 }}>{s.label}</div>
-              <div style={{ fontFamily: font.body, fontSize: 12, color: T.mute, fontWeight: 400 }}>{s.sub}</div>
+              {/* Top accent line */}
+              <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 2, background: `linear-gradient(90deg, transparent, ${T.accent}, transparent)`, borderRadius: 1 }} />
+              {/* Radial glow */}
+              <div style={{ position: "absolute", top: -30, left: "50%", transform: "translateX(-50%)", width: 120, height: 120, borderRadius: "50%", background: `radial-gradient(circle, rgba(201,162,39,0.08) 0%, transparent 70%)`, pointerEvents: "none" }} />
+              <div style={{ fontFamily: font.display, fontSize: 48, color: T.accent, lineHeight: 1, marginBottom: 12, fontWeight: 600, position: "relative", textShadow: "0 2px 12px rgba(166,124,0,0.15)" }}>{s.val}</div>
+              <div style={{ fontFamily: font.body, fontSize: 14, color: T.text, fontWeight: 700, marginBottom: 6, letterSpacing: 0.3, position: "relative" }}>{s.label}</div>
+              <div style={{ fontFamily: font.body, fontSize: 12, color: T.mute, fontWeight: 400, position: "relative" }}>{s.sub}</div>
             </div>
           ))}
         </div>
@@ -2074,12 +2109,21 @@ function Reviews() {
 
         <div className={`reveal ${vis ? "visible" : ""} reviews-why-grid`} style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
           {pillars.map((p, i) => (
-            <div key={i} style={{
-              padding: "28px 24px", border: `1px solid ${T.border}`, background: T.bg,
+            <div key={i} className="premium-card" style={{
+              padding: "32px 28px", border: `1px solid ${T.border}`, background: T.bg,
               borderLeft: `3px solid ${T.accent}`,
-            }}>
-              <h3 style={{ fontFamily: font.display, fontSize: 18, color: T.text, marginBottom: 10, fontWeight: 600 }}>{p.title}</h3>
-              <p style={{ fontFamily: font.body, fontSize: 14, color: T.textDim, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
+              borderRadius: 12,
+              position: "relative",
+              overflow: "hidden",
+              transition: "all 0.4s cubic-bezier(.22,1,.36,1)",
+            }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(201,162,39,0.35)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(201,162,39,0.08)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              {/* Hover glow */}
+              <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,162,39,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+              <h3 style={{ fontFamily: font.display, fontSize: 20, color: T.text, marginBottom: 10, fontWeight: 600, position: "relative" }}>{p.title}</h3>
+              <p style={{ fontFamily: font.body, fontSize: 14, color: T.textDim, lineHeight: 1.7, margin: 0, position: "relative" }}>{p.desc}</p>
             </div>
           ))}
         </div>
@@ -2565,7 +2609,7 @@ function Contact() {
         }}>
           <div style={{
             position: "absolute", inset: 0,
-            backgroundImage: "url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&q=80)",
+            backgroundImage: "url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&q=85)",
             backgroundSize: "cover", backgroundPosition: "center", opacity: 0.08,
           }} />
           <div style={{ position: "relative", zIndex: 2 }}>
