@@ -1836,26 +1836,52 @@ const PROCESS_STEP_ICON_PATHS = [
   "M18 9V7c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2c-1.65 0-3 1.35-3 3v5c0 1.65 1.35 3 3 3h10c1.65 0 3-1.35 3-3v-5c0-1.65-1.35-3-3-3zm-2 0h-4V7h4v2zm4 8c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-5c0-.55.45-1 1-1h1v1c0 .55.45 1 1 1s1-.45 1-1v-1h4v1c0 .55.45 1 1 1s1-.45 1-1v-1h1c.55 0 1 .45 1 1v5z",
 ];
 
-// ─── PROCESS — Real map + animated steps ───
+// ─── PROCESS — Premium animated timeline with icons ───
 function Process() {
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
-  const [inViewRef, vis] = useInView(0.1);
+  const [inViewRef, vis] = useInView(0.08);
   const setSectionRef = useCallback((el) => {
     sectionRef.current = el;
     if (inViewRef) inViewRef.current = el;
   }, [inViewRef]);
   const T = THEME.dark;
+  const [hoveredStep, setHoveredStep] = useState(null);
 
   const steps = [
-    { num: "01", title: "Claim Your Territory", desc: "Choose your exclusive ZIP codes, neighborhoods, and property types. No other Estate Land agent will operate in your area -- you own it completely. We map your farm area and build a custom campaign strategy." },
-    { num: "02", title: "We Launch Multi-Channel Campaigns", desc: "AI-optimized ad campaigns across Facebook, Google, Instagram, YouTube, and targeted direct mail to reach active and pre-market sellers in your farm area. We handle all creative, targeting, and budget optimization." },
-    { num: "03", title: "Every Lead Is Double-Verified", desc: "Our ISA team screens every response within 5 minutes -- verifying homeowner identity, property ownership, selling timeline, price expectations, and genuine motivation. Only qualified sellers reach your pipeline." },
-    { num: "04", title: "Listing Appointments Booked For You", desc: "Our trained inside sales agents contact every verified seller, handle initial objections, gather detailed property info, and book the listing appointment directly on your calendar with a confirmed date and time." },
-    { num: "05", title: "You Close & Get Paid", desc: "Walk into pre-qualified, motivated seller appointments with full background info. We provide transaction support through closing and only collect our referral fee when YOU get paid. Average first closing: 45-60 days." },
+    {
+      num: "01", title: "Claim Your Territory", time: "Day 1",
+      desc: "Choose your exclusive ZIP codes, neighborhoods, and property types. No other Estate Land agent will operate in your area -- you own it completely.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+      stat: "Your ZIPs",
+    },
+    {
+      num: "02", title: "We Launch Campaigns", time: "Days 2-7",
+      desc: "AI-optimized campaigns across Facebook, Google, Instagram, YouTube, and targeted direct mail laser-focused on active sellers in your farm area.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+      stat: "6 Channels",
+    },
+    {
+      num: "03", title: "Leads Double-Verified", time: "Within 5 min",
+      desc: "Our ISA team screens every response -- verifying homeowner identity, property ownership, selling timeline, price expectations, and genuine motivation.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>,
+      stat: "100% Verified",
+    },
+    {
+      num: "04", title: "Appointments Booked", time: "Days 7-14",
+      desc: "Our trained ISA contacts every verified seller, handles objections, gathers property details, and books the listing appointment directly on your calendar.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>,
+      stat: "On Your Calendar",
+    },
+    {
+      num: "05", title: "You Close & Get Paid", time: "Days 45-60",
+      desc: "Walk into pre-qualified, motivated seller appointments with full background info. We only collect our referral fee when YOU get paid.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>,
+      stat: "8-15x ROI",
+    },
   ];
 
-  // Floating gold particles
+  // Animated floating gold particles
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !vis) return;
@@ -1863,148 +1889,273 @@ function Process() {
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
-    Array.from({ length: 28 }, () => ({
+    const particles = Array.from({ length: 50 }, () => ({
       x: Math.random() * rect.width,
       y: Math.random() * rect.height,
-      r: Math.random() * 1.5 + 0.5,
-      opacity: Math.random() * 0.12 + 0.04,
-    })).forEach((p) => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(201, 162, 39, ${p.opacity})`;
-      ctx.fill();
-    });
+      r: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.15 + 0.03,
+      speed: Math.random() * 0.3 + 0.1,
+      drift: (Math.random() - 0.5) * 0.2,
+    }));
+    let animId;
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.y -= p.speed;
+        p.x += p.drift;
+        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(201,162,39,${p.opacity})`;
+        ctx.fill();
+      });
+      animId = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => cancelAnimationFrame(animId);
   }, [vis]);
 
   return (
     <section id="process" ref={setSectionRef}
       style={{
         background: T.bg,
-        padding: "clamp(60px, 10vw, 120px) clamp(20px, 5vw, 24px) clamp(80px, 12vw, 140px)",
+        padding: "clamp(80px, 10vw, 140px) clamp(20px, 5vw, 40px) clamp(100px, 12vw, 160px)",
         position: "relative",
         overflow: "hidden",
         minHeight: "100dvh",
       }}
     >
-      {/* Deep navy gradient overlay */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "linear-gradient(180deg, rgba(11,15,20,0.4) 0%, rgba(15,25,40,0.6) 50%, rgba(11,15,20,0.8) 100%)",
-        pointerEvents: "none",
-      }} />
+      <style>{`
+        @keyframes processLineGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+        @keyframes processIconPop { 0% { opacity: 0; transform: scale(0.3); } 60% { transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes processRingPulse { 0%,100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.4); opacity: 0; } }
+        @keyframes processGlowPulse { 0%,100% { box-shadow: 0 0 20px rgba(201,162,39,0.1), 0 0 40px rgba(201,162,39,0.05); } 50% { box-shadow: 0 0 30px rgba(201,162,39,0.2), 0 0 60px rgba(201,162,39,0.1); } }
+        .process-premium-card { transition: all 0.45s cubic-bezier(.22,1,.36,1); }
+        .process-premium-card:hover { transform: translateY(-6px) !important; border-color: rgba(201,162,39,0.5) !important; box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 32px rgba(201,162,39,0.12) !important; }
+        .process-premium-card:hover .process-icon-wrap { background: rgba(201,162,39,0.15) !important; border-color: rgba(201,162,39,0.5) !important; }
+        .process-premium-card:hover .process-stat-badge { background: rgba(201,162,39,0.2) !important; color: ${C.gold} !important; }
+        @media (max-width: 900px) {
+          .process-premium-grid { grid-template-columns: 1fr !important; max-width: 520px !important; margin: 0 auto !important; }
+          .process-premium-timeline { display: none !important; }
+        }
+      `}</style>
 
-      {/* Floating particles */}
-      <canvas ref={canvasRef} style={{
-        position: "absolute", inset: 0, width: "100%", height: "100%",
-        opacity: 0.7, pointerEvents: "none",
-      }} />
+      {/* Background layers */}
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(8,8,8,0.3) 0%, rgba(11,15,22,0.7) 40%, rgba(8,10,16,0.9) 100%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "15%", left: "50%", transform: "translateX(-50%)", width: 800, height: 800, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,162,39,0.04) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+      {/* Animated particles */}
+      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.8, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
-        {/* Hero headline */}
-        <div style={{ textAlign: "center", marginBottom: 64, paddingTop: 20 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-            <div style={{ width: 48, height: 1, background: T.accent }} />
-            <span style={{ fontFamily: font.body, fontSize: 10, color: T.accent, letterSpacing: 0.15, textTransform: "uppercase", fontWeight: 600 }}>The Process</span>
-            <div style={{ width: 48, height: 1, background: T.accent }} />
+        {/* Section header */}
+        <div style={{ textAlign: "center", marginBottom: 72, paddingTop: 20 }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 16, marginBottom: 28,
+            opacity: vis ? 1 : 0, transform: vis ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.8s cubic-bezier(.22,1,.36,1)",
+          }}>
+            <div style={{ width: 56, height: 1, background: `linear-gradient(90deg, transparent, ${T.accent})` }} />
+            <span style={{ fontFamily: font.body, fontSize: 11, color: T.accent, letterSpacing: 2, textTransform: "uppercase", fontWeight: 700 }}>How It Works</span>
+            <div style={{ width: 56, height: 1, background: `linear-gradient(90deg, ${T.accent}, transparent)` }} />
           </div>
-          <h2 style={{ fontFamily: font.display, fontSize: "clamp(36px, 5vw, 56px)", color: T.text, lineHeight: 1.15 }}>
-            Own The Map.
+          <h2 style={{
+            fontFamily: font.display, fontSize: "clamp(38px, 5vw, 62px)", color: T.text, lineHeight: 1.08, marginBottom: 20,
+            opacity: vis ? 1 : 0, transform: vis ? "translateY(0)" : "translateY(30px)",
+            transition: "all 0.9s cubic-bezier(.22,1,.36,1) 0.1s",
+          }}>
+            From Sign-Up to
             <br />
             <span style={{ color: T.accent, position: "relative", display: "inline-block" }}>
-              Not Just The Leads.
-              <span style={{ position: "absolute", bottom: -4, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${T.accent}, transparent)`, opacity: 0.7 }} />
+              Closed Deal
+              <span style={{ position: "absolute", bottom: -6, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent, ${T.accent}, transparent)`, borderRadius: 2 }} />
             </span>
+            {" "}in 5 Steps
           </h2>
-          <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute, marginTop: 16 }}>
-            From sign-up to closed deal in five proven steps. Average time to first listing appointment: 14 days.
+          <p style={{
+            fontFamily: font.body, fontSize: 16, color: T.mute, marginTop: 16, maxWidth: 540, margin: "16px auto 0", lineHeight: 1.7,
+            opacity: vis ? 1 : 0, transition: "all 0.9s cubic-bezier(.22,1,.36,1) 0.2s",
+          }}>
+            A proven system used by 500+ realtors to go from territory selection to closing in as little as 45 days. Average time to first listing appointment: 14 days.
           </p>
+
+          {/* Timeline dots preview */}
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 32,
+            opacity: vis ? 1 : 0, transition: "all 0.8s ease 0.3s",
+          }}>
+            {steps.map((_, i) => (
+              <Fragment key={i}>
+                <div style={{
+                  width: hoveredStep === i ? 14 : 10, height: hoveredStep === i ? 14 : 10, borderRadius: "50%",
+                  background: hoveredStep === i ? T.accent : hoveredStep !== null && hoveredStep > i ? T.accent : "rgba(201,162,39,0.3)",
+                  transition: "all 0.3s cubic-bezier(.22,1,.36,1)",
+                  boxShadow: hoveredStep === i ? `0 0 12px ${T.accent}` : "none",
+                }} />
+                {i < steps.length - 1 && (
+                  <div style={{
+                    width: 32, height: 2, borderRadius: 1,
+                    background: hoveredStep !== null && hoveredStep > i ? `linear-gradient(90deg, ${T.accent}, ${T.accent})` : `linear-gradient(90deg, rgba(201,162,39,0.3), rgba(201,162,39,0.1))`,
+                    transition: "all 0.3s ease",
+                  }} />
+                )}
+              </Fragment>
+            ))}
+          </div>
         </div>
 
-        {/* USA map — clean outline, theme-styled */}
+        {/* USA map */}
         <ProcessMap T={T} />
 
-        {/* Steps — vertical flow: 1 → 2 → 3 → 4 → 5 */}
-        <div className="process-steps-flow" style={{ maxWidth: 680, margin: "0 auto 80px" }}>
-          {steps.map((s, i) => (
-            <div
-              key={i}
-              className="process-step-card"
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 24,
-                position: "relative",
-                opacity: 0,
-                transform: "translateY(24px)",
-                animation: vis ? `processStepIn 0.6s cubic-bezier(0.22,1,0.36,1) ${0.2 + i * 0.1}s forwards` : "none",
-              }}
-            >
-              {/* Vertical connector line (except after last) */}
-              {i < steps.length - 1 && (
-                <div className="process-step-connector" style={{
-                  position: "absolute", left: 27, top: 56, bottom: -24, width: 2,
-                  background: `linear-gradient(to bottom, ${T.accent}, ${T.border})`,
-                  borderRadius: 1,
-                }} />
-              )}
-              {/* Step number circle */}
-              <div style={{
-                flexShrink: 0, width: 56, height: 56, borderRadius: "50%", border: `2px solid ${T.accent}`,
-                background: "rgba(201,162,39,0.08)", display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: font.body, fontSize: 14, fontWeight: 700, color: T.accent,
-              }}>
-                {s.num}
-              </div>
-              {/* Content */}
-              <div style={{
-                flex: 1, paddingBottom: 40,
-                background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)",
-                border: `1px solid ${T.border}`, borderRadius: 12, padding: "24px 28px",
-                transition: "border-color 0.3s, box-shadow 0.3s, background 0.3s",
-              }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(201,162,39,0.4)";
-                  e.currentTarget.style.boxShadow = "0 0 24px rgba(201,162,39,0.1)";
-                  e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = T.border;
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+        {/* Step cards — premium grid */}
+        <div className="process-premium-grid" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 16, marginBottom: 72 }}>
+          {steps.map((s, i) => {
+            const isHov = hoveredStep === i;
+            return (
+              <div
+                key={i}
+                className="process-premium-card"
+                onMouseEnter={() => setHoveredStep(i)}
+                onMouseLeave={() => setHoveredStep(null)}
+                style={{
+                  background: isHov ? "rgba(201,162,39,0.06)" : "rgba(255,255,255,0.03)",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  border: `1px solid ${isHov ? "rgba(201,162,39,0.4)" : T.border}`,
+                  borderRadius: 20,
+                  padding: "28px 24px 24px",
+                  position: "relative",
+                  overflow: "hidden",
+                  opacity: 0,
+                  transform: "translateY(32px)",
+                  animation: vis ? `processStepIn 0.7s cubic-bezier(0.22,1,0.36,1) ${0.3 + i * 0.12}s forwards` : "none",
                 }}
               >
-                <p style={{ fontFamily: font.body, fontSize: 10, color: T.accent, letterSpacing: 0.2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Step {s.num}</p>
-                <h3 style={{ fontFamily: font.display, fontSize: 20, color: T.text, marginBottom: 12, lineHeight: 1.25, fontWeight: 600 }}>{s.title}</h3>
-                <p style={{ fontFamily: font.body, fontSize: 14, color: T.mute, lineHeight: 1.7, margin: 0 }}>{s.desc}</p>
+                {/* Top accent bar */}
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, height: 3,
+                  background: `linear-gradient(90deg, transparent 10%, ${T.accent} 50%, transparent 90%)`,
+                  opacity: isHov ? 1 : 0.3,
+                  transition: "opacity 0.4s",
+                }} />
+
+                {/* Radial glow on hover */}
+                <div style={{
+                  position: "absolute", top: -40, left: "50%", transform: "translateX(-50%)",
+                  width: 160, height: 160, borderRadius: "50%",
+                  background: `radial-gradient(circle, rgba(201,162,39,${isHov ? 0.1 : 0.02}) 0%, transparent 70%)`,
+                  transition: "all 0.4s", pointerEvents: "none",
+                }} />
+
+                {/* Icon container */}
+                <div className="process-icon-wrap" style={{
+                  width: 56, height: 56, borderRadius: 16,
+                  background: isHov ? "rgba(201,162,39,0.12)" : "rgba(201,162,39,0.06)",
+                  border: `1px solid ${isHov ? "rgba(201,162,39,0.4)" : "rgba(201,162,39,0.15)"}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: T.accent, marginBottom: 20, position: "relative",
+                  transition: "all 0.4s cubic-bezier(.22,1,.36,1)",
+                  animation: vis ? `processIconPop 0.5s cubic-bezier(.22,1,.36,1) ${0.5 + i * 0.12}s both` : "none",
+                }}>
+                  {s.icon}
+                  {/* Pulse ring on hover */}
+                  {isHov && <div style={{
+                    position: "absolute", inset: -6, borderRadius: 20,
+                    border: `1px solid ${T.accent}`,
+                    animation: "processRingPulse 1.5s ease infinite",
+                  }} />}
+                </div>
+
+                {/* Step number & time */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                  <span style={{ fontFamily: font.body, fontSize: 10, fontWeight: 700, color: T.accent, letterSpacing: 1.5, textTransform: "uppercase" }}>Step {s.num}</span>
+                  <span style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(201,162,39,0.4)" }} />
+                  <span style={{ fontFamily: font.body, fontSize: 10, color: T.mute, fontWeight: 500 }}>{s.time}</span>
+                </div>
+
+                {/* Title */}
+                <h3 style={{
+                  fontFamily: font.display, fontSize: "clamp(17px, 1.4vw, 20px)", color: isHov ? C.cream : T.text,
+                  marginBottom: 10, lineHeight: 1.3, fontWeight: 600, position: "relative",
+                  transition: "color 0.3s",
+                }}>{s.title}</h3>
+
+                {/* Description */}
+                <p style={{
+                  fontFamily: font.body, fontSize: 13, color: T.mute, lineHeight: 1.65, margin: 0,
+                  position: "relative",
+                }}>{s.desc}</p>
+
+                {/* Stat badge */}
+                <div className="process-stat-badge" style={{
+                  marginTop: 16, display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "6px 14px", borderRadius: 20,
+                  background: isHov ? "rgba(201,162,39,0.15)" : "rgba(201,162,39,0.06)",
+                  border: `1px solid rgba(201,162,39,${isHov ? 0.3 : 0.1})`,
+                  fontFamily: font.body, fontSize: 11, fontWeight: 600,
+                  color: isHov ? T.accent : T.mute,
+                  transition: "all 0.3s",
+                  position: "relative",
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  {s.stat}
+                </div>
               </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom stats bar */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(24px, 4vw, 56px)",
+          marginBottom: 56, flexWrap: "wrap",
+          opacity: vis ? 1 : 0, transition: "all 0.8s ease 0.6s",
+        }}>
+          {[
+            { val: "14", unit: "Days", label: "To first leads" },
+            { val: "5", unit: "Min", label: "Lead response time" },
+            { val: "14%", unit: "", label: "Avg. conversion" },
+            { val: "45-60", unit: "Days", label: "To first closing" },
+          ].map((m, i) => (
+            <div key={i} style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: font.display, fontSize: "clamp(28px, 3vw, 38px)", color: T.accent, fontWeight: 600, lineHeight: 1 }}>
+                {m.val}<span style={{ fontSize: "0.5em", color: T.mute, marginLeft: 4 }}>{m.unit}</span>
+              </div>
+              <div style={{ fontFamily: font.body, fontSize: 11, color: T.mute, marginTop: 6, letterSpacing: 0.5 }}>{m.label}</div>
             </div>
           ))}
         </div>
 
-        {/* CTA — glass morphism */}
+        {/* CTA */}
         <div style={{ textAlign: "center" }}>
           <button
             className="gold-btn"
             onClick={() => go("contact")}
             style={{
-              background: "rgba(201,162,39,0.1)",
-              border: `1px solid ${T.accent}`,
-              color: T.accent,
-              boxShadow: "none",
+              background: `linear-gradient(135deg, ${T.accent}, #b8922a)`,
+              border: "none",
+              color: T.bg,
+              padding: "18px 44px",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: 1.5,
+              borderRadius: 8,
+              boxShadow: `0 8px 32px rgba(201,162,39,0.3), 0 0 0 1px rgba(201,162,39,0.2)`,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = `0 0 30px ${T.accentDim}, 0 0 60px ${T.accentDim}`;
-              e.currentTarget.style.background = "rgba(201,162,39,0.2)";
+              e.currentTarget.style.boxShadow = `0 12px 48px rgba(201,162,39,0.5), 0 0 0 1px rgba(201,162,39,0.4)`;
+              e.currentTarget.style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "none";
-              e.currentTarget.style.background = "rgba(201,162,39,0.1)";
+              e.currentTarget.style.boxShadow = `0 8px 32px rgba(201,162,39,0.3), 0 0 0 1px rgba(201,162,39,0.2)`;
+              e.currentTarget.style.transform = "";
             }}
-            onMouseDown={(e) => { e.currentTarget.style.transform = "scale(0.98)"; }}
-            onMouseUp={(e) => { e.currentTarget.style.transform = ""; }}
           >
-            Claim Your Territory
+            Claim Your Territory Now
           </button>
+          <p style={{ fontFamily: font.body, fontSize: 12, color: T.mute, marginTop: 14 }}>
+            No long-term contracts. Money-back guarantee on every plan.
+          </p>
         </div>
       </div>
 
