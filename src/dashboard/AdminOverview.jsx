@@ -92,26 +92,39 @@ const Icons = {
   ),
 };
 
-// ── Mini bar chart (sparkline) ──
-function MiniChart({ data, color = C.gold, height = 40 }) {
+// ── Premium SVG area chart (sparkline with gradient fill) ──
+function MiniChart({ data, color = C.gold, height = 48 }) {
   if (!data || data.length === 0) return null;
   const max = Math.max(...data, 1);
-  const barW = Math.max(4, Math.floor(120 / data.length) - 2);
+  const w = 120;
+  const h = height;
+  const pad = 2;
+  const points = data.map((v, i) => ({
+    x: pad + (i / (data.length - 1)) * (w - pad * 2),
+    y: h - pad - ((v / max) * (h - pad * 2)),
+  }));
+
+  // Build smooth SVG path
+  const linePath = points.map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`)).join(" ");
+  const areaPath = `${linePath} L${points[points.length - 1].x},${h} L${points[0].x},${h} Z`;
+  const gradientId = `chart-grad-${color.replace("#", "")}`;
+
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height, opacity: 0.7 }}>
-      {data.map((v, i) => (
-        <div
-          key={i}
-          style={{
-            width: barW,
-            height: `${Math.max(4, (v / max) * 100)}%`,
-            background: `linear-gradient(180deg, ${color}, ${color}44)`,
-            borderRadius: "2px 2px 0 0",
-            transition: "height 0.4s cubic-bezier(.22,1,.36,1)",
-          }}
-        />
-      ))}
-    </div>
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ overflow: "visible", opacity: 0.85 }}>
+      <defs>
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.35" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+      {/* Area fill */}
+      <path d={areaPath} fill={`url(#${gradientId})`} />
+      {/* Line */}
+      <path d={linePath} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      {/* End dot with glow */}
+      <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="3.5" fill={color} />
+      <circle cx={points[points.length - 1].x} cy={points[points.length - 1].y} r="6" fill={color} opacity="0.2" />
+    </svg>
   );
 }
 
