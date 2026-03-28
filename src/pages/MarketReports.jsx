@@ -23,7 +23,7 @@ export default function MarketReports() {
         </p>
       </div>
 
-      <Link to="/#contact" className="gold-btn" style={{ display: "inline-flex", textDecoration: "none" }}>
+      <Link to="/contact" className="gold-btn" style={{ display: "inline-flex", textDecoration: "none" }}>
         Request Access
       </Link>
     </section>

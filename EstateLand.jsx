@@ -671,13 +671,14 @@ function Navbar() {
       window.location.href = "/dashboard/login";
     }, 1200);
   };
-  const isHome = location.pathname === "/";
+  const sectionIds = ["about", "services", "process", "results", "reviews", "plans", "faq", "contact"];
+  const isHome = location.pathname === "/" || sectionIds.includes(location.pathname.slice(1));
   const handleSectionClick = (id) => {
     if (!isHome) return;
-    const el = id === "hero" ? document.documentElement : document.getElementById(id);
+    const el = id === "hero" || !id ? document.documentElement : document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
-      window.history.replaceState(null, "", id === "hero" ? "/" : `/#${id}`);
+      window.history.replaceState(null, "", id && id !== "hero" ? `/${id}` : "/");
     }
   };
   const mobileRef = useRef(null);
@@ -705,7 +706,7 @@ function Navbar() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [mobileOpen]);
 
-  const links = ["Home:hero", "About:about", "Services:services", "Process:process", "Results:results", "Why Estate Land:reviews", "Plans:plans", "FAQ:faq", "Contact:contact"];
+  const links = ["Home:", "About:about", "Services:services", "Process:process", "Results:results", "Why Estate Land:reviews", "Plans:plans", "FAQ:faq", "Contact:contact"];
 
   const navLinkBase = {
     fontFamily: font.body,
@@ -755,12 +756,12 @@ function Navbar() {
             const [label, id] = l.split(":");
             return (
               <Link
-                key={id}
-                to={id === "hero" ? "/" : `/#${id}`}
+                key={id || "home"}
+                to={id ? `/${id}` : "/"}
                 className="nav-link-btn"
                 style={navLinkBase}
                 onClick={(e) => {
-                  if (isHome) {
+                  if (isHome && id) {
                     e.preventDefault();
                     handleSectionClick(id);
                   }
@@ -817,11 +818,11 @@ function Navbar() {
             const [label, id] = l.split(":");
             return (
               <Link
-                key={id}
-                to={id === "hero" ? "/" : `/#${id}`}
+                key={id || "home"}
+                to={id ? `/${id}` : "/"}
                 onClick={(e) => {
                   setMobileOpen(false);
-                  if (isHome) {
+                  if (isHome && id) {
                     e.preventDefault();
                     handleSectionClick(id);
                   }
@@ -2439,9 +2440,18 @@ function FAQ() {
             }}>
               Everything you need to know about exclusive leads, territory, and working with Estate Land.
             </p>
-            <a href="#contact" className="outline-btn" style={{ textDecoration: "none" }}>
+            <Link to="/contact" className="outline-btn" style={{ textDecoration: "none" }}
+              onClick={(e) => {
+                const el = document.getElementById("contact");
+                if (el) {
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: "smooth" });
+                  window.history.replaceState(null, "", "/contact");
+                }
+              }}
+            >
               Still have questions? Get in touch
-            </a>
+            </Link>
           </div>
 
           {/* Right: accordion cards */}
@@ -2735,10 +2745,10 @@ function Footer() {
   const footerLinkStyle = { fontFamily: font.body, fontSize: 13, color: C.mute, fontWeight: 400, textDecoration: "none", transition: "all 0.3s cubic-bezier(.4,0,.2,1)", display: "inline-block" };
   const footerLinks = [
     { title: "Company", items: [
-      { label: "About Us", to: "/#about" },
-      { label: "Services", to: "/#services" },
-      { label: "Plans", to: "/#plans" },
-      { label: "Results", to: "/#results" },
+      { label: "About Us", to: "/about" },
+      { label: "Services", to: "/services" },
+      { label: "Plans", to: "/plans" },
+      { label: "Results", to: "/results" },
       { label: "Careers", to: "/careers" },
     ]},
     { title: "Resources", items: [
@@ -2746,14 +2756,14 @@ function Footer() {
       { label: "Agent Guide", to: "/agent-guide" },
       { label: "Market Reports", to: "/market-reports" },
       { label: "Referral Program", to: "/referral" },
-      { label: "FAQ", to: "/#faq" },
+      { label: "FAQ", to: "/faq" },
       { label: "Info about Estate Land", to: "/info" },
     ]},
     { title: "Legal", items: [
       { label: "Privacy Policy", to: "/privacy" },
       { label: "Terms of Service", to: "/terms" },
       { label: "Cookie Policy", to: "/cookies" },
-      { label: "Contact Us", to: "/#contact" },
+      { label: "Contact Us", to: "/contact" },
     ]},
   ];
 
@@ -2789,10 +2799,10 @@ function Footer() {
               </p>
             </div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link to="/#plans" className="gold-btn" style={{ padding: "14px 32px", fontSize: 13, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>
+              <Link to="/plans" className="gold-btn" style={{ padding: "14px 32px", fontSize: 13, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>
                 View Plans
               </Link>
-              <Link to="/#contact" style={{ padding: "14px 32px", fontSize: 13, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600, fontFamily: font.body, color: C.cream, border: `1px solid ${C.border}`, borderRadius: 6, textDecoration: "none", transition: "all 0.3s", display: "inline-flex", alignItems: "center", gap: 8 }}
+              <Link to="/contact" style={{ padding: "14px 32px", fontSize: 13, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600, fontFamily: font.body, color: C.cream, border: `1px solid ${C.border}`, borderRadius: 6, textDecoration: "none", transition: "all 0.3s", display: "inline-flex", alignItems: "center", gap: 8 }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.cream; }}
               >
@@ -2921,14 +2931,16 @@ export function Layout({ children }) {
 }
 
 export function HomePage() {
-  const { hash } = useLocation();
+  const { pathname } = useLocation();
   useEffect(() => {
-    if (hash) {
-      const id = hash.slice(1);
-      const el = document.getElementById(id);
+    const sectionIds = ["about", "services", "process", "results", "reviews", "plans", "faq", "contact", "pricing"];
+    const id = pathname.slice(1); // remove leading /
+    if (id && sectionIds.includes(id)) {
+      const targetId = id === "pricing" ? "plans" : id;
+      const el = document.getElementById(targetId);
       if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 100);
     }
-  }, [hash]);
+  }, [pathname]);
 
   return (
     <>
