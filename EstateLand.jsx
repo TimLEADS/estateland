@@ -1003,6 +1003,10 @@ const BROKERAGE_LOGO_ITEMS = [
   { name: "eXp Realty", domain: "exprealty.com" },
   { name: "Berkshire Hathaway", domain: "berkshirehathaway.com" },
   { name: "Sotheby's", domain: "sothebysrealty.com" },
+  { name: "Keller Williams", domain: "kw.com" },
+  { name: "RE/MAX", domain: "remax.com" },
+  { name: "Douglas Elliman", domain: "elliman.com" },
+  { name: "Redfin", domain: "redfin.com" },
 ];
 
 function BrokerageLogo({ name, domain, index, theme, size }) {
@@ -1112,39 +1116,47 @@ function Marquee() {
             style={{
               fontFamily: font.body,
               fontSize: 12,
-              color: T.mute,
-              letterSpacing: 0.35,
+              color: T.accent,
+              letterSpacing: 2,
               textTransform: "uppercase",
               fontWeight: 700,
-              marginBottom: 12,
+              marginBottom: 16,
               opacity: vis ? 1 : 0,
               transform: vis ? "translateY(0)" : "translateY(20px)",
               animation: vis ? "marqueeHeadlineIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards" : "none",
             }}
           >
-            Trusted by agents from
+            Trusted Nationwide
           </p>
           <h2
             style={{
               fontFamily: font.display,
-              fontSize: "clamp(38px, 5vw, 58px)",
+              fontSize: "clamp(40px, 5.5vw, 64px)",
               color: T.text,
               fontWeight: 600,
               letterSpacing: "-0.02em",
-              lineHeight: 1.1,
+              lineHeight: 1.08,
               marginBottom: 20,
               opacity: vis ? 1 : 0,
               transform: vis ? "translateY(0)" : "translateY(20px)",
               animation: vis ? "marqueeHeadlineIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards" : "none",
             }}
           >
-            The world's leading <em style={{ color: T.accent, fontStyle: "italic", fontWeight: 600 }}>brokerages</em>
+            Agents from the <em style={{ color: T.accent, fontStyle: "italic", fontWeight: 600 }}>top 10</em>
+            <br />
+            brokerages choose us
           </h2>
+          <p style={{
+            fontFamily: font.body, fontSize: 15, color: T.mute, maxWidth: 480, margin: "0 auto", lineHeight: 1.6,
+            opacity: vis ? 1 : 0, animation: vis ? "marqueeHeadlineIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards" : "none",
+          }}>
+            From solo agents to mega teams, the best in real estate trust Estate Land for exclusive leads and listing appointments.
+          </p>
           <div
             style={{
-              width: 100,
+              width: 120,
               height: 3,
-              margin: "0 auto",
+              margin: "24px auto 0",
               background: `linear-gradient(90deg, transparent, ${T.accent}, transparent)`,
               borderRadius: 2,
               opacity: vis ? 1 : 0,
@@ -1154,37 +1166,34 @@ function Marquee() {
           />
         </div>
 
-        {/* Stat pill — credibility in one line */}
+        {/* Trust metrics row */}
         <div
           style={{
             display: "flex",
             justifyContent: "center",
+            gap: "clamp(24px, 4vw, 64px)",
             marginBottom: 48,
+            flexWrap: "wrap",
             opacity: vis ? 1 : 0,
             animation: vis ? "marqueeHeadlineIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards" : "none",
           }}
         >
-          <div className="marquee-stat-pill" style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 24,
-            padding: "10px 28px",
-            background: "rgba(255,255,255,0.85)",
-            border: `1px solid ${T.border}`,
-            borderRadius: 999,
-            boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
-            fontFamily: font.body,
-            fontSize: 12,
-            fontWeight: 600,
-            color: T.text,
-            letterSpacing: 0.08,
-          }}>
-            <span>500+ Realtors</span>
-            <span style={{ width: 4, height: 4, borderRadius: "50%", background: T.accent }} aria-hidden />
-            <span>$2.4B+ in Closed Volume</span>
-            <span style={{ width: 4, height: 4, borderRadius: "50%", background: T.accent }} aria-hidden />
-            <span>All 50 States</span>
-          </div>
+          {[
+            { val: "500+", label: "Active Agents" },
+            { val: "$2.4B+", label: "Closed Volume" },
+            { val: "200+", label: "Brokerages" },
+            { val: "50", label: "States Covered" },
+          ].map((m, i) => (
+            <div key={i} style={{ textAlign: "center" }}>
+              <div style={{
+                fontFamily: font.display, fontSize: "clamp(28px, 3vw, 40px)", color: T.accent, fontWeight: 700, lineHeight: 1,
+                textShadow: "0 2px 12px rgba(166,124,0,0.15)",
+              }}>{m.val}</div>
+              <div style={{
+                fontFamily: font.body, fontSize: 11, color: T.mute, marginTop: 6, fontWeight: 500, letterSpacing: 0.5, textTransform: "uppercase",
+              }}>{m.label}</div>
+            </div>
+          ))}
         </div>
 
         {/* Full-bleed logo track — single row, larger logos, stronger container */}
