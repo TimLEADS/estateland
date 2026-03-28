@@ -47,13 +47,13 @@ export default function RealtorInfo() {
           <div style={sectionNum}>Info about Estate Land</div>
           <h2 style={sectionTitle}>Who we are</h2>
           <p style={{ ...bodyText, marginBottom: 16 }}>
-            Estate Land is a premium lead generation and delivery platform built exclusively for real estate professionals across the United States. We serve agents, teams, and brokerages in 50+ markets with exclusive, verified seller leads — no shared lists, no unqualified inquiries.
+            Estate Land is the #1 exclusive lead generation and delivery platform built specifically for top-producing real estate professionals across all 50 United States. We serve 500+ agents, teams, and brokerages with double-verified, exclusive seller leads -- zero shared lists, zero unqualified inquiries, zero competition.
           </p>
           <p style={{ ...bodyText, marginBottom: 16 }}>
-            Our mission is simple: connect producing realtors with pre-qualified sellers who are ready to list. We handle sourcing, verification, and appointment setting so you can focus on closing. Every lead is exclusive to your territory and verified by our ISA team before it reaches you.
+            Our mission is simple: connect producing realtors with pre-qualified sellers who are ready to list. We handle multi-channel sourcing, ISA verification, appointment setting, and full CRM automation so you can focus on what you do best -- closing deals. Every lead is 100% exclusive to your territory and verified by our trained inside sales team before it reaches you.
           </p>
           <p style={{ ...bodyText, margin: 0 }}>
-            We offer flexible partnership plans (Launch, Growth, Premier) with transparent pricing, referral fees at closing, and live support. Whether you are a solo agent or a growing team, Estate Land is designed to scale with you.
+            We offer three flexible partnership plans (Launch, Growth, Premier) with transparent pricing, referral fees only at closing, a money-back guarantee, and priority live support. Our agents report an average 14% lead-to-close conversion rate and $2.4B+ in total closed volume. Whether you are a solo agent or a 50-person team, Estate Land is designed to scale with you.
           </p>
         </section>
 

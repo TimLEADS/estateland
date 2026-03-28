@@ -13,7 +13,7 @@ export default function Careers() {
           Careers at <span style={{ color: C.gold }}>Estate Land</span>
         </h1>
         <p style={{ fontFamily: font.body, fontSize: 17, color: C.creamDim, lineHeight: 1.75 }}>
-          We're building the future of real estate lead generation. If you're driven, talented, and want to help realtors win in their markets, we'd love to hear from you.
+          We are building the #1 lead generation platform for real estate professionals across all 50 states. With 500+ active agents and $2.4B+ in closed volume, Estate Land is growing fast. If you are driven, talented, and want to help top-producing realtors dominate their markets, we want to hear from you.
         </p>
       </div>
 
@@ -31,9 +31,11 @@ export default function Careers() {
       <div>
         <h2 style={{ fontFamily: font.display, fontSize: 24, color: C.gold, marginBottom: 16 }}>Why Estate Land?</h2>
         <ul style={{ fontFamily: font.body, fontSize: 15, color: C.creamDim, lineHeight: 1.9, paddingLeft: 24 }}>
-          <li>Work with a team that understands real estate</li>
-          <li>Remote-first culture across all 50 states</li>
-          <li>Competitive compensation and growth opportunities</li>
+          <li>Work with a team of real estate and marketing experts</li>
+          <li>100% remote-first culture across all 50 states</li>
+          <li>Competitive compensation with performance bonuses</li>
+          <li>Fast-growing company with real impact on agent success</li>
+          <li>Equity opportunities for early team members</li>
         </ul>
       </div>
 
